@@ -1,0 +1,38 @@
+import("GSEABase","cellHTS2","BioNet","biomaRt")
+import("AnnotationDbi")
+
+export("aggregatePvals",
+	"biogridDataDownload", 
+       "celAnnotationConvertor",
+       "cellHTS2OutputStatTests",
+       "collectionGsea",
+       "drosoAnnotationConvertor",
+       "duplicateRemover",
+       "enrichedSubNw",
+       "FDRcollectionGsea",
+       "analyzeGeneSetCollections",
+       "getGeneSetInfo",
+       "GOGeneSets",
+       "GOstatsHTest",
+       "gseaPlots",
+       "gseaScores",
+	"HTSanalysis4CellHTS2",
+	"HTSanalyzeR",
+	"InterProGeneSets",
+       "KeggGeneSets",
+       "mammalAnnotationConvertor",
+       "multiHyperGeoTest",
+       "networkAnalysis",
+       "overlapComputing",
+	"pairwiseGsea",
+	"pairwiseGseaPlot",
+	"pairwisePhenoMannWith",
+       "permutationPvalueCollectionGsea",
+       "permutationPvalueGsea",
+       "permutationScoresGsea",
+       "permutationsGeneratorGsea",
+       "hyperGeoTest",
+       "writeReportHTSA")
+
+
+
