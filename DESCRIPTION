@@ -1,7 +1,7 @@
 Package: HTSanalyzeR
 Type: Package
 Title: Network and gene set enrichment analysis pipeline for high throughput screens.
-Version: 1.4.0
+Version: 1.5.0
 Date: 2010-08-20
 Author: John C. Rose <jcr53@cam.ac.uk>, Camille Terfve <cdat2@cam.ac.uk>,  Xin Wang <Xin.Wang@cancer.org.uk>, Florian Markowetz <Florian.Markowetz@cancer.org.uk>
 Maintainer: Xin Wang <Xin.Wang@cancer.org.uk>
