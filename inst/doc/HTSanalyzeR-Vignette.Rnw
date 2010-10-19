@@ -114,6 +114,7 @@ gsc.solo.list <- list(Dm.GO.MF = Dm.GO.MF)
 \emph{geneSetAnalyze} performs hypergeometric tests for overrepresentation of gene sets with the list of hits and also performs gene set enrichment analysis (GSEA), as described by Subramanian and colleagues\cite{subramanian2005}.
 
 <<eval=FALSE>>=
+library(snow)
 options(htsa.cluster=makeCluster(4,"SOCK"))
 enrichment.analysis <- analyzeGeneSetCollections(
 	ListOfGeneSetCollections = gsc.list,
@@ -128,7 +129,7 @@ enrichment.analysis <- analyzeGeneSetCollections(
 	whichSetIsGOIds = c(1, 2, 3),
 	verbose=TRUE)
 if(is(getOption("htsa.cluster"),"cluster")) 
-	stopCluster(getoption("htsa.cluster"))
+	stopCluster(getOption("htsa.cluster"))
 @
 
 The output contains data frames displaying the results for hypergeometric testing and GSEA for each gene set collection, as well as data frames showing the combined results of all gene set collections. Additionally, gene sets exhibiting significant p-values for enrichment from both hypergeometric testing and GSEA are displayed in separate tables. Additionally, the output contains dataframes of gene sets exhibiting significant p-values (and significant adjusted p-values) for enrichment from both hypergeometric testing and GSEA.
