@@ -18,7 +18,7 @@ function(pvaluesMatrix,columns=c("t.test.pvalues.two.samples","t.test.pvalues.on
 		pvalues<-pvaluesMatrix[,columns]
 	} else {
 		pvalues<-pvaluesMatrix[,columns]
-		pvalues<-aggregatePvals(pvaluesMatrix,order=order)
+		pvalues<-aggrPvals(pvaluesMatrix,order=order,plot=FALSE)
 	}
 	names(pvalues)<-rownames(pvaluesMatrix)
 	#Download the data from the BioGRID, if no data matrix is specified by the argument 'biogridObject'	
