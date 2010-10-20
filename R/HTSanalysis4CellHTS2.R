@@ -29,34 +29,42 @@ HTSanalysis4CellHTS2 <- function(
 		verbose=TRUE
 	) {
 	#check that 'normCellHTSobject' is a cellHTS cellHTSobject
-	if(class(normCellHTSobject) != "cellHTS") 
-		stop("The argument 'normCellHTSobject' is not a cellHTS object")
-	#check that the cellHTS2 cellHTSobject is in the right format 
-	#(configured, so that we know which rows are samples and which are controls
-	#annotated, so that we can match names of constructs
-	#normalized, but not scored)
-	if(!state(normCellHTSobject)["configured"]) 
-		stop("The cellHTS object should be configured to perform the statistical tests")
-	if(!state(normCellHTSobject)["normalized"]) 
-		warning("Your cellHTS object has not been normalized, this could impact the results of these tests",immediate.=TRUE)
-	if(state(normCellHTSobject)["scored"]) 
-		stop("This cellHTS object has been scored; the statistical analysis should be performed on the normalized signal intensities",immediate.=TRUE)
-	if(!state(normCellHTSobject)["annotated"]) 
-		stop("This cellHTS object has not been annotated",immediate.=TRUE)
-	#check that the annotationColumn has been specified as a single character string
-	if(!is.character(annotationColumn) || length(annotationColumn) !=1 ) 
-		stop("The 'annotationColumn' parameter does not have the right format")
-	#check that the annotationColumn matches a column in the fData(cellHTSobject) dataframe	
-	if(!(annotationColumn %in% colnames(fData(normCellHTSobject)))) 
-		stop("The 'annotationColumn' parameter does not match to any column in your cellHTS object")
-	#Prepare the data for the enrichment analysis: 
-	#1.we need a scored cellHTS2 object
-	scoredCellHTSobject<-scoreReplicates(normCellHTSobject,sign=scoreSign,method=scoreMethod)
-	scoredCellHTSobject<-summarizeReplicates(scoredCellHTSobject,summary=summarizeMethod)
-	#2.we need a named vector, with no NA names
-	data4enrich<-as.vector(Data(scoredCellHTSobject));
-	names(data4enrich)<-fData(scoredCellHTSobject)[,annotationColumn] 
-	data4enrich<-data4enrich[-which(is.na(names(data4enrich)))]
+	#if(class(normCellHTSobject) != "cellHTS")
+	#	stop("The argument 'normCellHTSobject' is not a cellHTS object")
+	data4enrich<-NULL
+	if(is(normCellHTSobject,"cellHTS")) {
+		#check that the cellHTS2 cellHTSobject is in the right format 
+		#(configured, so that we know which rows are samples and which are controls
+		#annotated, so that we can match names of constructs
+		#normalized, but not scored)
+		if(!state(normCellHTSobject)["configured"]) 
+			stop("The cellHTS object should be configured to perform the statistical tests")
+		if(!state(normCellHTSobject)["normalized"]) 
+			warning("Your cellHTS object has not been normalized, this could impact the results of these tests",immediate.=TRUE)
+		if(state(normCellHTSobject)["scored"]) 
+			stop("This cellHTS object has been scored; the statistical analysis should be performed on the normalized signal intensities",immediate.=TRUE)
+		if(!state(normCellHTSobject)["annotated"]) 
+			stop("This cellHTS object has not been annotated",immediate.=TRUE)
+		#check that the annotationColumn has been specified as a single character string
+		if(!is.character(annotationColumn) || length(annotationColumn) !=1 ) 
+			stop("The 'annotationColumn' parameter does not have the right format")
+		#check that the annotationColumn matches a column in the fData(cellHTSobject) dataframe	
+		if(!(annotationColumn %in% colnames(fData(normCellHTSobject)))) 
+			stop("The 'annotationColumn' parameter does not match to any column in your cellHTS object")
+		#Prepare the data for the enrichment analysis: 
+		#1.we need a scored cellHTS2 object
+		scoredCellHTSobject<-scoreReplicates(normCellHTSobject,sign=scoreSign,method=scoreMethod)
+		scoredCellHTSobject<-summarizeReplicates(scoredCellHTSobject,summary=summarizeMethod)
+		#2.we need a named vector, with no NA names
+		data4enrich<-as.vector(Data(scoredCellHTSobject));
+		names(data4enrich)<-fData(scoredCellHTSobject)[,annotationColumn] 
+		data4enrich<-data4enrich[-which(is.na(names(data4enrich)))]
+	} else {
+		#check if cellHTS2 is a named vector
+		if(!is.vector(normCellHTSobject) || is.null(names(normCellHTSobject)))
+			stop("normCellHTSobject should be a named vector including phenotypes if it is not a cellHTS object")
+		data4enrich <- normCellHTSobject
+	}	
 	#3.we need Entrez.gene identifiers
 	if(initialIDs != "Entrez.gene") {
 	#This checks that the species argument corresponds to a single character string 
