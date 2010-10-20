@@ -35,6 +35,14 @@ export("aggregatePvals",
        "permutationScoresGsea",
        "permutationsGeneratorGsea",
        "hyperGeoTest",
+       "writeHTSAHtmlHead",
+       "writeHTSAHtmlTab",
+       "writeHTSAHtmlTail",
+       "writeHTSAHtmlTable",
+       "GenHTSAHtmlRowUnit",
+       "htmlAttrVectorPaste",
+       "makeGSEAplots",
+       "makeOverlapTable",
        "writeReportHTSA")
 
 
