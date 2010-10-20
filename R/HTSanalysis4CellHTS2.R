@@ -55,16 +55,17 @@ HTSanalysis4CellHTS2 <- function(
 		#1.we need a scored cellHTS2 object
 		scoredCellHTSobject<-scoreReplicates(normCellHTSobject,sign=scoreSign,method=scoreMethod)
 		scoredCellHTSobject<-summarizeReplicates(scoredCellHTSobject,summary=summarizeMethod)
-		#2.we need a named vector, with no NA names
+		#2.we need a named vector
 		data4enrich<-as.vector(Data(scoredCellHTSobject));
 		names(data4enrich)<-fData(scoredCellHTSobject)[,annotationColumn] 
-		data4enrich<-data4enrich[-which(is.na(names(data4enrich)))]
 	} else {
 		#check if cellHTS2 is a named vector
 		if(!is.vector(normCellHTSobject) || is.null(names(normCellHTSobject)))
 			stop("normCellHTSobject should be a named vector including phenotypes if it is not a cellHTS object")
 		data4enrich <- normCellHTSobject
 	}	
+	#no NA names in data4enrich
+	data4enrich<-data4enrich[which(!is.na(names(data4enrich)))]
 	#3.we need Entrez.gene identifiers
 	if(initialIDs != "Entrez.gene") {
 	#This checks that the species argument corresponds to a single character string 
@@ -100,7 +101,7 @@ HTSanalysis4CellHTS2 <- function(
 		data4enrichentrez<-data4enrich
 		names(data4enrichentrez)<-names(data4enrich)
 	}
-	data4enrichentrez<-data4enrichentrez[-which(is.na(data4enrichentrez))]
+	data4enrichentrez<-data4enrichentrez[which(!is.na(data4enrichentrez))]
 	#4.we need 	to remove the duplicates, and order the gene list
 	#This function will check that the method is correctly specified
 	data4enrichentrez<-duplicateRemover(geneList=data4enrichentrez,method=duplicateRemoverMethod,absValue=orderAbsValue)
