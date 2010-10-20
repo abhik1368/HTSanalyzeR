@@ -48,6 +48,7 @@ Collate:aggregatePvals.R
 	permutationPvalueGsea.R
 	permutationScoresGsea.R
 	permutationsGeneratorGsea.R
+	writeHtml.R
 	writeReportHTSA.R
 LazyLoad: yes
 Packaged: 2010-10-19 08:30:30 UTC; xinwang
