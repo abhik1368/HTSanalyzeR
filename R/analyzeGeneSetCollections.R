@@ -199,8 +199,21 @@ function(ListOfGeneSetCollections,
 	names(overlap)<-result.names	
 	names(overlap.adj)<-result.names
 	cat("-Gene set enrichment analysis complete \n")
+
+	
+	
 	final.results<-list("HyperGeo.results"=HGTresults,"GSEA.results"=GSEA.results.list,
 		"Sig.pvals.in.both"=overlap,"Sig.adj.pvals.in.both"=overlap.adj)
 	return(final.results)
 }
+
+
+
+
+
+
+
+
+
+
 

@@ -54,6 +54,7 @@ function(geneList,geneNames.perm,collectionOfGeneSets,exponent,npermutations, mo
 				runningES<-Phit-Pmiss		
 				ESrange<-sapply(1:(npermutations+1),function(i) range(runningES[,i]))
 				ES<-sapply(1:(npermutations+1), function(i) ESrange[which.max(abs(ESrange[,i])),i])	
+				if(is.list(ES)) ES<-unlist(ES)
 			}
 		}
 		

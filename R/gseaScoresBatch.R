@@ -53,6 +53,7 @@ function(geneList,geneNames.perm,geneSet,exponent,npermutations, mode=c("graph",
 			runningES<-Phit-Pmiss		
 			ESrange<-sapply(1:(npermutations+1),function(i) range(runningES[,i]))
 			ES<-sapply(1:(npermutations+1), function(i) ESrange[which.max(abs(ESrange[,i])),i])	
+			if(is.list(ES)) ES<-unlist(ES)
 		}
 	}
 	#Return the relevant information according to mode		
