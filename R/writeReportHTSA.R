@@ -50,10 +50,24 @@ writeReportHTSA <- function(experimentName, enrichmentAnalysis,
 	
 	## Get the indices of the gene set collections for which there will be
 	## links to the relevant databases
-	if (missing(whichSetIsKEGGIds))
-		whichSetIsKEGGIds <- 0
-	if (missing(whichSetIsGOIds))
-		whichSetIsGOIds <- 0
+	if(length(whichSetIsKEGGIds) == 1) {
+		if(is.na(whichSetIsKEGGIds)) {
+			keggGS<-0
+		} else {
+			keggGS<-whichSetIsKEGGIds
+		}
+	} else {	
+		keggGS<-whichSetIsKEGGIds
+	}
+	if(length(whichSetIsGOIds) == 1) {
+		if(is.na(whichSetIsGOIds)){
+			GOGS<-0
+		} else {
+			GOGS<-whichSetIsGOIds
+		}
+	} else {	
+		GOGS<-whichSetIsGOIds
+	}	
 	
 	## Error checking: add helpers here for future S4
 	species <- match.arg(species, c("Dm", "Hs", "Rn", "Mm", "Ce"))
@@ -70,13 +84,10 @@ writeReportHTSA <- function(experimentName, enrichmentAnalysis,
 	##########################################
 	#           create directories 		     #
 	##########################################
-	docdir<-file.path(reportdir,"doc")				#dir for documents or text files
-	imgdir<-file.path(reportdir,"image")			#dir for image files
-	htmdir<-file.path(reportdir,"html")				#dir for html files
-	for(htsdir in c(reportdir,docdir,imgdir,htmdir)) {
-		if(!file.exists(htsdir)) 
-			dir.create(htsdir)
-	}
+	## Directories: alphabetically sorted (1 - doc; 2 - html; 3 - image)
+	dirs <- file.path(reportdir, c('','doc', 'html', 'image'))
+	names(dirs) <- c('root', 'doc', 'html', 'image')
+	sapply(dirs, function(diri) if(!file.exists(diri)) dir.create(diri))
 	##########################################
 	#       	produce GSEA plots		     #
 	##########################################
@@ -136,7 +147,7 @@ writeReportHTSA <- function(experimentName, enrichmentAnalysis,
 	##########################################
 	#Copy css and logos in there
 	cpfile<-dir(system.file("templates",package="HTSanalyzeR"),full=TRUE)
-	file.copy(from=cpfile,to=imgdir,overwrite=TRUE)
+	file.copy(from=cpfile,to=dirs['image'],overwrite=TRUE)
 	##########################################
 	#       	produce index.html		     #
 	##########################################
@@ -156,7 +167,7 @@ writeReportHTSA <- function(experimentName, enrichmentAnalysis,
 	cat(paste(" ( ",length(geneList), " genes)",sep=""), append = TRUE, file = htmlfile)
 	cat("\n <br> This analysis was performed using the gene set collection(s): ", append = TRUE, file = htmlfile)
 	cat("\n \t <UL>", append = TRUE, file = htmlfile)
-	for(i in 1:number.gsc) {
+	for(i in 1:nGSC) {
 		cat(paste(" \n \t \t <LI>",names(listOfGeneSetCollections)[i],sep=""), append = TRUE, file = htmlfile)
 		cat(paste(" ( ",length(listOfGeneSetCollections[[i]]), " gene sets, of which ",dim(enrichmentAnalysis$GSEA.results[[i]])[1] ," were above the minimum size )",sep=""), append = TRUE, file = htmlfile)
 	}
@@ -204,7 +215,7 @@ writeReportHTSA <- function(experimentName, enrichmentAnalysis,
 	##########################################
 	#-Produce the HyperG results pages: one page is produced for each element of the enrichmentAnalysis$HyperGeo.results list (i.e. for each gene set collection)
 	for(n in 1:l.HyperGeo.results) {
-		htmlfile =  file.path(htmdir,paste("hyperg",n,".html",sep=""))
+		htmlfile =  file.path(dirs['html'],paste("hyperg",n,".html",sep=""))
 		##########################################
 		#       non-GO and non-KEGG Gene sets    #
 		##########################################
@@ -364,7 +375,7 @@ writeReportHTSA <- function(experimentName, enrichmentAnalysis,
 	##########################################
 	#-Produce the gsea results pages:  one page is produced for each element of the enrichmentAnalysis$GSEA.results list (i.e. for each gene set collection)
 	for(n in 1:l.GSEA.results) {
-		htmlfile =  file.path(htmdir,paste("gsea",n,".html",sep=""))
+		htmlfile =  file.path(dirs['html'],paste("gsea",n,".html",sep=""))
 		##########################################
 		#     non-GO and non-KEGG Gene sets	     #
 		##########################################
@@ -528,7 +539,7 @@ writeReportHTSA <- function(experimentName, enrichmentAnalysis,
 	##########################################	
 	#Produce the enrichment summary page
 	for(n in 1:l.Sig.adj.pvals.in.both) {
-		htmlfile =  file.path(htmdir,paste("enrichment",n,".html",sep=""))
+		htmlfile =  file.path(dirs['html'],paste("enrichment",n,".html",sep=""))
 		writeHTSAHtmlHead(experimentName=experimentName, htmlfile=htmlfile, rootdir="..")
 		#Produce the tabs
 		writeHTSAHtmlTab(enrichmentAnalysis=enrichmentAnalysis,htmlfile=htmlfile,rootdir="..",index=TRUE)
@@ -560,8 +571,8 @@ writeReportHTSA <- function(experimentName, enrichmentAnalysis,
 	##########################################	
 	#Produce the networks analysis results page
 	nwAnalysisGraphFile<-"EnrichedSubNw.png"
-	networkPlot(nwAnalysisOutput=nwAnalysisOutput,phenotypeVector=geneList,filepath=imgdir,filename=nwAnalysisGraphFile)
-	htmlfile =  file.path(htmdir,"network.html")
+	networkPlot(nwAnalysisOutput=nwAnalysisOutput,phenotypeVector=geneList,filepath=dirs['image'],filename=nwAnalysisGraphFile)
+	htmlfile =  file.path(dirs['html'],"network.html")
 	writeHTSAHtmlHead(experimentName=experimentName, htmlfile=htmlfile, rootdir="..")
 	#Produce the tabs
 	writeHTSAHtmlTab(enrichmentAnalysis=enrichmentAnalysis,htmlfile=htmlfile,rootdir="..",index=TRUE)
