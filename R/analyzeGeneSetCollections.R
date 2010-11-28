@@ -34,8 +34,6 @@ analyzeGeneSetCollections <-
 	######################
 	###Hypergeometric test
 	######################
-
-	
 	HGTresults<-list()
 	for(i in 1:length(listOfGeneSetCollections)) {
 		if(verbose) {
@@ -153,8 +151,6 @@ analyzeGeneSetCollections <-
 			colnames(GSEA.results.list[[i]])<-c("Observed.score","Pvalue","Adjusted.Pvalue","FDR")
 		}
 	}
-
-	
 	##identify gene set collections with hypergeometric test pvalues < pValueCutoff
 	sign.hgt<-lapply(HGTresults, function(x) {
 				if(nrow(x)>0) {

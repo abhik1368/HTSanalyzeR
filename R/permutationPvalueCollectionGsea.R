@@ -23,9 +23,9 @@ function(permScores,dataScores){
 			pval[i]=1
 		} else {
 			if(dataScores[i] < 0) {
-				pval[i]=length(which(permScores[i,] < dataScores[i]))/dim(permScores)[2]
+				pval[i]=length(which(permScores[i,] < dataScores[i]))/ncol(permScores)
 			} else {
-				pval[i]=length(which(permScores[i,] > dataScores[i]))/dim(permScores)[2]
+				pval[i]=length(which(permScores[i,] > dataScores[i]))/ncol(permScores)
 			}
 		}	
 	}			

@@ -1,9 +1,9 @@
 Package: HTSanalyzeR
 Type: Package
 Title: Network and gene set enrichment analyses for data set such as high throughput RNAi screens.
-Version: 2.0.0
+Version: 2.1.0
 Date: 2010-10-19
-Author: Xin Wang <Xin.Wang@cancer.org.uk>, Camille Terfve <cdat2@cam.ac.uk>,  John C. Rose <jcr53@cam.ac.uk>, Florian Markowetz <Florian.Markowetz@cancer.org.uk>
+Author: Camille Terfve <cdat2@cam.ac.uk>, Xin Wang <Xin.Wang@cancer.org.uk>, John C. Rose <jcr53@cam.ac.uk>, Florian Markowetz <Florian.Markowetz@cancer.org.uk>
 Maintainer: Xin Wang <Xin.Wang@cancer.org.uk>
 Depends:graph, GSEABase, BioNet, cellHTS2, RankProd
 Imports:graph, GSEABase, BioNet, cellHTS2, AnnotationDbi, biomaRt
@@ -13,6 +13,7 @@ License: Artistic-2.0
 biocViews: CellBasedAssays, Bioinformatics, MultipleComparisons
 Collate:
 	paraCheck.R
+	aggregatePvals.R
 	analyzeGeneSetCollections.R
 	annotationConvertor.R
 	biogridDataDownload.R
@@ -46,4 +47,4 @@ Collate:
 	writeHtml.R
 	writeReportHTSA.R
 LazyLoad: yes
-Packaged: 2010-11-28 12:35:12 UTC; xinwang
+Packaged: 2010-11-28 20:25:06 UTC; xinwang

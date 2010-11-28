@@ -25,10 +25,10 @@ function(permScores,dataScores){
 		NegAvg<-abs(mean(permScores[i,neg]))
 		PosAvg<-abs(mean(permScores[i,pos]))
 		#If the score is 0, just do not normalize anything	
-		if(is.na(dataScores[i]) || dataScores[i]==0) {
-			NegAvg<-1
-			PosAvg<-1
-		}
+		#if(is.na(dataScores[i]) || dataScores[i]==0) {
+		#	NegAvg<-1
+		#	PosAvg<-1
+		#}
 		#Normalize the permutation-based scores, separately for negative and positive scores		
 		permScores[i,neg]=permScores[i,neg]/NegAvg
 		permScores[i,pos]=permScores[i,pos]/PosAvg
@@ -48,19 +48,19 @@ function(permScores,dataScores){
 	for(i in 1:ldataScores) {
 		if(is.na(dataScores[i])) {
 			FDRgeneset[i]=1
-		} else {
-			if(dataScores[i]==0) {
-				FDRgeneset[i]=1
-			} else {
+		} #else {
+		#	if(dataScores[i]==0) {
+		#		FDRgeneset[i]=1
+		#	} 
+			else {
 				if(dataScores[i] < 0) {
-					FDRgeneset[i]=(length(which(permScores <= dataScores[i]))/negtot)/
-						(length(which(dataScores <= dataScores[i]))/length(which(dataScores <= 0)))
+					FDRgeneset[i]=(sum(permScores <= dataScores[i])/negtot)/(sum(dataScores <= dataScores[i])/sum(dataScores <= 0))
 				} else {
-					FDRgeneset[i]=(length(which(permScores >= dataScores[i]))/postot)/
-						(length(which(dataScores >= dataScores[i]))/length(which(dataScores >= 0)))
+					FDRgeneset[i]=(sum(permScores >= dataScores[i])/postot)/(sum(dataScores >= dataScores[i])/sum(dataScores >= 0))
 				}
+				ifelse(FDRgeneset[i]>1, 1, FDRgeneset[i])
 			}
-		}			
+		#}			
 	}	
 	#name the FDRs (by gene set name) and return the vector		
 	names(FDRgeneset)<-names(dataScores)

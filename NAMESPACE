@@ -3,6 +3,7 @@ import("AnnotationDbi")
 
 export(
 	"paraCheck",
+	"aggregatePvals",
 	"analyze",
 	"annotationConvertor",
 	"interactome",
