@@ -1,28 +1,28 @@
 \name{KeggGeneSets}
 \alias{KeggGeneSets}
 \title{
-This function creates gene set collections based on Kegg pathways terms.
+Create gene set collections (lists) based on Kegg pathways terms
 }
 \description{
-This function creates gene set collections based on Kegg pathways terms. It is species-specific, and returns a GeneSetCollection objects with the elements of the gene sets represented by Entrez Gene IDs.
+This function creates gene set collections (lists) based on Kegg pathways terms. It is species-specific, and returns a GeneSetCollection objects with the elements of the gene sets represented by Entrez Gene IDs.
 }
 \usage{
-KeggGeneSets(species=c("Dm", "Hs", "Rn", "Mm", "Ce"))
+KeggGeneSets(species="Dm")
 }
 \arguments{
   \item{species}{
-A choice of species (only one species of the following: "Dm" ("Drosophila_melanogaster"), "Hs" ("Homo_sapiens"), 
-"Rn" ("Rattus_norvegicus"), "Mm" ("Mus_musculus"), "Ce" ("Caenorhabditis_elegans"))
+a single character value specifying the species: "Dm" ("Drosophila_melanogaster"), "Hs" ("Homo_sapiens"), 
+"Rn" ("Rattus_norvegicus"), "Mm" ("Mus_musculus") or "Ce" ("Caenorhabditis_elegans"))
 }
 }
 \details{
-This function relies on the following packages:GSEABase,KEGG.db.
+This function relies on the following packages: GSEABase, KEGG.db.
 }
 \value{
-A GeneSetCollection object, with names=kegg pathway IDs and genes as entrez gene IDs
+a collection (list) of gene sets, with names as kegg pathway IDs and genes as entrez gene IDs
 }
 \author{
-Camille Terfve
+Camille Terfve, Xin Wang
 }
 \seealso{
 GOGeneSets

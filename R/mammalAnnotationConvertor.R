@@ -1,15 +1,14 @@
 #This function takes a named vector or matrix of data and converts the names into another type of identifiers
 mammalAnnotationConvertor <-
 function(
-		geneList,initialIDs=c("Ensembl.transcript","Ensembl.prot","Ensembl.gene","Entrez.gene","RefSeq","Symbol","GenBank"),
-		finalIDs=c("Ensembl.transcript","Ensembl.prot","Ensembl.gene","Entrez.gene","RefSeq","Symbol","GenBank"),
-		species=c("Homo_sapiens","Rattus_norvegicus","Mus_musculus"), keepMultipleMappings=TRUE, verbose=TRUE) {
-	#This checks that the species argument corresponds to a single character string that can be matched to one of our species
-	if(!is.character(species) || length(species) != 1) 
-		stop("The species argument does not have the right format")
-	if(!(species %in% c("Hs","Rn","Mm")))
-		stop("The species argument does not match any of the names recognized by this function, please provide one of 
-			the following character strings: 'Hs' ('Homo_sapiens'), 'Rn' ('Rattus_norvegicus'), 'Mm' ('Mus_musculus')")	
+		geneList, initialIDs="Entrez.gene", finalIDs="Entrez.gene", species="Hs", keepMultipleMappings=TRUE, verbose=TRUE) {
+	#check input arguments
+	paraCheck("genelist.general",geneList)
+	paraCheck("mam.initialIDs",initialIDs)
+	paraCheck("mam.finalIDs",finalIDs)
+	paraCheck("mam.species",species)
+	paraCheck("keepMultipleMappings",keepMultipleMappings)
+	paraCheck("verbose",verbose)
 	if(species == "Hs") {
 		#Determine the environment to be used for the mapping
 		#If the type of initial identifiers is not "Entrez.gene", then the mapping will 
@@ -85,9 +84,6 @@ function(
 	#Determine if the geneList is a matrix (named rows) or a named vector 
 	#the computation will be done separately depending on this (i.e. based on names or rownames)					
 	if(!is.matrix(geneList)) {
-		#Check that the data vector is named 	
-		if(is.null(names(geneList))) 
-			stop("Your data vector is not named")
 		#Create a list with an element for each name in the geneList, containing a vector 
 		#of identifiers of the type finalIDs mapped to that name in the geneList			
 		list.new.names<-mget(names(geneList), fromto, ifnotfound=NA)
@@ -106,12 +102,12 @@ function(
 				if(keepMultipleMappings) {
 					if(verbose) {
 						cat("--The following identifier was mapped to more than one value (only the first value is kept): \n")
-						cat("--",list.new.names[i],"\n")
+						print(list.new.names[i])
 					}
 				} else {
 					if(verbose) {
 						cat("--The following identifier was mapped to more than one value (this entry will be discarded): \n")
-						cat("--",list.new.names[i],"\n")
+						print(list.new.names[i])
 					}
 					tag.multiples[i]<-1
 				}
@@ -139,9 +135,7 @@ function(
 					") could not be mapped to any identifier (or were mapped to multiple identifiers), 
 					and were removed from the data. \n"))
 		}
-	} else {
-		#Check that the data matrix has row names	
-		if(is.null(rownames(geneList))) stop("Your data matrix does not have row names")		
+	} else {	
 		list.new.names<-mget(rownames(geneList), fromto, ifnotfound=NA)
 		#This is identical to what is done for vectors, except that we work on row names		
 		l.new.names<-length(list.new.names)
@@ -153,12 +147,12 @@ function(
 				if(keepMultipleMappings) {
 					if(verbose) {
 						cat("--The following identifier was mapped to more than one value (only the first value is kept): \n")
-						cat("--",list.new.names[i],"\n")
+						print(list.new.names[i])
 					}
 				} else {
 					if(verbose) {
 						cat("--The following identifier was mapped to more than one value (this entry will be discarded): \n")
-						cat("--",list.new.names[i],"\n")
+						print(list.new.names[i])
 					}
 					tag.multiples[i]<-1
 				}

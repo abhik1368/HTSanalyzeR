@@ -1,9 +1,13 @@
 #This function takes a named vector or matrix of data and converts the names into another type of identifiers
 drosoAnnotationConvertor <-
 	function(
-			geneList,initialIDs=c("Ensembl.transcript","Ensembl.prot","Ensembl.gene","Entrez.gene","RefSeq","Symbol","GenBank","Flybase","FlybaseCG","FlybaseProt"),
-			finalIDs=c("Ensembl.transcript","Ensembl.prot","Ensembl.gene","Entrez.gene","RefSeq","Symbol","GenBank","Flybase","FlybaseCG","FlybaseProt"),
-			keepMultipleMappings=TRUE,verbose=TRUE) {
+			geneList,initialIDs="Entrez.gene", finalIDs="Entrez.gene", keepMultipleMappings=TRUE,verbose=TRUE) {
+	#check input arguments
+	paraCheck("genelist.general",geneList)
+	paraCheck("initialIDs",initialIDs)
+	paraCheck("finalIDs",finalIDs)
+	paraCheck("keepMultipleMappings",keepMultipleMappings)
+	paraCheck("verbose",verbose)
 	#Determine the environment to be used for the mapping
 	#If the type of initial identifiers is not "Entrez.gene", then the mapping will 
 	#automatically be from one of the following to Entrez Gene identifiers		
@@ -35,9 +39,6 @@ drosoAnnotationConvertor <-
 	#Determine if the geneList is a matrix (named rows) or a named vector 
 	#the computation will be done separately depending on this (i.e. based on names or rownames)					
 	if(!is.matrix(geneList)) {
-	#Check that the data vector is named 	
-		if(is.null(names(geneList))) 
-			stop("Your data vector is not named")
 		#Create a list with an element for each name in the geneList, containing a vector 
 		#of identifiers of the type finalIDs mapped to that name in the geneList			
 		list.new.names <- mget(names(geneList), fromto, ifnotfound=NA)
@@ -56,12 +57,12 @@ drosoAnnotationConvertor <-
 				if(keepMultipleMappings){
 					if(verbose) {
 						cat("--The following identifier was mapped to more than one value (only the first value is kept): \n")
-						cat(list.new.names[i],"\n")	
+						print(list.new.names[i])	
 					}
 				} else {
 					if(verbose) {
 						cat("--The following identifier was mapped to more than one value (this entry will be discarded): \n")
-						cat(list.new.names[i],"\n")
+						print(list.new.names[i])
 					}
 					tag.multiples[i]<-1
 				}
@@ -90,9 +91,6 @@ drosoAnnotationConvertor <-
 					and were removed from the data. \n"))
 		}
 	} else {
-		#Check that the data matrix has row names	
-		if(is.null(rownames(geneList))) 
-			stop("Your data matrix does not have row names")
 		#This is identical to what is done for vectors, except that we work on row names			
 		list.new.names<-mget(rownames(geneList), fromto, ifnotfound=NA)
 		n.new.names<-length(list.new.names)
@@ -104,12 +102,12 @@ drosoAnnotationConvertor <-
 				if(keepMultipleMappings) {
 					if(verbose) {
 						cat("--The following identifier was mapped to more than one value (only the first value is kept): \n")
-						cat("--",list.new.names[i],"\n")
+						print(list.new.names[i])
 					}
 				} else {
 					if(verbose) {
 						cat("--The following identifier was mapped to more than one value (this entry will be discarded): \n")
-						cat("--",list.new.names[i],"\n")
+						print(list.new.names[i])
 					}
 					tag.multiples[i]<-1
 				}

@@ -1,37 +1,45 @@
 \name{drosoAnnotationConvertor}
 \alias{drosoAnnotationConvertor}
 \title{
-Conversion between different types of identifiers.
+Conversion between different types of identifiers for Drosophila Melanogaster
 }
 \description{
-This function converts an initial named data vector (or data matrix with row names=identifiers) to the same vector but with a different identifier category.
+This function converts an initial named data vector to the same vector but with a 
+different identifier category. This function can also take a matrix, with 
+rows=gene id's. This function removes the genes for which no mapping were found.
 }
 \usage{
-drosoAnnotationConvertor(geneList, initialIDs = c("Ensembl.transcript", 
-"Ensembl.prot", "Ensembl.gene", "Entrez.gene", "RefSeq", "Symbol", "GenBank", 
-"Flybase", "FlybaseCG", "FlybaseProt"), finalIDs = c("Ensembl.transcript", 
-"Ensembl.prot", "Ensembl.gene", "Entrez.gene", "RefSeq", "Symbol", "GenBank", 
-"Flybase", "FlybaseCG", "FlybaseProt"), keepMultipleMappings = TRUE, verbose=TRUE)
+drosoAnnotationConvertor(geneList, initialIDs = "Entrez.gene", finalIDs = 
+"Entrez.gene", keepMultipleMappings = TRUE, verbose=TRUE)
 }
 \arguments{
   \item{geneList}{
-A named data vector (names= identifiers to be converted) or a matrix with identifiers to be converted as row names.
+a named integer or numeric vector, or a matrix with rows named by gene identifiers
 }
   \item{initialIDs}{
-The current identifiers type. One of "Ensembl.transcript", "Ensembl.prot", "Ensembl.gene", "Entrez.gene", "RefSeq", "Symbol", "GenBank", "Flybase", "FlybaseCG", "FlybaseProt".
+a single character value specifying the type of initial identifiers for input 
+'geneList'. Current version can take one of the following types: "Ensembl.transcript", 
+"Ensembl.prot", "Ensembl.gene", "Entrez.gene", "RefSeq", "Symbol", "GenBank", 
+"Flybase", "FlybaseCG", "FlybaseProt".
 }
   \item{finalIDs}{
-The final identifier type that is wanted. One of "Ensembl.transcript", "Ensembl.prot", "Ensembl.gene", "Entrez.gene", "RefSeq", "Symbol", "GenBank", "Flybase", "FlybaseCG", "FlybaseProt".
+a single character value specifying the type of final identifiers to which users want 
+to convert. Current version can take one of the following types: "Ensembl.transcript", 
+"Ensembl.prot", "Ensembl.gene", "Entrez.gene", "RefSeq", "Symbol", "GenBank", "Flybase", 
+"FlybaseCG", "FlybaseProt".
 }
   \item{keepMultipleMappings}{
-If TRUE, keeps the entries with multiple mappings (first mapping is kept). If FALSE, discarding them.
+a single logical value. If TRUE, the function keeps the entries with multiple mappings 
+(first mapping is kept). If FALSE, the entries with multiple mappings will be discarded.
 }
   \item{verbose}{
-A logical value to decide to display detailed messages (when verbose=TRUE) or not (when verbose=FALSE)
+a single logical value deciding to display detailed messages (when verbose=TRUE) or 
+not (when verbose=FALSE)
 }
 }
 \details{
-The entries that could not be mapped to any identifiers are removed from the resulting data vector/matrix.
+The entries that could not be mapped to any identifiers are removed from the resulting 
+data vector/matrix.
 This function relies on the org.Dm.eg.dbpackage and therefore only maps 
 \itemize{
 	\item from any identifier to an Entrez gene id
@@ -39,24 +47,23 @@ This function relies on the org.Dm.eg.dbpackage and therefore only maps
 	}
 }
 \value{
-The same data vector/matrix but with names/row names converted.
+the same data vector/matrix but with names/row names converted.
 }
 \author{
-Camille Terfve
+Camille Terfve, Xin Wang
 }
 \seealso{
-mammalAnnotationConvertor, celAnnotationConvertor
+mammalAnnotationConvertor, celAnnotationConvertor, annotationConvertor
 }
 \examples{
 library(org.Dm.eg.db)
+##example 1: convert a named vector
 x<-runif(10)
 names(x)<-names(as.list(org.Dm.egSYMBOL2EG))[1:10]
-xEntrez<-drosoAnnotationConvertor(geneList=x,initialIDs="Symbol",
-finalIDs="Entrez.gene")
-#
+xEntrez<-drosoAnnotationConvertor(geneList=x, initialIDs="Symbol", finalIDs="Entrez.gene")
+##example 2: convert a data matrix with row names as gene ids
 library(org.Dm.eg.db)
 x<-cbind(runif(10),runif(10))
 rownames(x)<-names(as.list(org.Dm.egSYMBOL2EG))[1:10]
-xEntrez<-drosoAnnotationConvertor(geneList=x,initialIDs="Symbol",
-finalIDs="Entrez.gene")
+xEntrez<-drosoAnnotationConvertor(geneList=x, initialIDs="Symbol", finalIDs="Entrez.gene")
 }

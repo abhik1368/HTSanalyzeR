@@ -1,39 +1,24 @@
 cellHTS2OutputStatTests <-
-function(cellHTSobject,annotationColumn="GeneID",controls="neg",alternative=c("two.sided","less","greater"),logged=FALSE,tests=c("T-test","MannWhitney","RankProduct")) {
-	#check that 'cellHTSobject' is a cellHTS cellHTSobject
-	if(!is(cellHTSobject, "cellHTS")) 
-		stop("The argument 'cellHTSobject' is not a cellHTS object")
-	#check that the cellHTS2 cellHTSobject is in the right format 
-	#(configured, so that we know which rows are samples and which are controls
-	#normalized and annotated, so that we can match the names of the constructs)
-	if(!state(cellHTSobject)["configured"]) 
-		stop("The cellHTS object should be configured to perform the statistical tests")
-	if(!state(cellHTSobject)["normalized"]) 
-		warning("Your cellHTS object has not been normalized, this could impact the results of these tests",immediate.=TRUE)
-	if(state(cellHTSobject)["scored"]) 
-		warning("This cellHTS object has been scored and the statistical analysis will be perfomed on the score rather than the normalized signal intensities",immediate.=TRUE)
-	if(!state(cellHTSobject)["annotated"]) 
-		warning("This cellHTS object has not been annotated",immediate.=TRUE)
-	#check that the annotationColumn has been specified as a single character string
-	if(!(is.character(annotationColumn) && length(annotationColumn) ==1)) 
-		stop("The 'annotationColumn' parameter does not have the right format")
+function(cellHTSobject,annotationColumn="GeneID",controls="neg",alternative="two.sided",logged=FALSE,tests="T-test") {
+	paraCheck("normCellHTSobject", cellHTSobject)
+	paraCheck("annotationColumn", annotationColumn)
 	#check that the annotationColumn matches a column in the fData(cellHTSobject) dataframe	
 	if(!(annotationColumn %in% colnames(fData(cellHTSobject)))) 
 		stop("The 'annotationColumn' parameter does not match to any column in your cellHTS object")
 	#check that the 'controls' parameter has been specified as a single character string
-	if(!(is.character(controls) && length(controls)==1)) 
-		stop("The 'controls' parameter does not have the right format")
+	paraCheck("nwStatsControls", controls)
 	#check that the  'controls' parameter matches a status in the 'controlStatus' column of the cellHTS cellHTSobject	
 	if(!(controls %in% fData(cellHTSobject)[,"controlStatus"])) 
 		stop("The 'controls' parameter does not match to any status in the 'controlStatus' column of your cellHTS object")	
 	#check that the 'alternative' parameter has been correctly set 
-	if(!(alternative %in% c("two.sided","less","greater") && length(alternative)==1)) 
-		stop("The 'alternative' parameter has not been set properly, please provide only one of the following charcater strings: 'two.sided','less','greater'")
+	paraCheck("nwStatsAlternative", alternative)
+	#check 'tests'
+	paraCheck("nwStatsTests", tests)
 	#make a named data matrix (only samples) rows=features, columns=replicates, with row names = identifiers in the "annotationColumn" of the fData() data frame
 	dataNw<-Data(cellHTSobject)[,1:dim(Data(cellHTSobject))[2],1]
 	rownames(dataNw)<-fData(cellHTSobject)[,annotationColumn] 
-	dataNw<-dataNw[-which(fData(cellHTSobject)[,"controlStatus"] != "sample"),]
-	dataNw<-dataNw[-which(is.na(rownames(dataNw))),]
+	dataNw<-dataNw[which(fData(cellHTSobject)[,"controlStatus"] == "sample"),]
+	dataNw<-dataNw[which(!is.na(rownames(dataNw))),]
 	#make a vector of data for the control 	population
 	controlData<-Data(cellHTSobject)[which(fData(cellHTSobject)[,"controlStatus"]== controls),1:dim(Data(cellHTSobject))[2],1]
 	controlData<-as.vector(controlData)

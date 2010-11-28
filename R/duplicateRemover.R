@@ -1,15 +1,8 @@
-#This function gets rid of the duplicates in a gene list. It also orders the gene list by phenotype.
-duplicateRemover <- function(geneList, method=c("max","min","average","fc.avg"), absValue=FALSE){
-	
-	#Check that geneList is a single vector
-	if(!is.vector(geneList)) 
-		stop("Your geneList should be a vector")
-	#Check that the data vector is named 	
-	if(is.null(names(geneList))) 
-		stop("Your data vector is not named")
-	#Check that the method argument is correctly specified
-	if(!(length(method) == 1 && (method %in% c("max","min","average","fold.change.average"))))
-		stop("The 'method' argument should be only one of the following character strings: 'max', 'min', 'average', 'fc.avg(fold change average)'")
+#This function gets rid of the duplicates in a gene list.
+duplicateRemover <- function(geneList, method="max"){
+	#check input arguments
+	paraCheck("genelist",geneList)
+	paraCheck("duplicateRemoverMethod",method)
 	#Get the unique names and create a vector that will store the processed values corresponding to those names
 	geneList.names<-names(geneList)
 	datanames<-unique(geneList.names)
@@ -48,14 +41,7 @@ duplicateRemover <- function(geneList, method=c("max","min","average","fc.avg"),
 		#convert back to fold change				
 		neg.fcs<-which(data.processed<1)
 		data.processed[neg.fcs]<-(-1/data.processed[neg.fcs]) 
-	}
-	#order the final vector: considering absolute values or signed values and return the apporpriate vector	
-	if(!absValue) {
-		data.processed<-data.processed[order(data.processed,decreasing=TRUE)]
-		return(data.processed)
-	} else {
-		data.processed.abs<-abs(data.processed)[order(abs(data.processed),decreasing=TRUE)]	
-		return(data.processed.abs)
 	}	
+	data.processed
 }
 

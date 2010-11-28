@@ -1,10 +1,10 @@
 #This function takes a named vector or matrix of data and converts the names into another type of identifiers
-celAnnotationConvertor <-
-	function(
-			geneList,initialIDs=c("Ensembl.transcript","Ensembl.prot","Ensembl.gene","Entrez.gene","RefSeq","Symbol","GenBank"),
-			finalIDs=c("Ensembl.transcript","Ensembl.prot","Ensembl.gene","Entrez.gene","RefSeq","Symbol","GenBank","wormbase"),
-			keepMultipleMappings=TRUE,verbose=TRUE
-	) {
+celAnnotationConvertor <- function(geneList, initialIDs="Entrez.gene", finalIDs="Entrez.gene", keepMultipleMappings=TRUE, verbose=TRUE) {
+	paraCheck("genelist.general",geneList)
+	paraCheck("initialIDs",initialIDs)
+	paraCheck("finalIDs",finalIDs)
+	paraCheck("keepMultipleMappings",keepMultipleMappings)
+	paraCheck("verbose",verbose)
 	fromto<-"dummystring"
 	#Determine the environment to be used for the mapping
 	#If the type of initial identifiers is not "Entrez.gene", then the mapping will 
@@ -31,10 +31,7 @@ celAnnotationConvertor <-
 		stop("Please provide a valid type of identifiers for the 'initialIDs' and 'finalIDs' parameters (see help(celAnnotationConvertor))")		
 	#Determine if the geneList is a matrix (named rows) or a named vector 
 	#the computation will be done separately depending on this (i.e. based on names or rownames)			
-	if(is.matrix(geneList)==FALSE) {
-	#Check that the data vector is named 	
-		if(is.null(names(geneList))) 
-			stop("Your data vector is not named")
+	if(!is.matrix(geneList)) {
 		#Create a list with an element for each name in the geneList, containing a vector 
 		#of identifiers of the type finalIDs mapped to that name in the geneList		
 		list.new.names<-mget(names(geneList), fromto, ifnotfound=NA)
@@ -87,9 +84,6 @@ celAnnotationConvertor <-
 					and were removed from the data. \n"))
 		}
 	} else {
-		#Check that the data matrix has row names	
-		if(is.null(rownames(geneList))) 
-			stop("Your data matrix does not have row names")	
 		list.new.names<-mget(rownames(geneList), fromto, ifnotfound=NA)
 		#This is identical to what is done for vectors, except that we work on row names		
 		n.new.names<-length(list.new.names)

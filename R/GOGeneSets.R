@@ -2,19 +2,10 @@
 #It is species-specific, and returns a GeneSetCollection objects 
 #with the elements of the gene sets represented by Entrez Gene IDs.
 GOGeneSets <-
-	function(species=c("Dm", "Hs", "Rn", "Mm", "Ce"), ontologies=c("BP","MF","CC")) {
-
-	#Check that the species argument corresponds to a single character string that can be matched
-	if(!is.character(species) || length(species) != 1) 
-		stop("The species argument does not have the right format")
-	if(!(species %in% c("Dm","Hs","Rn","Mm","Ce"))) {
-		stop("The species argument does not match any of the names recognized by this function, 
-				please provide one of the following character strings: \"Dm\" for \"Drosophila Melanogaster\",
-				\"Hs\" for \"Homo Sapiens\", \"Rn\" for \"Rattus Norvegicus\", \"Mm\" for \"Mus Musculus\", and \"Ce\" for \"Caenorhabditis Elegans\"")
-		}
-	#This checks that the ontologies argument is appropriate
-	if(!all(ontologies %in% c("BP","MF","CC"))) 
-		stop('The "ontologies" argument is not corectly specified, please provide a vector containing any non redundant combination of "BP","MF","CC" ')
+	function(species="Dm", ontologies="MF") {
+	#check input arguments
+	paraCheck("species",species)
+	paraCheck("ontologies",ontologies)
 	#This creates a list with an element for each GO term, containing the Entrez Gene identifiers and corresponding evidence codes
 	if(species == "Hs") ThisGO<-org.Hs.egGO2EG
 	if(species == "Mm") ThisGO<-org.Mm.egGO2EG

@@ -22,42 +22,106 @@ writeHTSAHtmlHead<-function(experimentName, htmlfile, rootdir=".") {
 	cat('&nbsp <img src="',file.path(rootdir,"image","goatcomputer.png"),'" width="85" height="60"/> </div></tr><tr>',append = TRUE,file=htmlfile)
 }
 #Write tabs of report htmls
-writeHTSAHtmlTab<-function(enrichmentAnalysis,htmlfile,rootdir=".",index=TRUE) {
-	l.HyperGeo.results<-length(enrichmentAnalysis$HyperGeo.results)
-	l.GSEA.results<-length(enrichmentAnalysis$GSEA.results)
-	l.Sig.adj.pvals.in.both<-length(enrichmentAnalysis$Sig.adj.pvals.in.both)
+writeHTSAHtmlTab<-function(enrichmentAnalysis,tab=c("GSCA","NWA"),htmlfile,rootdir=".",index=TRUE) {
 	if(index) {
-		cat(paste('\n <table class="noframe"> <tr> <td class="tabs"> <h3><a href="',file.path(rootdir,"index.html"),'" title="index">Index</a></h3> </td> <tr>',sep=""), append = TRUE, file = htmlfile)
+		cat(paste('\n <table class="noframe"> <tr> <td class="tabs"> <h3><a href="',file.path(rootdir,"index.html"),'" title="index">Index</a></h3> </td>',sep=""), append = TRUE, file = htmlfile)		
+	}
+	if("GSCA" %in% tab) {
 		cat("\n <tr>", append = TRUE, file = htmlfile)
+		cat('<td class="tabs"> <h3>  </h3> </td>', append = TRUE, file = htmlfile)
+		l.HyperGeo.results<-length(enrichmentAnalysis$HyperGeo.results)
+		l.GSEA.results<-length(enrichmentAnalysis$GSEA.results)
+		l.Sig.adj.pvals.in.both<-length(enrichmentAnalysis$Sig.adj.pvals.in.both)
+		for(i in 1:l.HyperGeo.results){
+			cat(paste('\n <td class="tabs"> <h3>',names(enrichmentAnalysis$HyperGeo.results)[i],'</h3> </td>',sep=""), append = TRUE, file = htmlfile)
+		}
+		cat("\n </tr> <tr>", append = TRUE, file = htmlfile)	
+		cat('<td class="tabs"> <h3> Hypergeometric tests </h3> </td>', append = TRUE, file = htmlfile)
+		for(i in 1:l.HyperGeo.results){
+			cat(paste('\n <td class="tabs"> <h3><a href="',file.path(rootdir,"html",paste("hyperg",i,".html",sep="")),'" title="',sep=""), append = TRUE, file = htmlfile)
+			cat(paste(names(enrichmentAnalysis$HyperGeo.results)[i],' Hyperg. Tests">','here</a></h3> </td>',sep=""), append = TRUE, file = htmlfile)
+		}
+		cat("\n </tr> <tr>", append = TRUE, file = htmlfile)
+		cat('<td class="tabs"> <h3> GSEA </h3> </td>', append = TRUE, file = htmlfile)	
+		for(i in 1:l.GSEA.results){
+			cat(paste('\n <td class="tabs"> <h3><a href="',file.path(rootdir,"html",paste("gsea",i,".html",sep="")),'" title="',sep=""), append = TRUE, file = htmlfile)
+			cat(paste(names(enrichmentAnalysis$GSEA.results)[i],' GSEA">','here</a></h3> </td>',sep=""), append = TRUE, file = htmlfile)
+		}
+		cat("\n </tr> <tr>", append = TRUE, file = htmlfile)	
+		cat('<td class="tabs"> <h3> Enrichment Summary </h3> </td>', append = TRUE, file = htmlfile)
+		for(i in 1:l.Sig.adj.pvals.in.both){
+			cat(paste('\n <td class="tabs"> <h3><a href="',file.path(rootdir,"html",paste("enrichment",i,".html",sep="")),'" title="',sep=""), append = TRUE, file = htmlfile)
+			cat(paste(names(enrichmentAnalysis$Sig.adj.pvals.in.both)[i],' Enrichment.summary">','here</a></h3> </td>',sep=""), append = TRUE, file = htmlfile)
+		}
+		cat("\n </tr>", append = TRUE, file = htmlfile)
 	}
-	cat('<td class="tabs"> <h3>  </h3> </td>', append = TRUE, file = htmlfile)
-	for(i in 1:l.HyperGeo.results){
-		cat(paste('\n <td class="tabs"> <h3>',names(enrichmentAnalysis$HyperGeo.results)[i],'</h3> </td>',sep=""), append = TRUE, file = htmlfile)
+	if("NWA" %in% tab) {
+		cat("\n <tr>", append = TRUE, file = htmlfile)
+		cat(paste('\n  <td class="tabs"> <h3><a href="',file.path(rootdir,"html","network.html"),'" title="network">Network Analysis</a></h3> </td> </tr> ',sep=""), append = TRUE, file = htmlfile)
 	}
-	cat("\n </tr> <tr>", append = TRUE, file = htmlfile)	
-	cat('<td class="tabs"> <h3> Hypergeometric tests </h3> </td>', append = TRUE, file = htmlfile)
-	for(i in 1:l.HyperGeo.results){
-		cat(paste('\n <td class="tabs"> <h3><a href="',file.path(rootdir,"html",paste("hyperg",i,".html",sep="")),'" title="',sep=""), append = TRUE, file = htmlfile)
-		cat(paste(names(enrichmentAnalysis$HyperGeo.results)[i],' Hyperg. Tests">','here</a></h3> </td>',sep=""), append = TRUE, file = htmlfile)
-	}
-	cat("\n </tr> <tr>", append = TRUE, file = htmlfile)
-	cat('<td class="tabs"> <h3> GSEA </h3> </td>', append = TRUE, file = htmlfile)	
-	for(i in 1:l.GSEA.results){
-		cat(paste('\n <td class="tabs"> <h3><a href="',file.path(rootdir,"html",paste("gsea",i,".html",sep="")),'" title="',sep=""), append = TRUE, file = htmlfile)
-		cat(paste(names(enrichmentAnalysis$GSEA.results)[i],' GSEA">','here</a></h3> </td>',sep=""), append = TRUE, file = htmlfile)
-	}
-	cat("\n </tr> <tr>", append = TRUE, file = htmlfile)	
-	cat('<td class="tabs"> <h3> Enrichment Summary </h3> </td>', append = TRUE, file = htmlfile)
-	for(i in 1:l.Sig.adj.pvals.in.both){
-		cat(paste('\n <td class="tabs"> <h3><a href="',file.path(rootdir,"html",paste("enrichment",i,".html",sep="")),'" title="',sep=""), append = TRUE, file = htmlfile)
-		cat(paste(names(enrichmentAnalysis$Sig.adj.pvals.in.both)[i],' Enrichment.summary">','here</a></h3> </td>',sep=""), append = TRUE, file = htmlfile)
-	}
-	cat("\n </tr> <tr>", append = TRUE, file = htmlfile)
-	cat(paste('\n  <td class="tabs"> <h3><a href="',file.path(rootdir,"html","network.html"),'" title="network">Network Analysis</a></h3> </td> </tr> </table>',sep=""), append = TRUE, file = htmlfile)
+	cat("\n </table>", append = TRUE, file = htmlfile)
 }
 #Write tail part of report htmls
 writeHTSAHtmlTail<-function(htmlfile) {
 	cat('\n </tr> \n </table> \n </td> \n </tr> \n </table> \n </body> \n </html>',append = TRUE, file = htmlfile)
+}
+#Write the summary page
+writeHTSAHtmlSummary<-function(gsca=NULL, nwa=NULL, htmlfile) {
+	cat("\n <hr/> \n ",append=TRUE,file=htmlfile)
+	if(!is.null(gsca)) {
+		l.HyperGeo.results<-length(gsca@result$HyperGeo.results)
+		l.GSEA.results<-length(gsca@result$GSEA.results)
+		l.Sig.adj.pvals.in.both<-length(gsca@result$Sig.adj.pvals.in.both)
+		cat("<br> The enrichment analysis was performed using the gene list ", append = TRUE, file = htmlfile)
+		#cat(geneListName, append = TRUE, file = htmlfile)
+		cat(paste(" including ",gsca@summary$gl[,"input"], " genes",sep=""), append = TRUE, file = htmlfile)
+		cat("\n <br><br> This analysis was performed using the gene set collection(s): ", append = TRUE, file = htmlfile)
+		cat("\n \t <UL>", append = TRUE, file = htmlfile)
+		for(i in 1:length(gsca@listOfGeneSetCollections)) {
+			cat(paste(" \n \t \t <LI>",names(gsca@listOfGeneSetCollections)[i],sep=""), append = TRUE, file = htmlfile)
+			cat(paste(" ( ",length(gsca@listOfGeneSetCollections[[i]]), " gene sets, of which ",dim(gsca@result$GSEA.results[[i]])[1] ," were above the minimum size )",sep=""), append = TRUE, file = htmlfile)
+		}
+		cat("\n \t </UL>", append = TRUE, file = htmlfile)
+		cat("\n The following methods were used: ", append = TRUE, file = htmlfile)
+		cat("\n \t <UL> \n \t \t <LI>", append = TRUE, file = htmlfile)
+		cat("Hypergeometric test", append = TRUE, file = htmlfile)
+		cat("\n \t \t <UL>", append = TRUE, file = htmlfile)
+		#cat(paste("\n \t \t \t <LI> Cutoff for hits: ",gsca@summary$para$hypergeo[,"pValueCutoff"],sep=""), append = TRUE, file = htmlfile)
+		cat(paste("\n \t \t \t <LI> MHT correction method: ",gsca@summary$para$hypergeo[,"pAdjustMethod"]), append = TRUE, file = htmlfile)
+		cat(paste("\n \t \t \t <LI> Minimum gene set size: ",gsca@summary$para$hypergeo[,"minGeneSetSize"]), append = TRUE, file = htmlfile)
+		cat("\n \t \t </UL>", append = TRUE, file = htmlfile)
+		cat("\n \t \t <LI>", append = TRUE, file = htmlfile)
+		cat("Gene Set Enrichment Analysis", append = TRUE, file = htmlfile)
+		cat("\n \t \t <UL> \n \t \t \t <LI>", append = TRUE, file = htmlfile)
+		cat(paste("Minimum gene set size: ",gsca@summary$para$gsea[,"minGeneSetSize"],sep=""), append = TRUE, file = htmlfile)
+		cat(paste("\n \t \t \t <LI> MHT correction method: ",gsca@summary$para$gsea[,"pAdjustMethod"]), append = TRUE, file = htmlfile)
+		cat(paste("\n \t \t \t <LI> Number of permutations: ",gsca@summary$para$gsea[,"nPermutations"]), append = TRUE, file = htmlfile)
+		cat(paste("\n \t \t \t <LI> Exponent: ",gsca@summary$para$gsea[,"exponent"]), append = TRUE, file = htmlfile)
+		cat("\n \t \t </UL>", append = TRUE, file = htmlfile)
+	}
+
+	if(!is.null(nwa)) {
+		cat("\n \t \t <LI>", append = TRUE, file = htmlfile)
+		cat("Network Analysis", append = TRUE, file = htmlfile)
+		cat("\n \t \t <UL>", append = TRUE, file = htmlfile)
+
+		if(!is.na(nwa@summary$db[,"species"])) {
+			cat(paste("\n \t \t \t <LI> Interaction dataset: The Biogrid organism: ",ifelse(!is.na(nwa@summary$db[,"species"]),nwa@summary$db,"Unknown")), append = TRUE, file = htmlfile)
+		} else {
+			cat(paste("\n \t \t \t <LI> Interaction dataset: User-input Biogrid object "), append = TRUE, file = htmlfile)
+		}
+		if(!is.na(nwa@summary$db[,"genetic"])) {
+			if(nwa@summary$db[,"genetic"]=="FALSE") {
+				cat(" (excluding genetic interactions)", append = TRUE, file = htmlfile)
+			} else {
+				cat(" (including genetic interactions)", append = TRUE, file = htmlfile)
+			}
+		}
+		cat(paste("\n \t \t \t <LI> FDR for score calculation: ",nwa@fdr), append = TRUE, file = htmlfile)
+		cat("\n \t \t </UL>", append = TRUE, file = htmlfile)
+		cat("\n \t </UL>", append = TRUE, file = htmlfile)
+	}
+
 }
 #Write a table
 writeHTSAHtmlTable<-function(dat.tab, href.tab=NULL, signif.tab=NULL, row.attr.tab=NULL, tab.class,tab.name, htmlfile) {
@@ -101,6 +165,7 @@ writeHTSAHtmlTable<-function(dat.tab, href.tab=NULL, signif.tab=NULL, row.attr.t
 #Generate a unit of a table according to specified attributes
 GenHTSAHtmlRowUnit<-function(content, href.attr=NULL,td.attr=NULL,header=FALSE) {
 	mark<-ifelse(header,"th","td")
+
 	row.unit<-paste(
 			"<",mark, 
 			ifelse(is.null(td.attr) || all(is.na(td.attr)),"",htmlAttrVectorPaste(td.attr)), ">", 
@@ -108,8 +173,9 @@ GenHTSAHtmlRowUnit<-function(content, href.attr=NULL,td.attr=NULL,header=FALSE) 
 			"</",mark,">", sep="")
 	return(row.unit)
 }
-#Collapse a attribute vector for a table unit
+#Collapse an attribute vector for a table unit
 htmlAttrVectorPaste<-function(vec) {
+
 	if(all(!is.na(vec)) && !is.null(vec)) {
 		if(!(all(!is.na(names(vec))) && !is.null(names(vec)) && is.character(vec) && length(vec)>0)) {
 			stop("Wrong vector of attributes")

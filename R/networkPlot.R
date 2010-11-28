@@ -1,5 +1,5 @@
 ###############################################################################
-# TODO: 
+# Plot subnetwork
 # Xin Wang <xw264@cam.ac.uk>
 # Advisor: Florian Markowetz <florian.markowetz@cancer.org.uk> 
 # University of Cambridge Deparment of Oncology
@@ -7,27 +7,21 @@
 # At 15:22:08, on 9 Oct 2010
 ###############################################################################
 networkPlot <-
-function(
-	nwAnalysisOutput,
-	phenotypeVector=NA,
-	filepath=".",
-	filename="EnrichedSubNw.png"
+function(nwAnalysisOutput, phenotypeVector=NULL, filepath=".", filename="EnrichedSubNw.png"
 ) {
+	if(!is.list(nwAnalysisOutput) || !(c("subnw") %in% names(nwAnalysisOutput)))
+		stop("'nwAnalysisOutput' should contain a subnetwork module!\n")
 	subnw<-nwAnalysisOutput$subnw
 	labels<-nwAnalysisOutput$labels
+	if(!is(subnw,"graphNEL"))
+		stop("The module in 'nwAnalysisOutput' should be an object of class 'graphNEL'!\n")
 	#If no phenotype vector is specified, then we can just plot the module	
-	if(length(phenotypeVector) == 1) {
+	if(is.null(phenotypeVector)) {
 		png("EnrichedSubNw.png",width = 900, height = 900)
 		plotModule(subnw,labels=labels)
 		dev.off()
 	} else {
-		#If a phenotype vector is specified, it will be used to color the nodes
-		#check that the phenotypeVector has the right format (single numerical vector)
-		if(!is.numeric(phenotypeVector) && !is.integer(phenotypeVector)) 
-			stop("The phenotypeVector should be a single vector of numerical phenotypes")
-		#Check that the phenotypeVector is a named vector
-		if(!is.null(dim(phenotypeVector)) || is.null(names(phenotypeVector))) 
-			stop("Please provide a phenotypeVector as a single named vector")	
+		paraCheck("phenotypes",phenotypeVector)
 		#this vector holds the phenotype for the nodes of the sub-network	
 		diff.expr<-phenotypeVector[nodes(subnw)]
 		names(diff.expr)<-nodes(subnw)

@@ -1,23 +1,11 @@
-#Function to compute enrichment scores for GSEA, running score and position of hits for a gene set.
+#This function computes enrichment scores for GSEA, running score and position of hits for a gene set.
 gseaScores <-
-function(geneList,geneSet,exponent,mode=c("graph","score")) {
-	#Check that the geneList is a named vector
-	if(!is.vector(geneList) || is.null(names(geneList))) 
-		stop("Please provide a geneList as a single named and ordered vector")	
-	#Check that the geneList does not have any NA names 
-	if(any(is.na(names(geneList)))) 
-		stop("Some of the elements of your geneList do not have a name")
-	#check that the exponent is a single integer
-	if(!((is.integer(exponent) || is.numeric(exponent)) && length(exponent) == 1))  
-		stop("The exponent should be a single integer (default (advised) = 1, see help(gseaScores))")
-	#check that the geneSet is a single vector (I am not precising the class of that vector because although characters are expected
-	#most of the time, it is actually possible to have numerical values in the case of Entrez IDs for example)
-	if(!is.vector(geneSet)) 
-		stop("The geneSet should be a vector")
-	#check that the mode argument is correctly specified
-	if(!(mode %in% c("graph", "score"))) {
-		stop("The mode argument is not correctly specified, please provide one of the following character strings: 'graph', 'score'")
-	}
+function(geneList,geneSet,exponent=1,mode="score") {
+	#check input arguments
+	paraCheck("genelist",geneList)
+	paraCheck("exponent",exponent)
+	paraCheck("gs",geneSet)
+	paraCheck("gseaScore.mode",mode)
 	#The geneSet should be a subset of the gene universe, i.e. we keep only those element of the gene set that appear in the geneList		
 	geneSet<-intersect(names(geneList),geneSet)
 	#Compute the size of the gene set and of the genelist	
@@ -56,6 +44,6 @@ function(geneList,geneSet,exponent,mode=c("graph","score")) {
 	if(mode=="score")
 		return(ES)	
 	if(mode=="graph")	
-		return(list("Enrichment.Score"=ES, "Running.Score"=runningES, "Positions"=as.integer(hits)))
+		return(list("enrichmentScore"=ES, "runningScore"=runningES, "positions"=as.integer(hits)))
 }
 

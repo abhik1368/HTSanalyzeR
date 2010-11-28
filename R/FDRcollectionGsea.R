@@ -3,13 +3,13 @@ FDRcollectionGsea <-
 function(permScores,dataScores){
 	#Check that permscores and dataScores have the right format
 	if(!is.matrix(permScores)) 
-		stop("The argument 'permScores' should be a matrix")
-	if(is.matrix(dataScores)) 
-		stop("The argument 'dataScores' should be a vector")
-	if(nrow(permScores) != length(dataScores)) 
-		stop("The number of rows of the permScores matrix should be the same as the length of the dataScores vector")
+		stop("'permScores' should be a matrix!\n")
+	if(!is.numeric(dataScores) && !is.integer(dataScores))
+		stop("'dataScores' should be an integer or numeric vector!\n")
 	if(is.null(names(dataScores))) 
-		stop("The dataScores vector should be named (by gene set identifier)")
+		stop("'dataScores' should be named (by gene set identifier)")
+	if(nrow(permScores) != length(dataScores)) 
+		stop("The number of rows of the 'permScores' matrix should be the same as the length of the 'dataScores' vector")
 	#Create a vector to store the FDRs	
 	ldataScores<-length(dataScores)
 	FDRgeneset=rep(0,ldataScores)

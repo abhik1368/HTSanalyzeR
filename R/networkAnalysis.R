@@ -1,76 +1,37 @@
-#This function finds subnetworks enriched for genes with significant phenotypes.  
-#It is a wrapper around the whole network analysis process in this package.
+#This function takes a vector of p-values generated for a set of genes and searches for enriched sub-networks in an interaction data set from The Biogrid.
 networkAnalysis <-
-function(
-	cellHTSobject,
-	annotationColumn="GeneID",
-	controls="neg",
-	alternative=c("two.sided","less","greater"),
-	logged=FALSE,
-	tests=c("T-test"),
-	columns=c("t.test.pvalues.two.samples","t.test.pvalues.one.sample"),
-	species=c("Dm"),
-	initialIDs="FlybaseCG",
-	fdr=0.001,
-	genetic=FALSE,
-	biogridObject=NA,
-	order=2,
-	link="http://thebiogrid.org/downloads/archives/Release%20Archive/BIOGRID-3.0.64/BIOGRID-ORGANISM-3.0.64.tab2.zip",
-	reportdir="HTSanalyzerReport",
-	verbose=TRUE
-) {
-	#Do the statistical tests: this function will test:
-	#-that the cellHTSobject is a cellHTS object
-	#that the cellHTS2 cellHTSobject is in the right format (configured, so that we know which rows are samples and which are controls)
-	#that the annotationColumn has been specified as a single character string
-	#that the annotationColumn matches a column in the fData(cellHTSobject) dataframe
-	#that the 'controls' parameter has been specified as a single character string
-	#that the  'controls' parameter matches a status in the 'controlStatus' column of the cellHTS cellHTSobject
-	#that the 'alternative' parameter has been correctly set 	
+function(pvalues,graph,fdr=0.001,verbose=TRUE) {
+	#check input parameters
+	paraCheck("pvalues",pvalues)
+	paraCheck("interactome",graph)
+	paraCheck("fdr",fdr)
+	paraCheck("verbose",verbose)
 	cat("-Performing network analysis ... \n")
-	test.stats<-cellHTS2OutputStatTests(cellHTSobject=cellHTSobject,alternative=alternative,tests=tests)
-	#Check that the species is correctly specified (corresponds to a single character string 
-	#that can be matched to an input for the AnnotationConvertor functions)
-	if(!is.character(species) || length(species) != 1) 
-		stop("The species argument does not have the right format")
-	if(!(species %in% c("Dm","Hs","Rn","Mm","Ce")))
-		stop("The species argument does not match any of the names recognized by this function, please provide one of the following character strings: 
-			\"Dm\" for Drosophila_melanogaster,\"Hs\" for Homo_sapiens,\"Rn\" for Rattus_norvegicus, \"Mm\" for Mus_musculus, \"Ce\" for Caenorhabditis_elegans")
-	#The biogridObject contains Entrez.gene IDs, so if this is not the initial type of identifiers,
-	#they need to be mapped to Entrez.gene IDs		
-	if(initialIDs != "Entrez.gene") {
-		#Check that the initialIDs argument is correctly specified
-		if(!(initialIDs %in% c("Ensembl.transcript", "Ensembl.prot", "Ensembl.gene", "Entrez.gene", "RefSeq", "Symbol", "GenBank", "Flybase", "FlybaseCG", "FlybaseProt"))) 
-			stop('The initialIDs argument is not correctly specified, please provide one of the following character strings: "Ensembl.transcript", "Ensembl.prot", "Ensembl.gene", "Entrez.gene", "RefSeq", "Symbol", "GenBank", "Flybase", "FlybaseCG", "FlybaseProt"')
-		#map the identifiers to Entrez.gene identifiers			
-		if(species == "Dm") test.stats.entrez<-drosoAnnotationConvertor(geneList=test.stats,initialIDs=initialIDs,finalIDs="Entrez.gene",verbose=verbose)
-		if(species == "Ce") test.stats.entrez<-celAnnotationConvertor(geneList=test.stats,initialIDs=initialIDs,finalIDs="Entrez.gene",verbose=verbose)
-		if(species == "Hs") test.stats.entrez<-mammalAnnotationConvertor(geneList=test.stats,species=species,initialIDs=initialIDs,finalIDs="Entrez.gene",verbose=verbose)
-		if(species == "Rn") test.stats.entrez<-mammalAnnotationConvertor(geneList=test.stats,species=species,initialIDs=initialIDs,finalIDs="Entrez.gene",verbose=verbose)
-		if(species == "Mm") test.stats.entrez<-mammalAnnotationConvertor(geneList=test.stats,species=species,initialIDs=initialIDs,finalIDs="Entrez.gene",verbose=verbose)
-		}
-	#create folders for biogrid date downloading
-	biogridDataDir=file.path(reportdir,"Data")
-	if(!file.exists(reportdir)) 
-		dir.create(reportdir)
-	subnw<-enrichedSubNw(
-		pvaluesMatrix=test.stats.entrez,
-		columns=columns,
-		species=species,
-		fdr=fdr,genetic=genetic,
-		biogridObject=biogridObject,order=order,biogridDataDir=biogridDataDir,verbose=verbose
-	)
-	nodesModule<-nodes(subnw)
-	#To represent the network in a more convenient format, the symbol identifiers will be mapped and given to the user (more readable than Entrez.gene IDs)	
-	if(species == "Dm") map <- org.Dm.egSYMBOL
-	if(species == "Ce") map <- org.Ce.egSYMBOL
-	if(species == "Hs") map <- org.Hs.egSYMBOL
-	if(species == "Rn") map <- org.Rn.egSYMBOL
-	if(species == "Mm") map <- org.Mm.egSYMBOL
-	par(mfrow=c(1,1))
-	map<-as.list(map)
+	#Store the name of the nodes of the graphNEL object for which we have pvalue information	
+	scoredNodes<-intersect(names(pvalues),nodes(graph))
+	#Check that there are nodes associated with a p-value
+	if(length(scoredNodes) == 0) 
+		stop("The rownames of your pvalueMatrix do not match to any name in the interactionMatrix, check that you have the right type of identifiers.")
+	if(verbose) 
+		cat(paste("--Your network consists of ",length(nodes(graph))," nodes, of which ",length(scoredNodes)," have an associated p-value",sep=""),"\n")
+	#Get the pvalue information for the nodes of the graphNEL object only, and fit a bum model on these	
+	#N.B. the fitting of the bum model will produce a diagnostic plot on the screen, to check the fitting
+	dataForNw<-pvalues[scoredNodes]
+	fb<-fitBumModel(dataForNw)
+	#Score the nodes of the network	
+	#The nodes without pvalues will get a NA value instead of a score
+	scores<-scoreNodes(graph,fb=fb,fdr=fdr)
+	#Compute the mean score, and set the score of all non-scored nodes (NAs) to this mean
+	meanscore<-mean(scores,na.rm=TRUE)
+	scoreswMean<-scores
+	scoreswMean[which(is.na(scores))]<-meanscore
+	#Find the optimal subnetwork	
+	if(verbose) 
+		cat("--Computing the optimal subnetwork","\n")
+	module<-runFastHeinz(network=graph,scores=scoreswMean)
+
 	cat("-Network analysis complete \n")
-	#This return a list with a graphNEL object (the module), and a mapping from the nodes of this module to their symbol identifiers	
-	return(list(subnw=subnw,labels=map[nodesModule]))
+	#Return a graphNEL object consisting of the enriched sub-network
+	return(module)
 }
 

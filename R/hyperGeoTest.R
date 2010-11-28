@@ -1,11 +1,11 @@
 hyperGeoTest <-
-function(GeneSet,GeneList,hits) {
+function(geneSet,universe,hits) {
 
-		N<-length(GeneList) 						#number of genes in universe
-		GeneSet<-intersect(GeneSet[[1]],GeneList) 	#remove genes from gene set that are not in universe
-		m<-length(GeneSet) 							#size of gene set
+		N<-length(universe) 						#number of genes in universe
+		geneSet<-intersect(geneSet[[1]],universe) 	#remove genes from gene set that are not in universe
+		m<-length(geneSet) 							#size of gene set
 		Nm<-N-m	
-		overlap<-intersect(GeneSet,hits) 			#hits in gene set
+		overlap<-intersect(geneSet,hits) 			#hits in gene set
 		k<-length(overlap) 							#number of hits in gene set
 		n<-length(hits)	
 		HGTresults<-phyper(k,m,Nm,n,lower.tail=F)

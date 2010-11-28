@@ -2,14 +2,8 @@
 #It is species-specific, and returns a GeneSetCollection objects with 
 #the elements of the gene sets represented by Entrez Gene IDs.
 KeggGeneSets <-
-function(species=c("Dm", "Hs", "Rn", "Mm", "Ce")) {
-		#This checks that the species argument corresponds to a single character string that can be matched to one of our Kegg species codes
-		if(!is.character(species) || length(species) != 1) 
-			stop("The species argument does not have the right format")
-		if(!(species %in% c("Dm", "Hs", "Rn", "Mm", "Ce"))) 
-			stop("The species argument does not match any of the names recognized by this function, 
-							please provide one of the following character strings: 'Dm' for 'Drosophila Melanogaster',
-							'Hs' for 'Homo Sapiens', 'Rn' for 'Rattus Norvegicus', 'Mm' for 'Mus Musculus', and 'Ce' for 'Caenorhabditis Elegans'")
+function(species="Dm") {
+		paraCheck("species",species)
 		#Create a list with an element for each pathway, each element containing a vector of gene identifiers	
 		Kegg <- as.list(KEGGPATHID2EXTID)
 		#Keep only those elements of the list that correspond to pathways from the gievn species	
