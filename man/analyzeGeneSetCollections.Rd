@@ -1,53 +1,87 @@
 \name{analyzeGeneSetCollections}
 \alias{analyzeGeneSetCollections}
 \title{
-Enrichment analysis by hypergeometric test and GSEA (Gene Set Enrichment Analysis)
+Enrichment analysis by hypergeometric test and GSEA (Gene Set Enrichment 
+Analysis)
 }
 \description{
-This function takes a list of gene set collections, a named phenotype vector (with names(phenotype vector)=GeneUniverse), a vector of hits (names only) and returns the results of hypergeometric and gene set enrichment analysis for all of the gene set collections (with multiple hypothesis testing correction).
+This function takes a list of gene set collections, a named phenotype 
+vector (with names(phenotype vector)=GeneUniverse), a vector of hits 
+(names only) and returns the results of hypergeometric and gene set 
+enrichment analysis for all of the gene set collections (with multiple 
+hypothesis testing correction).
 }
 \usage{
-analyzeGeneSetCollections(listOfGeneSetCollections, geneList, hits, pAdjustMethod = "BH", pValueCutoff = 0.05, nPermutations = 1000, minGeneSetSize = 15, exponent = 1, verbose = TRUE)
+analyzeGeneSetCollections(listOfGeneSetCollections, geneList, hits, 
+pAdjustMethod="BH", pValueCutoff=0.05, nPermutations=1000, 
+minGeneSetSize=15, exponent=1, verbose=TRUE)
 }
 \arguments{
   \item{listOfGeneSetCollections}{
-a list of gene set collections (a 'gene set collection' is a list of gene sets). Even if only one collection is being tested,it must be entered as an element of a 1-element list, e.g. 
+a list of gene set collections (a 'gene set collection' is a list of 
+gene sets). Even if only one collection is being tested, it must be 
+entered as an element of a 1-element list, e.g. 
 \code{ListOfGeneSetCollections = list(YourOneGeneSetCollection)}. 
-Naming the elements of listOfGeneSetCollections will result in these names being associated with the relevant dataframes in the output (meaningful names are advised)
+Naming the elements of listOfGeneSetCollections will result in these 
+names being associated with the relevant dataframes in the output 
+(meaningful names are advised)
 }
   \item{geneList}{
-a numeric or integer vector of phenotypes in descending or ascending order with elements named by their EntrezIds (no duplicates nor NA values)
+a numeric or integer vector of phenotypes in descending or ascending 
+order with elements named by their EntrezIds (no duplicates nor NA values)
 }
   \item{hits}{
 a character vector of the EntrezIds of hits, as determined by the user
 }
   \item{pAdjustMethod}{
-a single character value specifying the p-value adjustment method to be used (see 'p.adjust' for details)
+a single character value specifying the p-value adjustment method to be 
+used (see 'p.adjust' for details)
 }
   \item{pValueCutoff}{
-a single numeric value specifying the cutoff for p-values considered significant
+a single numeric value specifying the cutoff for p-values considered 
+significant
 }
   \item{nPermutations}{
-a single integer or numeric value specifying the number of permutations for deriving p-values in GSEA
+a single integer or numeric value specifying the number of permutations 
+for deriving p-values in GSEA
 }
   \item{minGeneSetSize}{
-a single integer or numeric value specifying the minimum number of elements in a gene set that must map to elements of the gene universe. Gene sets with fewer than this number are removed from both hypergeometric analysis and GSEA.
+a single integer or numeric value specifying the minimum number of 
+elements in a gene set that must map to elements of the gene universe. 
+Gene sets with fewer than this number are removed from both hypergeometric 
+analysis and GSEA.
 }
   \item{exponent}{
-a single integer or numeric value used in weighting phenotypes in GSEA (see "gseaScores" function)
+a single integer or numeric value used in weighting phenotypes in GSEA 
+(see "gseaScores" function)
 }
   \item{verbose}{
-a single logical value deciding to display detailed messages (when verbose=TRUE) or not (when verbose=FALSE)
+a single logical value deciding to display detailed messages (when 
+verbose=TRUE) or not (when verbose=FALSE)
 }
 }
 \details{
- All gene names must be EntrezIds in 'listOfGeneSetCollections', 'geneList', and 'hits'.
+ All gene names must be EntrezIds in 'listOfGeneSetCollections', 
+ 'geneList', and 'hits'.
 }
 \value{
-\item{HyperGeo.results}{a list of dataframes containing the results for all gene set collections in the input,and the last element of this list contains all of these results in a single dataframe.}
-\item{GSEA.results}{a similar list of dataframes containing the results from GSEA. As an example, to access the GSEA results for a gene set collection named "MyGeneSetCollection", one would enter:output$GSEA.results$MyGeneSetCollection}
-\item{Sig.pvals.in.both}{a list of dataframes containing the gene sets with p-values considered significant in both hypergeometric test and GSEA, before pvalue correction.  Each element of the list contains the results for one gene set collection, and the last element of this list contains all of these results in a single dataframe.}
-\item{Sig.adj.pvals.in.both}{a list of dataframes containing the gene sets with p-values considered significant in both hypergeometric test and GSEA, after pvalue correction.  Each element of the list contains the results for one gene set collection, and the last element of this list contains all of these results in a single dataframe.}
+\item{HyperGeo.results}{a list of dataframes containing the results for 
+all gene set collections in the input,and the last element of this list 
+contains all of these results in a single dataframe.}
+\item{GSEA.results}{a similar list of dataframes containing the results 
+from GSEA. As an example, to access the GSEA results for a gene set 
+collection named "MyGeneSetCollection", one would enter:
+output$GSEA.results$MyGeneSetCollection}
+\item{Sig.pvals.in.both}{a list of dataframes containing the gene sets 
+with p-values considered significant in both hypergeometric test and 
+GSEA, before pvalue correction.  Each element of the list contains the 
+results for one gene set collection, and the last element of this list 
+contains all of these results in a single dataframe.}
+\item{Sig.adj.pvals.in.both}{a list of dataframes containing the gene 
+sets with p-values considered significant in both hypergeometric test 
+and GSEA, after pvalue correction.  Each element of the list contains 
+the results for one gene set collection, and the last element of this 
+list contains all of these results in a single dataframe.}
 }
 \author{
 John C. Rose, Xin Wang
@@ -57,17 +91,16 @@ John C. Rose, Xin Wang
 library(org.Dm.eg.db)
 library(GO.db)
 library(KEGG.db)
-##load phenotype vector (see the vignette for details about the preprocessing of this data set)
+##load phenotype vector (see the vignette for details about the 
+##preprocessing of this data set)
 data("data4enrich")
 ##Create a list of gene set collections for Drosophila melanogaster (Dm)
-GO.MF<-GOGeneSets(species="Dm",ontologies="MF")
-GO.BP<-GOGeneSets(species="Dm",ontologies="BP")
-GO.CC<-GOGeneSets(species="Dm",ontologies="CC")
-PW.KEGG<-KeggGeneSets(species="Dm")
-gsc.list<-list(GO.MF=GO.MF,GO.BP=GO.BP,GO.CC=GO.CC,PW.KEGG=PW.KEGG)
+GO_MF<-GOGeneSets(species="Dm",ontologies="MF")
+PW_KEGG<-KeggGeneSets(species="Dm")
+ListGSC<-list(GO_MF=GO_MF, PW_KEGG=PW_KEGG)
 ##Conduct enrichment analyses
-enrichment.analysis<-analyzeGeneSetCollections(
-		listOfGeneSetCollections=gsc.list,
+GSCAResults <- analyzeGeneSetCollections(
+		listOfGeneSetCollections=ListGSC,
 		geneList=data4enrich,
 		hits=names(data4enrich)[which(abs(data4enrich)>2)],
 		pAdjustMethod="BH",
@@ -75,6 +108,6 @@ enrichment.analysis<-analyzeGeneSetCollections(
 		minGeneSetSize=200,
 		exponent=1,
 		verbose=TRUE
-	)
+)
 }
 }

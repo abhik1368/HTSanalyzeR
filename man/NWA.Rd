@@ -50,28 +50,34 @@ the examples below)
 }
 \section{Methods}{
 	An overview of methods with class-specific functionality:
-	More detailed introduction can be found in help for each specific function.
+	More detailed introduction can be found in help for each specific
+	function.
 	\describe{	
 		\item{\code{preprocess}}{ 
 		do preprocessing on input gene list and hit list including: 
 		a) removing NAs in \code{p-values} and \code{phenotypes}; 
 		b) invoking function \code{duplicateRemover} to process
-		duplicated phenotypes and p-values (see \code{duplicateRemover} for more 
-		details); 
-		c) invoking function \code{annotationConvertor} to convert annotations; 
+		duplicated phenotypes and p-values (see \code{duplicateRemover}
+		for more details); 
+		c) invoking function \code{annotationConvertor} to convert
+		annotations; 
 		}
 		\item{\code{analyze}}{
-		invoke function \code{networkAnalysis} to identify sub-networks based on
-		input parameter list \code{para}.
+		invoke function \code{networkAnalysis} to identify sub-networks
+		based on input parameter list \code{para}.
 		}
 		\item{\code{summary}}{
-		print summary information of \code{p-values}, \code{phenotypes}, \code{interactome} and \code{result}.
+		print summary information of \code{p-values}, \code{phenotypes},
+		\code{interactome} and \code{result}.
 		}
 		\item{\code{interactome}}{
 		build an interactome for the network analysis.
 		}
+		\item{\code{viewSubNet}}{
+		plot a figure to screen for identified subnetwork.
+		}
 		\item{\code{plotSubNet}}{
-		plot figures for identified subnetworks.
+		plot and save a figure for identified subnetwork.
 		}
 		\item{\code{report}}{
 		generate html reports.
@@ -88,25 +94,30 @@ the examples below)
   \code{\link[NWA:report]{report}}
 }
 \examples{
+library(BioNet)
 ##load p-values and phenotypes
 data("pvalues","data4enrich")
 ##load Biogrid interactome for Drosophila Melanogaster
 data("Biogrid.Dm.interactome")
 ##create a NWA (NetWork Analysis) object
-nwa<-new("NWA",pvalues=pvalues,phenotypes=data4enrich, 
-interactome=Biogrid.Dm.interactome)
+nwa <- new("NWA", pvalues=pvalues, phenotypes=data4enrich, interactome=
+Biogrid.Dm.interactome)
 ##preprocessing
-nwa<-preprocess(nwa,species="Dm",initialIDs="Entrez.gene", 
+nwa <- preprocess(nwa, species="Dm", initialIDs="Entrez.gene", 
 keepMultipleMappings=TRUE, duplicateRemoverMethod="max")
 ##To create an interactome:
-##nwa<-interactome(nwa,species="Dm",reportDir="HTSanalyzerReport",genetic=FALSE)
+nwa <- interactome(nwa, species="Dm", reportDir="HTSanalyzerReport",
+genetic=FALSE)
 ##do network analysis
-nwa<-analyze(nwa, fdr=0.001, species="Dm")
-##plot identified subnetwork
-plotSubNet(nwa, filepath=".", filename="subnetwork.png")
+nwa <- analyze(nwa, fdr=0.001, species="Dm")
+graphics.off()
+##view identified subnetwork
+viewSubNet(nwa)
 ##report as html pages
-report(object=nwa, experimentName="NWATest", species="Dm", 
-allSig=TRUE, keggGSCs="PW.KEGG", goGSCs=c("GO.BP","GO.MF","GO.CC"), 
-reportDir="NWATestReport")
+report(object=nwa, experimentName="NWATest", species="Dm", allSig=TRUE,
+keggGSCs="PW.KEGG", goGSCs=c("GO.BP", "GO.MF", "GO.CC"), reportDir=
+"NWATestReport")
+##browse the index page of the report
+browseURL(file.path(getwd(), "NWATestReport", "index.html"))
 }
 \keyword{classes}

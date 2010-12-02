@@ -1,11 +1,4 @@
-###############################################################################
-# generic functions
-# Xin Wang <xw264@cam.ac.uk>
-# Advisor: Florian Markowetz <florian.markowetz@cancer.org.uk> 
-# University of Cambridge Deparment of Oncology
-# Cancer Research UK - Cambridge Research Institute
-# At 22:26:44, on 17 Nov 2010
-###############################################################################
+##generic functions
 setGeneric("preprocess",function(object,...) standardGeneric("preprocess"), package="HTSanalyzeR")
 setGeneric("score",function(object,...) standardGeneric("score"), package="HTSanalyzeR")
 setGeneric("selectHits",function(object,...) standardGeneric("selectHits"), package="HTSanalyzeR")
@@ -18,3 +11,5 @@ setGeneric("plotSubNet",function(object,...) standardGeneric("plotSubNet"), pack
 setGeneric("writeHits",function(object,...) standardGeneric("writeHits"), package="HTSanalyzeR")
 setGeneric("plotGSEA",function(object,...) standardGeneric("plotGSEA"), package="HTSanalyzeR")
 setGeneric("getTopGeneSets",function(object,...) standardGeneric("getTopGeneSets"), package="HTSanalyzeR")
+setGeneric("viewGSEA",function(object,...) standardGeneric("viewGSEA"), package="HTSanalyzeR")
+setGeneric("viewSubNet",function(object,...) standardGeneric("viewSubNet"), package="HTSanalyzeR")

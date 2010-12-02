@@ -84,8 +84,8 @@ For objects of class \code{NWA}:
 
 This function will store the subnetwork module identified by BioNet (if 
 \code{species} is given, labels of nodes will also be mapped from Entrez IDs 
-to gene symbols), and update information about these results to slot \code{summary} 
-of class \code{NWA}.
+to gene symbols), and update information about these results to slot 
+\code{summary} of class \code{NWA}.
 
 See function \code{networkAnalysis} for the detailed information about the
 returned results.
@@ -95,9 +95,14 @@ In the end, this function will return an updated object of class \code{GSCA}
 or \code{NWA}.  
 }
 \references{
-Beisser D, Klau GW, Dandekar T, Muller T, Dittrich MT. BioNet: an R-Package for the functional analysis of biological networks. Bioinformatics. 2010 Apr 15;26(8):1129-30.
+Beisser D, Klau GW, Dandekar T, Muller T, Dittrich MT. \emph{BioNet: an R-Package 
+for the functional analysis of biological networks.} Bioinformatics. 2010 
+Apr 15;26(8):1129-30.
 
-Dittrich MT, Klau GW, Rosenwald A., Dandekar T and Muller T. \emph{Identifying functional modules in protein-protein interaction networks: an integrated exact approach.} Bioinformatics 2008 24(13):i223-i231.
+Dittrich MT, Klau GW, Rosenwald A., Dandekar T and Muller T. 
+\emph{Identifying functional modules in protein-protein interaction 
+networks: an integrated exact approach.} Bioinformatics 2008 24(13):
+i223-i231.
 }
 \author{
 Xin Wang \email{xw264@cam.ac.uk}

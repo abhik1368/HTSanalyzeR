@@ -1,12 +1,5 @@
-###############################################################################
-# Check parameters
-# Xin Wang <xw264@cam.ac.uk>
-# Advisor: Florian Markowetz <florian.markowetz@cancer.org.uk> 
-# University of Cambridge Deparment of Oncology
-# Cancer Research UK - Cambridge Research Institute
-# At 09:35:52, on 24 Nov 2010
-###############################################################################
-paraCheck<-function(name, para) {
+##This is the central function for argument checking
+paraCheck <- function(name, para) {
 	if(name=="normCellHTSobject") {
 		if(!is(para,"cellHTS"))
 			stop("The argument 'cellHTSobject/normCellHTSobject' should be a cellHTS object")
@@ -77,9 +70,17 @@ paraCheck<-function(name, para) {
 		if(!is.character(para) || length(para)==0 || any(is.na(para)) || any(para==""))
 			stop("'geneSet/GeneSet' should be a character vector with length > 0, without NA or empty names!\n")
 	}
+	if(name=="gs.single") {
+		if(!is.character(para) || length(para)!=1 || is.na(para) || para=="")
+			stop("'geneSet/GeneSet' should be single character!\n")		
+	}
 	if(name=="gscs.names") {
 		if(!is.character(para) || length(para)==0) 
 			stop("'gscs' should be a character! \n")
+	}
+	if(name=="gsc.name") {
+		if(!is.character(para) || length(para)!=1) 
+			stop("'gsc' should be a single character! \n")
 	}
 	if(name=="keggGSCs") {
 		if(!is.character(para) || length(para)==0)

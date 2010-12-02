@@ -4,9 +4,9 @@
 Print summary information about an object of class \code{GSCA} or \code{NWA}
 }
 \description{
-This is an S4 method, which can be applied to an object of 
-either class \code{GSCA} or \code{NWA}. It prints a summary of slots 
-specified by users. 
+This is an S4 method, which can be applied to an object of either class
+\code{GSCA} or \code{NWA}. It prints a summary of slots specified by
+users. 
 }
 \usage{
 summary(object, what="ALL")
@@ -16,18 +16,19 @@ summary(object, what="ALL")
 an object of class 'GSCA' or 'NWA'
 }
 	\item{what}{
-a single character value or a character vector of key words specifying what to 
-print. 
+a single character value or a character vector of key words specifying
+what to print. 
 }
 }
 \details{
-For an object of class 'GSCA', key words are 'GSC' (slot 'listOfGeneSetCollections'), 
-'GeneList' (slot 'geneList'), 'Hits' (slot 'hits'), 'Para' (slot 'para'),  
-'Result' (slot 'result') and 'ALL' (all slots). 
+For an object of class 'GSCA', key words are 'GSC' (slot
+'listOfGeneSetCollections'), 'GeneList' (slot 'geneList'), 'Hits'
+(slot 'hits'), 'Para' (slot 'para'),  'Result' (slot 'result') and 'ALL'
+(all slots). 
 
 For an object of class 'NWA', key words include 'Pval' (slot 'pvalue'), 
-'Phenotype' (slot 'phenotype'), 'Interactome' (slot 'interactome'), 'Para' 
-(slot 'fdr'), 'Result' (slot 'result') and 'ALL' (all slots).
+'Phenotype' (slot 'phenotype'), 'Interactome' (slot 'interactome'),
+'Para' (slot 'fdr'), 'Result' (slot 'result') and 'ALL' (all slots).
 }
 
 \author{
@@ -43,11 +44,11 @@ data("data4enrich")
 ##select hits
 hits <- names(data4enrich)[which(abs(data4enrich) > 2)]
 ##set up a list of gene set collections
-PW.KEGG <- KeggGeneSets(species = "Dm")
-gsc.list <- list(PW.KEGG = PW.KEGG)
+PW_KEGG <- KeggGeneSets(species = "Dm")
+gscList <- list(PW_KEGG = PW_KEGG)
 ##create an object of class 'GSCA'
-gsca <- new("GSCA", listOfGeneSetCollections=gsc.list,
-geneList = data4enrich, hits = hits)
+gsca <- new("GSCA", listOfGeneSetCollections=gscList, geneList =
+data4enrich, hits = hits)
 ##print summary of gsca
 summary(gsca)
 ##do preprocessing (data4enrich has already been preprocessed)
@@ -58,7 +59,7 @@ orderAbsValue = FALSE)
 summary(gsca)
 ##do hypergeometric tests and GSEA
 gsca <- analyze(gsca, para = list(pValueCutoff = 0.05, pAdjustMethod 
-= "BH", nPermutations = 1000, minGeneSetSize = 100,exponent = 1))
+= "BH", nPermutations = 1000, minGeneSetSize = 100, exponent = 1))
 ##print summary of results
 summary(gsca, what="Result")
 }

@@ -1,77 +1,145 @@
 %\VignetteIndexEntry{Main vignette:Gene set enrichment and network analysis of high-throughput RNAi screen data using HTSanalyzeR}
 %\VignetteKeywords{Gene Set Enrichment and Network Analysis of RNAi screens}
 %\VignettePackage{HTSanalyzeR}
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage{color}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.75}
+\usepackage[%
+baseurl={http://www.bioconductor.org},%
+pdftitle={End-to-end analysis of cell-based screens},%
+pdfauthor={Wolfgang Huber},%
+pdfsubject={cellHTS2},%
+pdfkeywords={Bioconductor},%
+pagebackref,bookmarks,colorlinks,linkcolor=darkblue,citecolor=darkblue,%
+pagecolor=darkblue,raiselinks,plainpages,pdftex]{hyperref}
 
-\documentclass{article}
-\usepackage{Sweave,fullpage}
+\SweaveOpts{keep.source=TRUE,eps=FALSE,include=FALSE,width=4,height=4.5} 
 \newcommand{\Robject}[1]{\texttt{#1}}
 \newcommand{\Rpackage}[1]{\textit{#1}}
 \newcommand{\Rfunction}[1]{\textit{#1}}
 \newcommand{\Rclass}[1]{\textit{#1}}
+\newcommand{\htsa}{\emph{\sffamily HTSanalyzeR} }
 
-\title{Gene set enrichment and network analysis of high-throughput RNAi screen data using \emph{HTSanalyzeR}}
-\author{John Rose, Camille Terfve, Xin Wang and Florian Markowetz}
+
+\title{Gene set enrichment and network analyses of high-throughput screens using \emph{HTSanalyzeR}}
+\author{Xin Wang\,$^{\dagger}$, Camille Terfve\,$^{\dagger}$, John Rose and Florian Markowetz}
 
 \begin{document}
 \maketitle
 
-
 \tableofcontents
-
-\section{Introduction}
-
-The package \Rpackage{HTSanalyzeR} facilitates integrated high-level analysis of biological data sets such as RNAi high-throughput screening (HTS) data. In particular, this package allows for efficient gene set enrichment and network analyses. Gene set enrichment analysis is performed using both hypergeometric testing and the Gene Set Enrichment Analysis approach reported by Subramanian and colleagues\cite{subramanian2005}. The network analysis functionalities make use of the BioNet package\cite{beisser2010} to identify enriched subnetworks. 
-
-Based on the generic classes and methods for GSEA and network analysis, we also designed a pipeline specifically for RNA interference screen data. As we all know, there are various packages (e.g. \Rpackage{cellHTS2}, \Rpackage{RNAither}) for normalization, summarization, and annotation of RNAi HTS raw data, but, to date, there is little support for higher-level analyses of such data. This package adapts a number of methods used for high-level microarray analysis for application to RNA HTS data.  
-
-As a demonstration, in this vignette, we introduce how to perform these analyses on an RNAi screen data set in \Rpackage{cellHTS2} format. For other biological data sets, users can design their own classes, methods and pipelines very easily based on this package.
 
 <<Ropts, echo=FALSE, results=hide>>=
 options(width=70)
 @ 
+\section{Introduction}
 
-<<eval=FALSE>>=
+In recent years several technological advances have pushed gene perturbation screens to the forefront of functional genomics. Combining high-throughput screening (HTS) techniques with rich phenotypes enables researchers to observe detailed reactions to experimental perturbations on a genome-wide scale. This makes HTS one of the most promising tools in functional genomics.
+
+Although the phenotypes in HTS data correspond to single genes, it becomes more and more important to analyze them in the context of cellular pathways and networks to understand how genes work together. Network analysis of HTS data depends on the dimensionality of the phenotypic readout  \cite{Markowetz2010}. While specialised analysis approaches exist for high-dimensional phenotyping  \cite{Froehlich2008}, analysis approaches for low-dimensional screens have so far been spread out over diverse softwares and online tools like DAVID \cite{Huang2009} or gene set enrichment analysis (GSEA \cite{Subramanian2005}).
+
+Here we provide an integrated analysis package for HTS data that contains gene set and network analysis approaches commonly used in many papers as reviewed by \cite{Markowetz2010}. \htsa is written in R \cite{R} and freely available via the Bioconductor project \cite{Gentleman2004}. The software interfaces directly with existing HTS pre-processing packages like cellHTS2 \cite{Boutros2006} or RNAither \cite{Rieber2009}. Additionally, our software is in the process of being fully integrated in a web-interface for the analysis of HTS data \cite{Pelz2010} and will thus be easily accessible to non-programmers.
+
+\begin{figure*}
+\centerline{\includegraphics[width=\textwidth]{Figure}}
+\caption{\htsa takes as input HTS data that has already been pre-processed, normalized and quality checked, e.g. by cellHTS2. \htsa then combines the HTS data with gene sets and networks from freely available sources and performs three types of analysis: (i)~hypergeometric tests for overlap between hits and gene sets, (ii)~gene set enrichment analysis (GSEA)  for concordant trends of a gene set in one phenotype, (iii)~differential GSEA to identify gene sets with opposite trends in two phenotypes, and (iv)~identification of subnetworks enriched for hits. The results are provided to the user as figures and HTML tables linked to external databases for annotation.}
+\label{Fig1}
+\end{figure*}
+
+\section{An overview of HTSanalyzeR}
+
+\htsa takes as input HTS data that has already undergone preprocessing and quality control (e.g. by using cellHTS2). It then functionally annotates the hits by gene set enrichment and network analysis approaches (see Figure~\ref{Fig1} for an overview).
+
+\paragraph{Gene set analysis.} 
+\htsa implements two approaches: (i) hypergeometric tests for surprising overlap between hits and gene sets, and (ii) cut-off free gene set enrichment analysis which measures if a gene set shows a concordant trend to stronger phenotypes. \htsa uses gene sets from MSigDB \cite{Subramanian2005}, the Gene Ontolology \cite{Ashburner2000} and KEGG \cite{Kanehisa2006}. The accompanying vignette explains how user-defined gene sets can easily be included.
+
+\paragraph{Network analysis.} 
+In a complementary approach strong hits are mapped to a network and enriched subnetworks are identified. Networks can come from different sources, especially protein interaction networks are often used. In \htsa we use networks defined in the BioGRID database \cite{Stark2006}, but other user-defined networks can easily be included in the analysis. To identify rich subnetworks, we use the BioNet package \cite{Beisser2010}, which in its heuristic version is fast and produces close-to-optimal results.
+
+\paragraph{Comparing phenotypes.}
+A goal we expect to become more and more important in the future is to compare phenotypes for the same genes in different cellular conditions. \htsa supports comparative analyses for gene sets and networks. Differentially enriched gene sets are computed by comparing GSEA enrichment scores or alternatively by a Wilcoxon test statistic. Subnetworks rich for more than one phenotype can easily be found with BioNet \cite{Beisser2010}.
+
+\paragraph{Parameters and report.}
+Each of these analysis methods depends on several input parameters. While every one of them can be changed in the package, \htsa also implements a standard analysis option using default parameters that we have found to work well in many applications. Results are presented in an HTML format similar to cellHTS2. Overrepresentation and enrichment results are presented as tables, where gene sets are linked to their descriptions at EBI and KEGG pages. GSEA results are accompanied by enrichment plots similar to the ones in \cite{Subramanian2005}.
+
+As a demonstration, in this vignette, we introduce how to perform these analyses on an RNAi screen data set in \Rpackage{cellHTS2} format. For other biological data sets, the users can design their own classes, methods and pipelines very easily based on this package.
+
+The packages below need to be loaded before we start the demonstration:
+
+<<setup, results=hide>>=
 library(HTSanalyzeR)
 library(GSEABase)
 library(cellHTS2)
 library(org.Dm.eg.db)
 library(GO.db)
 library(KEGG.db)
-@
+@ 
 
-\section{Preprocessing cell-based RNAi screen data with \Rpackage{cellHTS2}}
+\section{Preprocessing of high-throughput screens}\label{htspre}
 
-The high-throughput RNAi data set that we use here results from a genome-wide RNAi analysis of growth and viability in Drosophila cells \cite{boutros2004}. This data set can be found in the package \Rpackage{cellHTS2} (\cite{boutros2006}).  Before the high-level functional analyses, we need a configured, normalized and annotated cellHTS object that will be used for the networks analysis.  This object is then scored to be used in the gene set over-representation part of this analysis.  Briefly, the data consists in a series of text files, one for each microtiter plate in the experiment, containing intensity reading for a luciferase reporter of ATP levels in each well of the plate.  
+In this section, we use RNA interference screens as an example to demonstrate how to prepare data for the enrichment and network analyses. The high-throughput screen data set we use here results from a genome-wide RNAi analysis of growth and viability in Drosophila cells \cite{Boutros2004}. This data set can be found in the package \Rpackage{cellHTS2} (\cite{Boutros2006}). Before the high-level functional analyses, we need a configured, normalized and annotated cellHTS object that will be used for the networks analysis. This object is then scored to be used in the gene set over-representation part of this analysis. Briefly, the data consists in a series of text files, one for each microtiter plate in the experiment, containing intensity reading for a luciferase reporter of ATP levels in each well of the plate.  
 
-The first data processing step is to read the data files and build a cellHTS object from them (performed by the \Rfunction{readPlateList} function).  Then, the object has to be configured, which involves describing the experiment and, more importantly in our case, the plate configuration (i.e. indicating which wells contain samples or controls and which are empty or flagged as invalid). Following configuration, the data can be normalized, which is done in this case by substracting from each raw intensity measurement the median of all sample measurements on the same plate. In order to use the values in this package, we need to associate each measurement with a meaningful identifier, which can be done by the \Rfunction{annotate} function.  In this case, the function will associate with each sample well a flybaseCG identifier, which can be converted subsequently into any identifiers that we might want to use.  There are many ways to perform this tasks, for example using our \Rfunction{drosoAnnotationConvertor} function, using a Bioconductor annotation package or taking advantage of the bioMaRt package functionalities. These normalized and annotated values can now be used for the network analysis part of this vignette. 
+The first data processing step is to read the data files and build a cellHTS object from them (performed by the \Rfunction{readPlateList} function). 
 
-For the gene set over-representation part of this vignette, we choose to work on data that has been scored and summarized.  These last processing steps allow us to work with values that have been standardized across samples, resulting in a robust z-score which is indicative of how much the phenotype associated with one condition differs from the bulk. This score effectively quantifies how different a measurement is from the median of all measurements, taking into account the variance (or rather in this case the median absolute deviation) across measurements, therefore reducing the spread of the data. This seems like a sensible measure to be used in gene set over-representation, especially for the GSEA, since it is more readily interpretable and comparable than an absolute phenotype.  Moreover the summarization across replicates produces only one value for each construct tested in the screen, which is what we need for the over-representation analysis.
-
-<<eval=FALSE>>=
+<<cellHTSRead, results=hide>>=
 experimentName <- "KcViab"
 dataPath <- system.file(experimentName, package = "cellHTS2")
-x <- readPlateList("Platelist.txt", name = experimentName, path = dataPath,verbose=TRUE)
-x <- configure(x, descripFile = "Description.txt", confFile = "Plateconf.txt", logFile = "Screenlog.txt", path = dataPath)
-xn <- normalizePlates(x, scale = "multiplicative", log = FALSE,method = "median", varianceAdjust = "none")
-xn <- annotate(xn, geneIDFile = "GeneIDs_Dm_HFA_1.1.txt", path = dataPath)
+x <- readPlateList("Platelist.txt", name = experimentName, 
+path = dataPath,verbose=TRUE)
+@
+
+Then, the object has to be configured, which involves describing the experiment and, more importantly in our case, the plate configuration (i.e. indicating which wells contain samples or controls and which are empty or flagged as invalid). 
+
+<<cellHTSConfig, results=hide>>=
+x <- configure(x, descripFile = "Description.txt", confFile = 
+"Plateconf.txt", logFile = "Screenlog.txt", path = dataPath)
+@
+
+Following configuration, the data can be normalized, which is done in this case by substracting from each raw intensity measurement the median of all sample measurements on the same plate. 
+
+<<cellHTSNorm, results=hide>>=
+xn <- normalizePlates(x, scale = "multiplicative", log = FALSE, 
+method = "median", varianceAdjust = "none")
+@
+
+In order to use the values in this package, we need to associate each measurement with a meaningful identifier, which can be done by the \Rfunction{annotate} function. In this case, the function will associate with each sample well a flybaseCG identifier, which can be converted subsequently into any identifiers that we might want to use. There are many ways to perform this tasks, for example using our \Rfunction{preprcess} function (in the next section), using a Bioconductor annotation package or taking advantage of the bioMaRt package functionalities. These normalized and annotated values can then be used for the network analysis part of this vignette. 
+
+<<cellHTSNorm, results=hide>>=
+xn <- annotate(xn, geneIDFile = "GeneIDs_Dm_HFA_1.1.txt", 
+path = dataPath)
+@
+
+For the gene set over-representation part of this vignette, we choose to work on data that has been scored and summarized. These last processing steps allow us to work with values that have been standardized across samples, resulting in a robust z-score which is indicative of how much the phenotype associated with one condition differs from the bulk. This score effectively quantifies how different a measurement is from the median of all measurements, taking into account the variance (or rather in this case the median absolute deviation) across measurements, therefore reducing the spread of the data. This seems like a sensible measure to be used in gene set over-representation, especially for the GSEA, since it is more readily interpretable and comparable than an absolute phenotype. 
+
+<<cellHTSScore, results=hide>>=
 xsc <- scoreReplicates(xn, sign = "-", method = "zscore")
+@
+
+Moreover the summarization across replicates produces only one value for each construct tested in the screen, which is what we need for the over-representation analysis.
+
+<<cellHTSSum, results=hide>>=
 xsc <- summarizeReplicates(xsc, summary = "mean")	
+@
+
+<<showXSC>>=
+xsc
 @
 
 For a more detailed description of the preprocessing methods below, please refer to the \Rpackage{cellHTS2} vignette.
 
 \section{Gene set overrepresentation and enrichment analysis} 
-\subsection{Preparing inputs}
+\subsection{Prepare inputs}
 
 To perform gene set enrichment analysis, one must first prepare three inputs: 
 \begin{enumerate}
-\item A named vector of numeric phenotypes. 
-\item A vector of hits
-\item A list of gene set collections.
+\item a named numeric vector phenotypes, 
+\item a character vector of hits, and
+\item a list of gene set collections.
 \end{enumerate}
 First, the phenotypes must be assembled into a vector, annotated, and the replicates must be summarized.
 
-<<eval=FALSE>>=
+<<getDataFromCellHTS, results=hide>>=
 data4enrich <- as.vector(Data(xsc))
 names(data4enrich) <- fData(xsc)[, "GeneID"]
 data4enrich <- data4enrich[which(!is.na(names(data4enrich)))]
@@ -79,103 +147,288 @@ data4enrich <- data4enrich[which(!is.na(names(data4enrich)))]
 
 Then we define the hits as targets displaying phenotypes more than 2 standard deviations away from the mean phenotype, i.e. abs(z-score) > 2.
 
-<<eval=FALSE>>=
-data.hits <- names(data4enrich)[which(abs(data4enrich) > 2)]
+<<selectHits, results=hide>>=
+hits <- names(data4enrich)[which(abs(data4enrich) > 2)]
 @
  
-Next, we must define the gene set collections. \Rpackage{HTSanalyzeR} provides facilities which greatly simplify the creation of up-to-date gene set collections. As a simple demonstration, we will test 4 gene set collections for Drosophila melanogaster (see help(annotationConvertor) for details about other species supported): KEGG and all 3 GO gene set collections. To work properly, these gene set collections must be provided as a named list.
+Next, we must define the gene set collections. \Rpackage{HTSanalyzeR} provides facilities which greatly simplify the creation of up-to-date gene set collections. As a simple demonstration, we will test three gene set collections for \textit{Drosophila melanogaster} (see help(annotationConvertor) for details about other species supported): \textit{KEGG} and two \textit{GO} gene set collections. To work properly, these gene set collections must be provided as a named list.
 
-For details on downloading and utilizing gene set collections from Molecular Signatures Database\cite{subramanian2005}, please refer to Appendix B.
+For details on downloading and utilizing gene set collections from Molecular Signatures Database\cite{Subramanian2005}, please refer to Appendix B.
 
-<<eval=FALSE>>=
-GO.MF <- GOGeneSets(species = "Dm",ontologies = c("MF"))
-GO.BP <- GOGeneSets(species = "Dm",ontologies = c("BP"))
-GO.CC <- GOGeneSets(species = "Dm",ontologies = c("CC"))
-PW.KEGG <- KeggGeneSets(species = "Dm")
-gsc.list <- list(GO.MF = GO.MF, GO.BP = GO.BP, GO.CC = GO.CC, PW.KEGG = PW.KEGG)
+<<gscList, results=hide>>=
+GO_MF <- GOGeneSets(species="Dm", ontologies=c("MF"))
+GO_BP <- GOGeneSets(species="Dm", ontologies=c("BP"))
+PW_KEGG <- KeggGeneSets(species="Dm")
+ListGSC <- list(GO_MF=GO_MF, GO_BP=GO_BP, PW_KEGG=PW_KEGG)
+@
+\subsection{Initialize and preprocess}
+An S4 class \Rclass{GSCA} (Gene Set Collection Analysis) is developed to do hypergeometric tests for overrepresented gene sets with the list of hits and also performs gene set enrichment analysis (GSEA), as described by Subramanian and colleagues\cite{Subramanian2005}.
+
+To begin, an object of class \Rclass{GSCA} needs to be initialized with a list of gene set collections, phenotypes and hits. If annotations of these input data are not Entrez identifiers, a preprocessing step including input data validation, duplicate removing, annotation conversion and phenotype ordering can be conducted by function \Rfunction{preprocessing}. The user can also build their own preprocessing function according to specific data sets. If input data are 'clean' enough, we can simply choose to perform analyses by function \Rfunction{analyze}. 
+
+<<gscaInit, results=hide>>=
+gsca <- new("GSCA", listOfGeneSetCollections=ListGSC, 
+geneList=data4enrich, hits=hits)
+gsca <- preprocess(gsca, species="Dm", initialIDs="FlybaseCG", 
+keepMultipleMappings=TRUE, duplicateRemoverMethod="max", 
+orderAbsValue=FALSE)
+@
+\subsection{Perform analyses}
+
+Then we can use function \Rfunction{analyze} to do the over-representation and enrichment analyses. This function needs an argument called \Robject{para}, which is a list of all parameters required to run these analyses. See help(``analyze") for the default parameter settings.
+
+<<gscaAnalyses, results=hide>>=
+gsca<-analyze(gsca, para=list(pValueCutoff=0.05, pAdjustMethod
+="BH", nPermutations=100, minGeneSetSize=180, exponent=1))
 @
 
-\subsection{Performing analyses}
-
-A S4 class \Rclass{GSCA} (Gene Set Collection Analysis) is developed to do hypergeometric tests for overrepresented gene sets with the list of hits and also performs gene set enrichment analysis (GSEA), as described by Subramanian and colleagues\cite{subramanian2005}.
-
-To begin, an object of class \Rclass{GSCA} needs to be initialized with a list of gene set collections, phenotypes and hits. If annotations of these input data are not Entrez identifiers, a preprocessing step including input data validation, duplicate removing, annotation conversion and phenotype ordering can be conducted by function \Rfunction{preprocessing}. Users can also build their own preprocessing function according to specific data sets. If input data are clean enough, we can simply choose to perform analyses by function \Rfunction{analyze}. 
+During the enrichment analysis of gene sets, a large number of permutations are required to evaluate the statistical significance. This package supports parallel computing to promote speed based on the \Rpackage{snow} package. To do this, the user simply need to set a cluster called \Robject{cluster} before running \Rfunction{analyze}. 
 
 <<eval=FALSE>>=
-gsca<-new("GSCA",listOfGeneSetCollections=gsc.list,geneList=data4enrich,hits=data.hits)
-gsca<-preprocess(gsca,species="Dm",initialIDs="FlybaseCG", keepMultipleMappings=TRUE, duplicateRemoverMethod="max", orderAbsValue=FALSE)
 library(snow)
-options(htsa.cluster=makeCluster(4,"SOCK"))
-gsca<-analyze(gsca,para=list(pValueCutoff = 0.05,pAdjustMethod = "BH", nPermutations = 1000, minGeneSetSize = 50,exponent = 1))
-if(is(getOption("htsa.cluster"),"cluster")) {
-	stopCluster(getOption("htsa.cluster"))
-	options(htsa.cluster=NULL)
+options(htsa.cluster=makeCluster(4, "SOCK"))
+@
+
+Please do make sure to stop this cluster and assign `NULL' to it after the enrichment analysis.
+
+<<eval=FALSE>>=
+if(is(getOption("cluster"), "cluster")) {
+	stopCluster(getOption("cluster"))
+	options(cluster=NULL)
 }
 @
-
-During the enrichment analysis of gene sets, a large number of permutations are required to evaluate the statistical significance. This package supports parallel computing to promote speed based on the \Rpackage{snow} package. To do this, users simply need to set a cluster called \Robject{htsa.cluster} before running \Rfunction{analyze}. But please do make sure to stop this cluster and assign a NULL value to it after the enrichment analysis.
  
-The output stored in slot \Robject{result} of the object contains data frames displaying the results for hypergeometric testing and GSEA for each gene set collection, as well as data frames showing the combined results of all gene set collections. Additionally, gene sets exhibiting significant p-values for enrichment from both hypergeometric testing and GSEA are displayed in separate tables. Additionally, the output contains dataframes of gene sets exhibiting significant p-values (and significant adjusted p-values) for enrichment from both hypergeometric testing and GSEA.
+The output of all analyses stored in slot \Robject{result} of the object contains data frames displaying the results for hypergeometric testing and GSEA for each gene set collection, as well as data frames showing the combined results of all gene set collections. Gene sets exhibiting significant p-values for enrichment from both hypergeometric testing and GSEA are displayed in separate tables. Additionally, the output contains dataframes of gene sets exhibiting significant p-values (and significant adjusted p-values) for enrichment from both hypergeometric testing and GSEA.
 
-A summary method is provided to print summary information about input gene set collections, phenotypes, hits, parameters for hypeogeometric tests and GSEA and results. A plot method is also available to plot all significant or top gene sets in specified gene set collections.
-<<eval=FALSE>>=
+\subsection{Summarize results}
+A summary method is provided to print summary information about input gene set collections, phenotypes, hits, parameters for hypeogeometric tests and GSEA and results. 
+
+<<gscaSum>>=
 summary(gsca)
-plotGSEA(gsca,gscs=c("GO.BP","GO.MF","GO.CC","PW.KEGG"),allSig=TRUE, filepath=".")
+@
+
+The function \Rfunction{getTopGeneSets} is desinged to retrieve top or all significant gene sets from results of over-representation or GSEA analysis. Basically, the user need to specify the name of results--``HyperGeo.results" or ``GSEA.results", the name(s) of the gene set collection(s) as well as the type of selection--top (by argument \Robject{ntop}) or all (by argument \Robject{allSig}) significant gene sets. 
+
+<<selectSigGS, results=hide>>=
+topGS_GO_MF <- getTopGeneSets(gsca, "GSEA.results", c("GO_MF","PW_KEGG"), 
+allSig=TRUE)
+@
+<<printTopGSs>>=
+topGS_GO_MF
+@
+
+\subsection{Plot significant gene sets}
+To help the user view GSEA results for a single gene set, the function \Rfunction{viewGSEA} is developed to plot the ranked phenotypes, positions of the gene set and the location of the maximum enrichment score.
+
+<<viewGSEARandWalk, fig=TRUE, width=6, height=6, results=hide>>=
+viewGSEA(gsca, "GO_MF", topGS_GO_MF[["GO_MF"]][1])
+@
+
+\begin{figure}[tp]
+\begin{center}
+\includegraphics{HTSanalyzeR-Vignette-viewGSEARandWalk}
+\caption{\label{fig:viewGSEARandWalkFig}%
+  Plot of GSEA result of the most significant gene set of the Molecular Function collection}
+\end{center}
+\end{figure}
+
+A plot method (function \Rfunction{plotGSEA}) is also available to plot and store GSEA results of all significant or top gene sets in specified gene set collections in `pdf' or `png' format.
+<<eval=FALSE>>=
+plotGSEA(gsca, gscs=c("GO_BP","GO_MF","PW_KEGG"), 
+ntop=1, filepath=".")
+@
+
+\subsection{Report results and save objects}
+The function \Rfunction{report} is used to produce html reports for all gene set analyses. 
+
+<<gscaReport, results=hide>>=
+report(object=gsca, experimentName=experimentName, species="Dm", 
+allSig=TRUE, keggGSCs="PW_KEGG", goGSCs=c("GO_BP", "GO_MF"), 
+reportDir="HTSanalyzerGSCAReport")
+@
+
+An index html file containing a summary of all results and hyperlink tables to more detailed results will be generated in the root directory. The other html files will be stored in a subdirectory called ``html". All GSEA plots will be produced in a subdirectory called ``image". All documents or text files such as the files containing significant gene sets of the hypergeometric test results will be stored in a subdirectory called ``doc".
+
+<<gscaReportStruct>>=
+print(dir("HTSanalyzerGSCAReport",recursive=TRUE))
+@
+
+To save or load the object of class \Rclass{GSCA}, we can simply use \Rfunction{save} or \Rfunction{load} similar to other objects of S4 class.
+
+<<gscaSaveAndLoad, eval=FALSE>>=
+save(gsca, file="./gsca.RData")
+load(file="./gsca.RData")
 @
 
 \section{Network analysis}
 
-As explained above, the data that we use for the network analysis is a configured, normalized and annotated cellHTS object (\Robject{xn}). From this object, we extract the normalized data and performs a set of statistical tests for the significance of an observed phenotype by function \Rfunction{cellHTS2OutputStatTests}. We will then aggregate utliple pvalues and map the obtained p-value to an interaction network downloaded from The BioGRID database, and finally use the BioNet package \cite{beisser2010} to extract subnetworks enriched with nodes associated with a significant phenotype, from the statistical analysis.  
+As explained above, the data that we use for the network analysis is a configured, normalized and annotated cellHTS object (\Robject{xn}). From this object, we extract the normalized data and performs a set of statistical tests for the significance of an observed phenotype by function \Rfunction{cellHTS2OutputStatTests}. We will then aggregate utliple pvalues and map the obtained p-value to an interaction network downloaded from The BioGRID database, and finally use the BioNet package \cite{Beisser2010} to extract subnetworks enriched with nodes associated with a significant phenotype, from the statistical analysis.  
 
-In the following example, we perform a one sample t-test which tests wether the mean of the observations for each construct is equal to the median of all sample observations under the null hypothesis.  This amounts to testing whether the phenotype associated with a construct is significantly different from the bulk of observations, with the underlying assumption that in a large scale screen (i.e. genome-wide in this case) most constructs are not expected to show a significant effect.  We also perform a two-sample t-test, which tests the null hypothesis that two populations have the same mean, where the two populations are a set of observations for each construct and a set of observations for a control population.  
+\subsection{Prepare input}
 
-To perform those tests, it is mandatory that the samples and controls are labelled in the column \Robject{controlStatus} of the fData(xn) dataframe as \Robject{sample} and a string specified by the \Robject{control} argument of the networkAnalysis function, respectively. Other types of tests can be performed, namely a "Mann-Whitney" test (one or two sample non-parametric equivalent of the t-test), or a rank product test.  Both the two samples and the one sample tests are automatically produced, in the case of the t-test and the Mann-Withney test. 
+In the following example, we perform a one sample t-test which tests whether the mean of the observations for each construct is equal to the mean of all sample observations under the null hypothesis. This amounts to testing whether the phenotype associated with a construct is significantly different from the bulk of observations, with the underlying assumption that in a large scale screen (i.e. genome-wide in this case) most constructs are not expected to show a significant effect. We also perform a two-sample t-test, which tests the null hypothesis that two populations have the same mean, where the two populations are a set of observations for each construct and a set of observations for a control population.  
 
-Please be aware that the t-test works under the assumption that the observations are normally distributed and that all of these tests are less reliable when the number of replicates is small.  The user should also keep in mind that the one sample t-test assumes that the majority of conditions are not expected to show any significant effect, which is likely to be a dodgy assumption when the size of the screen is small. This test is also to be avoided when the data consists of pre-screened conditions, i.e. constructs that have been selected specifically based on a potential effect.    
+To perform those tests, it is mandatory that the samples and controls are labelled in the column \Robject{controlStatus} of the fData(xn) dataframe as \Robject{sample} and a string specified by the \Robject{control} argument of the networkAnalysis function, respectively. Non-parametric tests, such as the \textit{Mann-Whitney U test} and the \textit{Rank Product test}, can also be performed. Both the two samples and the one sample tests are automatically produced, in the case of the t-test and the Mann-Withney U test, by function \Rfunction{cellHTS2OutputStatTests} in the package. 
 
-All three kind of tests can be performed with the two sided, less or greater alternative, corresponding to population means (or ranking in the case of the rank product) expected to be different, smaller of larger than the null hypothesis, respectively. For example if your phenotypes consist of cell number and you are looking for constructs that impair cell viability, you might be looking for phenotypes that are smaller than the mean. The \Robject{annotationcolumn} argument is used to specify which column of the fData(xn) dataframe contains identifiers for the constructs.  
+Please be aware that the t-test works under the assumption that the observations are normally distributed and that all of these tests are less reliable when the number of replicates is small. The user should also keep in mind that the one sample t-test assumes that the majority of conditions are not expected to show any significant effect, which is likely to be a dodgy assumption when the size of the screen is small. This test is also to be avoided when the data consists of pre-screened conditions, i.e. constructs that have been selected specifically based on a potential effect.    
+
+All three kind of tests can be performed with the `two sided', `less' or `greater' alternative, corresponding to population means (or ranking in the case of the rank product) expected to be different, smaller of larger than the null hypothesis, respectively. For example if your phenotypes consist of cell number and you are looking for constructs that impair cell viability, you might be looking for phenotypes that are smaller than the mean. The \Robject{annotationcolumn} argument is used to specify which column of the fData(xn) dataframe contains identifiers for the constructs.  
+
+<<nwaGetPval, results=hide>>=
+test.stats <- cellHTS2OutputStatTests(cellHTSobject=xn, 
+annotationColumn="GeneID", alternative="two.sided", 
+tests=c("T-test"))
+library(BioNet)
+pvalues <- aggrPvals(test.stats, order=2, plot=FALSE)
+@
+
+\subsection{Initialize and preprocess}
 
 After the p-values of nodes are aggregated, an object of class \Rclass{NWA} can be created. If phenotypes for these genes are also available, they can be input during the initialization stage. The phenotypes can then be used to highlight nodes in different colors in the identified subnetwork. Another optional argument of the initialize function of class \Rclass{NWA} is \Robject{interactome}, which is the background network of class \Rclass{graphNEL}. If it is not available, the interactome can be set up later. 
 
-The next step is to do preprocessing of input p-values and phenotypes. Similar to class \Rclass{GSCA}, at the preprocessing stage, the function will also check validity of input data, remove duplicated genes and convert annotations to Entrez ids. The type of initial identifiers can be specified in the \Robject{initialIDs} argument, and will be converted to Entrez gene identifiers which can be mapped to the BioGRID interaction data.  
+<<nwaInit2, eval=FALSE>>=
+data("Biogrid.Dm.interactome")
+nwa <- new("NWA", pvalues=pvalues, interactome=Biogrid.Dm.interactome, 
+phenotypes=data4enrich)
+@
 
-To create an interactome for the network analysis, users can either specify a species to download corresponding network database from \emph{Biogrid}, or input an interaction matrix if the network is already available and in the right format: a matrix with a row for each interaction, and at least the three columns "InteractorA", "InteractorB" and "InteractionType", where the interactors are specified by Entrez identifiers.. 
+The next step is to do preprocessing of input p-values and phenotypes. Similar to class \Rclass{GSCA}, at the preprocessing stage, the function will also check the validity of input data, remove duplicated genes and convert annotations to Entrez ids. The type of initial identifiers can be specified in the \Robject{initialIDs} argument, and will be converted to Entrez gene identifiers which can be mapped to the BioGRID interaction data.  
 
-After preprocessing of input data and establishment of the interactome, the network analysis can be performed by calling the same function \Rfunction{analyze}. In this function, the argument \Robject{fdr} is a parameter for the statistical analysis performed by the BioNet package (see \cite{beisser2010} for a guide on how to specify those).  The function will produce on your screen a plot showing the fitting of the BioNet model to your distribution of p values, this is a good plot to look at to check the order parameter and choice of statistics used in this function.  
+<<nwaInit, results=hide>>=
+nwa <- new("NWA", pvalues=pvalues, phenotypes=data4enrich)
+nwa <- preprocess(nwa, species="Dm", initialIDs="FlybaseCG", 
+keepMultipleMappings=TRUE, duplicateRemoverMethod="max")
+@
 
-The \Rfunction{plotSubNet} function produces a figure for the enriched subnetwork, with symbol identifiers as labels of the nodes (if phenotypes have been input during the initialization step). 
+To create an interactome for the network analysis, the user can either specify a species to download corresponding network database from \emph{Biogrid}, or input an interaction matrix if the network is already available and in the right format: a matrix with a row for each interaction, and at least the three columns ``InteractorA", ``InteractorB" and ``InteractionType", where the interactors are specified by Entrez identifiers.. 
+
+<<getInteractome2, eval=FALSE>>=
+nwa<-interactome(nwa, species="Dm", reportDir="HTSanalyzerReport",
+genetic=FALSE)
+@
+
+<<getInteractome, results=hide>>=
+data("Biogrid.Dm.Mat")
+nwa<-interactome(nwa, interactionMatrix=Biogrid.Dm.Mat,
+genetic=FALSE)
+@
+
+<<showNWAGraph>>=
+nwa@interactome
+@
+
+\subsection{Perform analysis}
+
+After preprocessing of input data and establishment of the interactome, the network analysis can then be performed by calling the same function \Rfunction{analyze} as the object of class \Rclass{GSCA}. In this function, the argument \Robject{fdr} is a parameter for the statistical analysis performed by the BioNet package (see \cite{Beisser2010} for a guide on how to specify those). The function will produce on your screen a plot showing the fitting of the BioNet model to your distribution of p-values, this is a good plot to check the choice of statistics used in this function.  
+
+<<fitBUMplot, fig=TRUE, width=8, height=4.8, results=hide>>=
+nwa<-analyze(nwa, fdr=0.001, species="Dm")
+@
+
+\begin{figure}[tp]
+\begin{center}
+\includegraphics{HTSanalyzeR-Vignette-fitBUMplot}
+\caption{\label{fig:fitBUMplotFig}%
+  Fitting BUM model to p-values by BioNet.}
+\end{center}
+\end{figure}
+
+The \Rfunction{plotSubNet} function produces a figure of the enriched subnetwork, with symbol identifiers as labels of the nodes (if phenotypes have been input during the initialization step). 
+
+\subsection{Summarize results}
+
+Similar to class \Rclass{GSCA}, a summary method is also available for objects of class \Rclass{NWA}. The summary includes information about the size of p-value and phenotype vectors before and after preprocessing, the interactome used, parameters and the subnetwork identified by \Rpackage{BioNet}.
+
+<<nwaSum>>=
+summary(nwa)
+@
+
+\subsection{Plot subnetworks}
+The identified enriched subnetwork will be plot to screen by function \Rfunction{viewSubNet}. 
+
+<<viewSubNet, fig=TRUE, width=8, height=8, results=hide>>=
+viewSubNet(nwa)
+@
+
+\begin{figure}[tp]
+\begin{center}
+\includegraphics{HTSanalyzeR-Vignette-viewSubNet}
+\caption{\label{fig:viewSubNetFig}%
+  Enriched subnetwork identified by BioNet.}
+\end{center}
+\end{figure}
+
+To plot and save the subnetwork, we can use function \Rfunction{plotSubNet} with \Robject{filepath} and \Robject{filename} specified. 
 
 <<eval=FALSE>>=
-library(BioNet)
-test.stats<-cellHTS2OutputStatTests(cellHTSobject=xn, annotationColumn = "GeneID", alternative="two.sided", tests=c("T-test"))
-pvalues<-aggrPvals(test.stats,order=2,plot=FALSE)
-nwa<-new("NWA",pvalues=pvalues,phenotypes=data4enrich)
-nwa<-preprocess(nwa,species="Dm",initialIDs="FlybaseCG", keepMultipleMappings=TRUE, duplicateRemoverMethod="max")
-nwa<-interactome(nwa,species="Dm",reportDir="HTSanalyzerReport",genetic=FALSE)
-nwa<-analyze(nwa, fdr=0.001, species="Dm")
 plotSubNet(nwa, filepath=".", filename="subnetwork.png")
 @
 
-\section{Producing the HTML report}
-The enrichment analysis and network analysis can be reported seperately (by function \Rfunction{report}) or together (by function \Rfunction{reportAll}) in user-specified directory as webpages. An index html file containing a summary of all results and hyperlink tables to more detailed results will be generated in the root directory. The other html files will be stored in a subdirectory called "html". All images including GSEA plots and subnetwork figure will be produced in a subdirectory called "image". All documents or text files such as the files containing significant gene sets of the hypergeometric test results will be stored in a subdirectory called "doc".
+\subsection{Report results and save objects}
+
+The results of network analysis can be reported by the function \Rfunction{report} in user-specified directory as webpages. An index html file containing a brief summary of the analyses will be generated in the root directory. Another html file including more detailed results will be stored in a subdirectory called ``html". One subnetwork figure will be produced in a subdirectory called ``image". In addition, a text file containing Entrez ids and gene symbols of the identified subnetwork will be stored in subdirectory ``doc".
 
 <<eval=FALSE>>=
-report(object=gsca, experimentName=experimentName, species="Dm", allSig=TRUE, 
-	keggGSCs="PW.KEGG", goGSCs=c("GO.BP","GO.MF","GO.CC"), reportDir="HTSanalyzerGSCAReport")
-report(object=nwa, experimentName=experimentName, species="Dm", allSig=TRUE, 
-	keggGSCs="PW.KEGG", goGSCs=c("GO.BP","GO.MF","GO.CC"), reportDir="HTSanalyzerNWReport")
-reportAll(gsca=gsca, nwa=nwa, experimentName=experimentName, species="Dm", allSig=TRUE, 
-	keggGSCs="PW.KEGG", goGSCs=c("GO.BP","GO.MF","GO.CC"), reportDir="HTSanalyzerReport")
+report(object=nwa, experimentName=experimentName, species="Dm", 
+allSig=TRUE, keggGSCs="PW.KEGG", goGSCs=c("GO.BP", "GO.MF"), 
+reportDir="HTSanalyzerNWReport")
 @
 
-\section{Appendix A: Using MSigDB gene set collections}
+To report both results of the enrichment and network analyses, we can use function \Rfunction{reportAll}:
 
-For experiments in human cell lines, it is often useful to test the gene set collections available at the Molecular Signatures Database (MSigDB; http://www.broadinstitute.org/gsea/msigdb/)\cite{subramanian2005}. 
+<<eval=FALSE>>=
+reportAll(gsca=gsca, nwa=nwa, experimentName=experimentName, 
+species="Dm", allSig=TRUE, keggGSCs="PW.KEGG", goGSCs=
+c("GO.BP", "GO.MF"), reportDir="HTSanalyzerReport")
+@
+
+To save and load an object of class \Rclass{NWA} so that we can reuse all information in the future, we can still use the same way as we did for \Rclass{GSCA}:
+
+<<eval=FALSE>>=
+save(nwa, file="./nwa.RData")
+load("./nwa.RData")
+@
+
+\section{Appendix A: HTSanalyzeR4cellHTS2--A pipeline for cellHTS2 object}
+
+All of the above steps can be performed with a unique pipeline function, starting from a normalized, configured and annotated cellHTS object.
+
+First, we need to prepare input data required for analyses just as we introduced in section \ref{htspre}. 
+
+<<eval=FALSE>>=
+data("KcViab.normalized")
+GO_CC<-GOGeneSets(species="Dm",ontologies=c("CC"))
+PW_KEGG<-KeggGeneSets(species="Dm");
+ListGSC<-list(GO_CC=GO_CC,PW_KEGG=PW_KEGG)
+@
+
+Then we simply call the function \Rfunction{HTSanalyzeR4cellHTS2}. This will produce a full HTSanalyzeR report, just as if the above steps were performed separately. All the parameters of the enrichment and network analysis steps can be specified as input of this function (see help(HTSanalyzeR4cellHTS2)).  Since they are given sensible default values, a minimal set of input parameters is actually required.
+
+<<eval=FALSE>>=
+HTSanalyzeR4cellHTS2(
+	normCellHTSobject=KcViab.normalized,
+	annotationColumn="GeneID",
+	species=c("Dm"),
+	initialIDs="FlybaseCG",
+	listOfGeneSetCollections=ListGSC,
+	cutoffHitsEnrichment=2,
+	minGeneSetSize=200,
+	keggGSCs=c("PW_KEGG"),
+	goGSCs=c("GO_CC"),
+	reportDir="HTSanalyzerReport"
+) 
+@
+
+\section{Appendix B: Using MSigDB gene set collections}
+
+For experiments in human cell lines, it is often useful to test the gene set collections available at the Molecular Signatures Database (MSigDB; http://www.broadinstitute.org/gsea/msigdb/)\cite{Subramanian2005}. 
 
 In order to download the gene set collections available through MSigDB, one must first register. After registration, download the desired gmt files into the working directory. Using the \Rfunction{getGmt} and \Rfunction{mapIdentifiers} functions from \Rpackage{GSEABase} importing the gene set collection and mapping the annotations to Entrez IDs is relatively. straightforward 
 
 <<eval=FALSE>>=
-c2<-getGmt(con="c2.all.v2.5.symbols.gmt.txt",geneIdType=SymbolIdentifier(), collectionType=BroadCollection(category="c2"))
+c2<-getGmt(con="c2.all.v2.5.symbols.gmt.txt",geneIdType=
+SymbolIdentifier(), collectionType=
+BroadCollection(category="c2"))
 @
 
 Once again, for many of the functions in this package to work properly, all gene identifiers must be supplied as Entrez IDs.
@@ -190,80 +443,93 @@ collectionOfGeneSets<-geneIds(c2entrez)
 names(collectionOfGeneSets)<-names(c2entrez)
 @
 
-\section{Appendix B: Using the \Rfunction{HTSanalyzeR4cellHTS2} function}
-
-All of the above steps can be performed with a unique function, starting from a normalized, configured and annotated cellHTS object.
-
-First, we need to create the cellHTS object and the gene set collection list, and load the relevant packages. 
-
-<<eval=FALSE>>=
-library(org.Dm.eg.db)
-library(GO.db)
-library(KEGG.db)
-experimentName<-"KcViab"
-dataPath<-system.file(experimentName, package="cellHTS2")
-x<-readPlateList("Platelist.txt",name=experimentName,path=dataPath)
-x<-configure(x,descripFile="Description.txt",confFile="Plateconf.txt",logFile="Screenlog.txt",path=dataPath)
-xn<-normalizePlates(x,scale="multiplicative",log=FALSE,method="median",varianceAdjust="none")
-xn<-annotate(xn,geneIDFile="GeneIDs_Dm_HFA_1.1.txt",path=dataPath)
-GO.CC<-GOGeneSets(species="Dm",ontologies=c("CC"))
-PW.KEGG<-KeggGeneSets(species="Dm");
-gsc.list<-list(GO.CC=GO.CC,PW.KEGG=PW.KEGG)
-@
-
-Then we simply call the function \Rfunction{HTSanalyzeR4cellHTS2}. This will produce a full HTSanalyzeR report, just as if the above steps were performed separately. All the parameters of the enrichment and network analysis steps can be specified as input of this function (see help(HTSanalyzeR4cellHTS2)).  Since they are given sensible default values, a minimal set of input parameters is actually required.
-
-<<eval=FALSE>>=
-cellHTS2DrosoData<-xn
-HTSanalyzeR4cellHTS2(
-	normCellHTSobject=cellHTS2DrosoData,
-	annotationColumn="GeneID",
-	species=c("Dm"),
-	initialIDs="FlybaseCG",
-	listOfGeneSetCollections=gsc.list,
-	cutoffHitsEnrichment=2,
-	minGeneSetSize=20,
-	keggGSCs="PW.KEGG",
-	goGSCs=c("GO.CC"),
-	reportDir="HTSanalyzerReport"
-) 
-@
-
 \section{Appendix C: Performing gene set analysis on multiple phenotypes}
 
-When performing hight throughput screens in cell culture-based assays, it is more and more common that multiple phenotypes would be recorded for each condition (such as e.g. number of cells and intensity of a reporter).  In these cases, you can perform the enrichment analysis separately on the different lists of phenotypes and try to find gene sets enriched in all of them.  In such cases, our package comprises a function called \Rfunction{aggregatePvals} that allows you to aggregate p values obtained for the same gene set from an enrichment analysis on different phenotypes.  This function simply inputs a matrix of p values with a row for each gene set, and returns aggregated p values, obtained using either the Fisher or Stouffer methods.  The Fisher method combines the p values into an aggregated chi-squared statistic equal to -2.sum(log(Pk)) were we have k=1,..,K  pvalues independently distributed as uniform on the unit interval under the null hypothesis.  The resulting p values is calculated by comparing this chi squared statistic to a chi squared distribution with 2K degrees of freedom. The Stouffer method computes a z statistic assuming that the sum of the quantiles (from a standard normal distribution) corresponding to the p values are distributed as N(0,K).
+When performing hight throughput screens in cell culture-based assays, it is more and more common that multiple phenotypes would be recorded for each condition (such as e.g. number of cells and intensity of a reporter).  In these cases, you can perform the enrichment analysis separately on the different lists of phenotypes and try to find gene sets enriched in all of them. In such cases, our package comprises a function called \Rfunction{aggregatePvals} that allows you to aggregate p-values obtained for the same gene set from an enrichment analysis on different phenotypes. This function simply inputs a matrix of p-values with a row for each gene set, and returns aggregated p-values, obtained using either the Fisher or Stouffer methods.  The Fisher method combines the p-values into an aggregated chi-squared statistic equal to -2.sum(log(Pk)) were we have k=1,..,K  pvalues independently distributed as uniform on the unit interval under the null hypothesis. The resulting p-values is calculated by comparing this chi squared statistic to a chi squared distribution with 2K degrees of freedom. The Stouffer method computes a z statistic assuming that the sum of the quantiles (from a standard normal distribution) corresponding to the p-values are distributed as N(0,K).
 
-However, it is possible that the phenotypes that are measured are expected to show opposite behaviors (e.g. when measuring the number of cells and a reporter for apoptosis).  In these cases, we provide two methods to detect gene sets that are associated with opposite patterns of a pair of phenotypic responses.  The first method (implemented in the functions \Rfunction{pairwiseGsea} and \Rfunction{pairwiseGseaPlot}) is a modification of the GSEA method by \cite{subramanian2005}.  Briefly, the enrichment scores are computed separately on both phenotype lists, and the absolute value of the difference between the two enrichment scores is compared to permutation-based scores obtained by computing the difference in enrichment score between the two lists when the gene labels are randomly shuffled.  This method can only be applied if both phenotypes are measured on the same set of conditions (i.e. the gene labels are the same in both lists, although their associated phenotypes might be very different).  
+However, it is possible that the phenotypes that are measured are expected to show opposite behaviors (e.g. when measuring the number of cells and a reporter for apoptosis).  In these cases, we provide two methods to detect gene sets that are associated with opposite patterns of a pair of phenotypic responses.  The first method (implemented in the functions \Rfunction{pairwiseGsea} and \Rfunction{pairwiseGseaPlot}) is a modification of the GSEA method by \cite{Subramanian2005}.  Briefly, the enrichment scores are computed separately on both phenotype lists, and the absolute value of the difference between the two enrichment scores is compared to permutation-based scores obtained by computing the difference in enrichment score between the two lists when the gene labels are randomly shuffled.  This method can only be applied if both phenotypes are measured on the same set of conditions (i.e. the gene labels are the same in both lists, although their associated phenotypes might be very different).  
 
 The second method, implemented in the function \Rfunction{pairwisePhenoMannWith}, performs a Mann-Whitney test for shift in location of genes from gene sets, on a pair of phenotypes.  The Mann-Whitney test is a non-parametrical equivalent to a two samples t-test (equivalent to a Wilcoxon rank sum test). It looks for gene sets that are whose phenotype distribution is located around two different values in the two phenotypes list, rather than spread on the whole list in both lists.  Please be aware that this test should be applied on phenotypes that are on the same scale.  If you compare a number of cells (e.g. thousands of cells) to a percentage of cells expressing a marker for example, you will always find a difference in the means of the two populations of phenotypes, whatever the genes in those populations. However, it is very common in high throughput experiments that some sort of internal control is available (e.g. phenotype of the wild type cell line, with no RNAi). A simple way to obtain the different phenotypes on similar scales is therefore to use as phenotypes the raw measurements divided by their internal control counterpart.  
 
+\section*{Session info}
+
+This document was produced using:
+
+<<sessionInfo, results=tex, print=TRUE>>=
+toLatex(sessionInfo())
+@ 
+
 \begin{thebibliography}{1}
+\bibitem{Ashburner2000}
+Ashburner, M., Ball, C.~A., Blake, J.~A., Botstein, D., et al (2000).
+\newblock Gene ontology: tool for the unification of biology. the gene ontology consortium.
+\newblock {\em Nat Genet\/}, {\bf 25}(1), 25--29.
 
-\bibitem{beisser2010}
-D.~Beisser, G.W. Klau, T.~Dandekar, T.~Mueller, and M.~Dittrich.
-\newblock Bionet: an r-package for the functional analysis of biological
-  networks.
-\newblock {\em Bioinformatics}, 2010.
+\bibitem{Beisser2010}
+Beisser, D., Klau, G. W., Dandekar, T., M{\"u}ller, T.,  Dittrich, M. T. (2010)
+\newblock BioNet: an R-Package for the functional analysis of biological networks.
+\newblock {\em Bioinformatics},  {\bf26}, 1129-1130
 
-\bibitem{boutros2006}
-M.~Boutros, L.~Br{\'a}s, and W.~Huber.
-\newblock Analysis of cell-based rnai screens.
-\newblock {\em Genome Biology}, 7(7):R66, 2006.
+\bibitem{Boutros2004}
+Boutros, M., Kiger, A.~A., Armknecht, S., Kerr, K., Hild, M., et al (2004).
+\newblock Genome-wide {RNAi} analysis of growth and viability in drosophila cells.
+\newblock {\em Science\/}, {\bf 303}(5659), 832--835.
 
-\bibitem{boutros2004}
-M.~Boutros, A.A. Kiger, S.~Armknecht, K.~Kerr, M.~Hild, B.~Koch, S.A. Haas,
-  et~al.
-\newblock Genome-wide rnai analysis of growth and viability in drosophila
-  cells.
-\newblock {\em Science}, 303(5659):832, 2004.
+\bibitem{Boutros2006}
+Boutros, M., Br\'as, L.~P., and Huber, W. (2006).
+\newblock Analysis of cell-based {RNAi} screens.
+\newblock {\em Genome Biol\/}, {\bf 7}(7), R66.
 
-\bibitem{subramanian2005}
-A.~Subramanian, P.~Tamayo, V.K. Mootha, S.~Mukherjee, B.L. Ebert, M.A.
-  Gillette, A.~Paulovich, S.L. Pomeroy, T.R. Golub, E.S. Lander, et~al.
-\newblock Gene set enrichment analysis: a knowledge-based approach for
-  interpreting genome-wide expression profiles.
-\newblock {\em Proceedings of the National Academy of Sciences}, 102(43):15545,
-  2005.
+\bibitem{Froehlich2008}
+Fr{\"o}hlich, H., Beissbarth, T., Tresch, A., Kostka, D., Jacob, J., Spang, R., and Markowetz, F. (2008).
+\newblock Analyzing gene perturbation screens with nested effects models in {R} and {Bioconductor}.
+\newblock {\em Bioinformatics\/}, {\bf 24}(21), 2549--2550.
+
+\bibitem{Gentleman2004}
+Gentleman, R.~C., Carey, V.~J., Bates, D.~M., Bolstad, B., Dettling, M., et al (2004).
+\newblock Bioconductor: open software development for computational biology and bioinformatics.
+\newblock {\em Genome Biol\/}, {\bf 5}(10), R80.
+
+\bibitem{Huang2009}
+Huang, D.~W., Sherman, B.~T., and Lempicki, R.~A. (2009).
+\newblock {Systematic and integrative analysis of large gene lists using DAVID bioinformatics resources.}
+\newblock {\em Nat Protoc\/}, {\bf 4}(1), 44--57.
+
+\bibitem{Kanehisa2006}
+Kanehisa, M., Goto, S., Hattori, M., Aoki-Kinoshita, K.~F., et al. (2006).
+\newblock {From genomics to chemical genomics: new developments in KEGG.}
+\newblock {\em Nucleic Acids Res\/}, {\bf 34}(Database issue), D354--D357.
+
+\bibitem{Markowetz2010}
+Markowetz, F. (2010).
+\newblock How to understand the cell by breaking it: network analysis of gene perturbation screens.
+\newblock {\em PLoS Comput Biol\/}, {\bf 6}(2), e1000655.
+
+\bibitem{Pelz2010}
+Pelz, O., Gilsdorf, M., and Boutros, M. (2010).
+\newblock {web-cellHTS2: a web-application for the analysis of high-throughput screening data.}
+\newblock {\em BMC Bioinformatics\/}, {\bf 11}, 185.
+
+\bibitem{R}
+{R Development Core Team} (2009).
+\newblock {\em R: A Language and Environment for Statistical Computing\/}.
+\newblock R Foundation for Statistical Computing, Vienna, Austria.
+\newblock {ISBN} 3-900051-07-0.
+
+\bibitem{Rieber2009}
+Rieber, N., Knapp, B., Eils, R., and Kaderali, L. (2009).
+\newblock {RNAither, an automated pipeline for the statistical analysis of high-throughput RNAi screens.}
+\newblock {\em Bioinformatics\/}, {\bf 25}(5), 678--679.
+
+\bibitem{Stark2006}
+Stark, C., Breitkreutz, B.-J., Reguly, T., Boucher, L., Breitkreutz, A., and Tyers, M. (2006).
+\newblock {BioGRID}: a general repository for interaction datasets.
+\newblock {\em Nucleic Acids Res\/}, {\bf 34}(Database issue), D535--D539.
+
+\bibitem{Subramanian2005}
+Subramanian, A., Tamayo, P., Mootha, V.~K., Mukherjee, S., Ebert, B.~L., et al.  (2005).
+\newblock Gene set enrichment analysis: a knowledge-based approach for interpreting genome-wide expression profiles.
+\newblock {\em Proc Natl Acad Sci U S A\/}, {\bf 102}(43), 15545--15550.
 
 \end{thebibliography}
 

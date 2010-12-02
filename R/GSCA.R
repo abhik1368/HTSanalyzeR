@@ -1,12 +1,5 @@
-###############################################################################
-# Class GSCA (Gene Set Collection Analyses)
-# Xin Wang <xw264@cam.ac.uk>
-# Advisor: Florian Markowetz <florian.markowetz@cancer.org.uk> 
-# University of Cambridge Deparment of Oncology
-# Cancer Research UK - Cambridge Research Institute
-# At 11:10:36, on 16 Nov 2010
-###############################################################################
-#definition of class gene set collection analysis
+##Class GSCA (Gene Set Collection Analyses)
+##definition of class gene set collection analysis
 setClass(
 		"GSCA",
 		representation(
@@ -28,25 +21,25 @@ setClass(
 				preprocessed=FALSE
 		)
 )
-#initialization method
+##initialization method
 setMethod("initialize",
 		"GSCA",
 		function(.Object, listOfGeneSetCollections,geneList,hits) {
 			#######################
-			#check input arguments
+			##check input arguments
 			#######################
 			paraCheck(name="gscs",listOfGeneSetCollections)
 			paraCheck(name="genelist",geneList)
 			paraCheck(name="hits",hits)
 			#[para<-paraCheck(name="gsca.para",para)
 			#######################
-			#	initialization
+			##	initialization
 			#######################
 			.Object@listOfGeneSetCollections<-listOfGeneSetCollections
 			.Object@geneList<-geneList
 			.Object@hits<-hits
-			#[.Object@para<-para]
-			#check result summary and preprocessed to make sure they are not specified by users
+			##[.Object@para<-para]
+			##check result summary and preprocessed to make sure they are not specified by users
 			.Object@result<-list()
 			.Object@preprocessed<-FALSE
 			
@@ -81,23 +74,23 @@ setMethod("initialize",
 			sum.info.gsc[,"input"]<-unlist(lapply(listOfGeneSetCollections,length))
 			sum.info.gl[,"input"]<-length(geneList)
 			sum.info.hits[,"input"]<-length(hits)
-			#[sum.info.para$hypergeo[1,]<-c(para$minGeneSetSize,para$pValueCutoff,para$pAdjustMethod)
-			#[sum.info.para$gsea[1,]<-c(para$minGeneSetSize,para$pValueCutoff,para$pAdjustMethod,para$nPermutations,para$exponent)
-			#[sum.info.para$hypergeo<-data.frame(sum.info.para$hypergeo)
-			#[sum.info.para$gsea<-data.frame(sum.info.para$gsea)
+			##[sum.info.para$hypergeo[1,]<-c(para$minGeneSetSize,para$pValueCutoff,para$pAdjustMethod)
+			##[sum.info.para$gsea[1,]<-c(para$minGeneSetSize,para$pValueCutoff,para$pAdjustMethod,para$nPermutations,para$exponent)
+			##[sum.info.para$hypergeo<-data.frame(sum.info.para$hypergeo)
+			##[sum.info.para$gsea<-data.frame(sum.info.para$gsea)
 			
 			
 			.Object@summary<-list(gsc=sum.info.gsc,gl=sum.info.gl,hits=sum.info.hits,para=sum.info.para,results=sum.info.results)			
 			.Object
 		}
 )
-#pre-processing
+##pre-processing
 setMethod(
 		"preprocess",
 		"GSCA",
 		function(object, species="Dm", initialIDs="FlybaseCG", keepMultipleMappings=TRUE, duplicateRemoverMethod="max", orderAbsValue=FALSE, verbose=TRUE) {
 			#######################
-			#check input arguments
+			##check input arguments
 			#######################
 			paraCheck(name="species",para=species)
 			paraCheck(name="initialIDs",para=initialIDs)
@@ -106,18 +99,18 @@ setMethod(
 			paraCheck(name="orderAbsValue",para=orderAbsValue)
 			paraCheck(name="verbose",para=verbose)
 			#######################
-			#	 preprocessing
+			##	 preprocessing
 			#######################
 			cat("-Preprocessing for input gene list and hit list ...\n")
 			
 			genelist<-object@geneList
-			#remove NA in geneList
+			##remove NA in geneList
 			if(verbose) cat("--Removing genes without values in geneList ...\n")
 			genelist<-genelist[which((!is.na(genelist)) & (names(genelist)!="") & (!is.na(names(genelist))))]
 			object@summary$gl[,"valid"]<-length(genelist)				#genes with valid values
 			if(length(genelist)==0)
 				stop("Input 'geneList' contains no useful data!\n")
-			#duplicate remover
+			##duplicate remover
 			if(verbose) cat("--Removing duplicated genes ...\n")
 			genelist<-duplicateRemover(geneList=genelist,method=duplicateRemoverMethod)
 			object@summary$gl[,"duplicate removed"]<-length(genelist)	#genes after removing duplicates 
@@ -132,7 +125,7 @@ setMethod(
 			if(length(hits.vec)==0) 
 				stop("Hits and geneList have no overlaps!\n")
 				
-			#annotation convertor
+			##annotation convertor
 			if(initialIDs!="Entrez.gene") {
 				if(verbose) cat("--Converting annotations ...\n")
 				genelist<-annotationConvertor(
@@ -162,7 +155,7 @@ setMethod(
 				genelist<-abs(genelist)[order(abs(genelist),decreasing=TRUE)]	
 			hits<-names(hits.vec)
 			object@summary$hits[,"preprocessed"]<-length(hits)			#hits after preprocessed
-			#update genelist and hits, and return object
+			##update genelist and hits, and return object
 			object@geneList<-genelist
 			object@hits<-hits
 			object@preprocessed<-TRUE
@@ -172,7 +165,7 @@ setMethod(
 			object
 		}
 )
-#Gene set enrichment analyses
+##Gene set enrichment analyses
 setMethod(
 		"analyze",
 		"GSCA",
@@ -181,12 +174,12 @@ setMethod(
 			object@para<-paraCheck(name="gsca.para",para=para)
 			object@summary$para$hypergeo[1,]<-c(object@para$minGeneSetSize,object@para$pValueCutoff,object@para$pAdjustMethod)
 			object@summary$para$gsea[1,]<-c(object@para$minGeneSetSize,object@para$pValueCutoff,object@para$pAdjustMethod,object@para$nPermutations,object@para$exponent)
-			#if(!is.data.frame(object@summary$para$hypergeo))
-			#	object@summary$para$hypergeo<-data.frame(object@summary$para$hypergeo)
-			#if(!is.data.frame(object@summary$para$gsea))
-			#	object@summary$para$gsea<-data.frame(object@summary$para$gsea)
+			##if(!is.data.frame(object@summary$para$hypergeo))
+			##	object@summary$para$hypergeo<-data.frame(object@summary$para$hypergeo)
+			##if(!is.data.frame(object@summary$para$gsea))
+			##	object@summary$para$gsea<-data.frame(object@summary$para$gsea)
 			#######################
-			#	  do analysis
+			##	  do analysis
 			#######################
 			object@result<-
 					analyzeGeneSetCollections(
@@ -200,7 +193,7 @@ setMethod(
 					exponent=object@para$exponent,
 					verbose=verbose
 			)
-			#update summary information
+			##update summary information
 			cols<-colnames(object@summary$results)
 			object@summary$gsc[,2]<-unlist(lapply(object@result$HyperGeo.results, nrow))[cols]
 
@@ -211,7 +204,7 @@ setMethod(
 			object
 		}
 )
-#show summary information on screen
+##show summary information on screen
 setMethod(
 		"show",
 		"GSCA",
@@ -220,13 +213,13 @@ setMethod(
 			summary(object, what=c("GSC","GeneList","Hits","Para"))
 		}
 )
-#print summary information on screen
+##print summary information on screen
 setMethod(
 		"summary",
 		"GSCA",
 		function(object, what="ALL") {
 			paraCheck("what.gsca",what)
-			#what can be "GSC" (gene set collection), "GeneList", "Hits", "Para", "Result"
+			##what can be "GSC" (gene set collection), "GeneList", "Hits", "Para", "Result"
 			if(any(c("ALL","GSC") %in% what)) {
 				cat("\n")
 				cat("-No of genes in Gene set collections: \n")
@@ -261,12 +254,12 @@ setMethod(
 			}	
 		}
 )
-#select gene sets for writeHits and plotGSEA
+##select top significant gene sets 
 setMethod(
 		"getTopGeneSets",
 		"GSCA",
 		function(object, resultName, gscs, ntop=NULL, allSig=FALSE) {
-			#check arguments			
+			##check arguments			
 			if(missing(gscs))
 				stop("Please specify the name(s) of Gene Set Collections in 'gscs'! \n")
 			paraCheck(name="gscs.names",para=gscs)
@@ -282,14 +275,14 @@ setMethod(
 			filenames<-list()
 			for(gsc in gscs) {
 				all.gs.names <- rownames(object@result[[resultName]][[gsc]])
-				#if(nrow(object@result[[resultName]][[gsc]])==0)
-				#	stop("No gene sets in this gene set collection!\n")
-				#find all gene sets that are going to be plot
+				##if(nrow(object@result[[resultName]][[gsc]])==0)
+				##	stop("No gene sets in this gene set collection!\n")
+				##find all gene sets that are going to be plot
 				gs.names<-NULL
 				if(allSig) {
 					gs.names<-all.gs.names[object@result[[resultName]][[gsc]][,"Adjusted.Pvalue"]<object@para$pValueCutoff]
-				#	if(is.null(gs.names))
-				#		stop("No significant gene sets found in specified gene set collection!\n")
+				##	if(is.null(gs.names))
+				##		stop("No significant gene sets found in specified gene set collection!\n")
 				} else {
 					if(ntop>nrow(object@result[[resultName]][[gsc]]))
 						stop("'ntop' is larger than the number of gene sets in specified gene set collection!\n")
@@ -301,12 +294,12 @@ setMethod(
 			return(filenames)
 		}
 )
-#write observed hits in gene sets for HyperGeo
+##write observed hits in gene sets for HyperGeo
 setMethod(
 		"writeHits",
 		"GSCA",
 		function(object, gscs, species=NULL, ntop=NULL, allSig=FALSE, filepath=".") {
-			#check arguments
+			##check arguments
 			paraCheck(name="filepath",para=filepath)
 			if(!is.null(species)) {
 				paraCheck(name="species",para=species)
@@ -318,7 +311,7 @@ setMethod(
 				mapID<-NULL
 			filenames<-getTopGeneSets(object, "HyperGeo.results", gscs, ntop, allSig)
 			for(gsc in gscs) {
-				#write for all gs.names	
+				##write for all gs.names	
 				gs.names<-filenames[[gsc]]
 				if(!is.null(gs.names)) {
 					for(gs.name in gs.names){
@@ -329,33 +322,66 @@ setMethod(
 			}
 		}		
 )
-#plot GSEA for GSCA
+##plot GSEA for GSCA
 setMethod(
 		"plotGSEA",
 		"GSCA",
-		function(object, gscs, ntop=NULL, allSig=FALSE, filepath=".") {
-			#check parameters
-			paraCheck(name="filepath",para=filepath)
+		function(object, gscs, ntop=NULL, allSig=FALSE, filepath=".", output="png", ...) {
+			##check arguments
+			paraCheck(name="filepath", para=filepath)
+			paraCheck(name="output", para=output)
+			paraCheck("allSig", allSig)
+			if(!is.null(ntop))
+				paraCheck("ntop", ntop)
+			paraCheck("gscs.names", gscs)
 			filenames<-getTopGeneSets(object, "GSEA.results", gscs, ntop, allSig)				
 			for(gsc in gscs) {
-				#plot for all gs.names	
+				##plot for all gs.names	
 				gs.names<-filenames[[gsc]]
 				if(!is.null(gs.names)) {
 					for(gs.name in gs.names){
 						makeGSEAplots(geneList=object@geneList, geneSet=object@listOfGeneSetCollections[[gsc]][[gs.name]],
 								exponent=object@para$exponent, filepath=filepath,
-								filename=gsub("/", "_", gs.name))
+								filename=gsub("/", "_", gs.name), output=output, ...=...)
 					}	
 				}
 			}
 		}
 )
-#generate html report for GSCA
+setMethod(
+		"viewGSEA",
+		"GSCA",
+		function(object, gscName, gsName) {
+			##check argument
+			paraCheck("gs.single", gsName)
+			paraCheck("gsc.name", gscName)
+			if(!("GSEA.results" %in% names(object@result)))
+				stop("GSEA not performed!\n")
+			gs.all<-lapply(object@result[["GSEA.results"]][1:length(object@listOfGeneSetCollections)], rownames)
+			if(length(unlist(gs.all))==0)
+				stop("No gene sets in GSEA results!\n")
+			if(!(gsName %in% unlist(gs.all)))
+				stop("'gs' is not a gene set that passes the 'minGeneSetSize'! \n")
+			if(!(gscName %in% names(object@listOfGeneSetCollections)))
+				stop("'gsc' is not a gene set collection in 'listOfGeneSetCollections'!\n")
+			##gsc.name<-NULL
+			##sapply(names(object@listOfGeneSetCollections), function(gsc) {
+			##	gs.id<-which(gs.all[[gsc]]==gs)
+			##	gsc.name<<-ifelse(length(gs.id)>0, gsc, gsc.name)
+			##})
+			test <- gseaScores(geneList = object@geneList, geneSet = object@listOfGeneSetCollections[[gscName]][[gsName]],
+					exponent = object@para$exponent, mode = "graph")
+			gseaPlots(runningScore = test[['runningScore']],
+					enrichmentScore = test[['enrichmentScore']],
+					positions = test[['positions']], geneList = object@geneList)
+		}
+)
+##generate html report for GSCA
 setMethod(
 		"report",
 		"GSCA",
 		function(object, experimentName="Unknown", species=NULL, ntop=NULL, allSig=FALSE, keggGSCs=NULL, goGSCs=NULL, reportDir="HTSanalyzerReport") {
-			#call writeReportHTSA
+			##call writeReportHTSA
 			writeReportHTSA(gsca=object, experimentName=experimentName, species=species, ntop=ntop, allSig=allSig, 
 					keggGSCs=keggGSCs, goGSCs=goGSCs, reportDir=reportDir)
 		}

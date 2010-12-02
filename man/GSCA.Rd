@@ -1,8 +1,6 @@
 \name{GSCA-class}
 \alias{GSCA}
 \alias{GSCA-class}
-\alias{getTopGeneSets}
-\alias{getTopGeneSets, GSCA-method}
 \alias{writeHits}
 \alias{writeHits, GSCA-method}
 \docType{class}
@@ -37,8 +35,9 @@ the examples below)
 		\item{\code{para}:}{
 		a list of parameters for hypergeometric tests and GSEA. These 
 		parameters are \code{pValueCutoff}, \code{pAdjustMethod}, \code{nPermutations}, 
-		\code{minGeneSetSize} and \code{exponent} (see function \code{analyzeGeneSetCollections}
-		for detailed descriptions about these parameters). 
+		\code{minGeneSetSize} and \code{exponent} (see function
+		\code{analyzeGeneSetCollections} for detailed descriptions about
+		these parameters). 
 		}
 		
 		\item{\code{result}:}{
@@ -84,8 +83,11 @@ the examples below)
 		\item{\code{writeHits}}{
 		write observed hits in gene sets for hypergeometric tests.
 		}
+		\item{\code{viewGSEA}}{
+		plot a figure of GSEA results of a gene set in a gene set collection.
+		}
 		\item{\code{plotGSEA}}{
-		plot figures for Gene Set Enrichment Analysis.
+		plot and save figures for Gene Set Enrichment Analysis.
 		}
 		\item{\code{report}}{
 		generate html reports.
@@ -110,24 +112,28 @@ data("data4enrich")
 ##select hits
 hits <- names(data4enrich)[which(abs(data4enrich) > 2)]
 ##set up a list of gene set collections
-PW.KEGG <- KeggGeneSets(species = "Dm")
-gsc.list <- list(PW.KEGG = PW.KEGG)
+PW_KEGG <- KeggGeneSets(species = "Dm")
+gscs <- list(PW_KEGG = PW_KEGG)
 ##create an object of class 'GSCA'
-gsca <- new("GSCA", listOfGeneSetCollections=gsc.list,
-geneList = data4enrich, hits = hits)
+gsca <- new("GSCA", listOfGeneSetCollections=gscs, geneList = data4enrich,
+hits = hits)
 ##do preprocessing (data4enrich has already been preprocessed)
 gsca <- preprocess(gsca, species="Dm", initialIDs = "Entrez.gene", 
 keepMultipleMappings = TRUE, duplicateRemoverMethod = "max", 
 orderAbsValue = FALSE)
 ##do hypergeometric tests and GSEA
 gsca <- analyze(gsca, para = list(pValueCutoff = 0.05, pAdjustMethod 
-= "BH", nPermutations = 1000, minGeneSetSize = 100,exponent = 1))
+= "BH", nPermutations = 1000, minGeneSetSize = 100, exponent = 1))
 ##print summary information
 summary(gsca)
-##plot GSEA figures
-plotGSEA(gsca, gscs = c("PW.KEGG"), allSig = TRUE, filepath = ".")
+##get all significant gene sets in "PW_KEGG"
+sigGSs<-getTopGeneSets(gsca, "GSEA.results", "PW_KEGG", allSig=TRUE)
+##view a GSEA figure
+viewGSEA(gsca, gscName="PW_KEGG", gsName=sigGSs[["PW_KEGG"]][1])
 ##write html reports
 report(object = gsca, experimentName = "GSCATest", species = "Dm", 
-allSig = TRUE, keggGSCs = "PW.KEGG", reportDir="GSCATestReport")
+allSig = TRUE, keggGSCs = "PW_KEGG", reportDir="GSCATestReport")
+##browse the index page
+browseURL(file.path(getwd(), "GSCATestReport", "index.html"))
 }
 \keyword{classes}

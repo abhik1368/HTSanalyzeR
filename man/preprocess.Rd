@@ -4,10 +4,9 @@
 Preprocessing method for object of class 'GSCA' or 'NWA'
 }
 \description{
-This is an S4 method, which can be applied to an object of 
-either class \code{GSCA} or \code{NWA}. This function will filter out
-invalid data, curate duplicated genes, convert annotations to Entrez 
-identifiers, etc.
+This is an S4 method, which can be applied to an object of either class
+\code{GSCA} or \code{NWA}. This function will filter out invalid data,
+remove duplicated genes, convert annotations to Entrez identifiers, etc.
 }
 \usage{
 For objects of class 'GSCA':
@@ -25,39 +24,41 @@ preprocess(object, species="Dm", initialIDs="FlybaseCG", keepMultipleMappings
 an object of class 'GSCA' or 'NWA'
 }
 	\item{species}{
-a single character value specifying the species for which the data 
-should be read. The current version supports one of the following 
-species: "Dm" ("Drosophila_melanogaster"), "Hs" ("Homo_sapiens"), 
-"Rn" ("Rattus_norvegicus"), "Mm" ("Mus_musculus"), "Ce" 
-("Caenorhabditis_elegans"). This is an optional argument here. If it is 
-provided, then the labels of nodes of the identified subnetwork will be
-mapped from Entrez IDs to gene symbols; otherwise, Entrez IDs will be
-used as labels for those nodes.
+a single character value specifying the species for which the data should
+be read. The current version supports one of the following species: "Dm"
+("Drosophila_melanogaster"), "Hs" ("Homo_sapiens"), "Rn" ("Rattus_
+norvegicus"), "Mm" ("Mus_musculus"), "Ce" ("Caenorhabditis_elegans").
+This is an optional argument here. If it is provided, then the labels of
+nodes of the identified subnetwork will be mapped from Entrez IDs to gene
+symbols; otherwise, Entrez IDs will be used as labels for those nodes.
 }
   \item{initialIDs}{
-a single character value specifying the type of initial identifiers for input 
-'geneList'. Current version can take one of the following types: 
-"Ensembl.transcript", "Ensembl.prot", "Ensembl.gene", "Entrez.gene", "RefSeq", 
-"Symbol" and "GenBank" for all supported species; "Flybase", "FlybaseCG" and 
-"FlybaseProt" for Drosophila Melanogaster; "wormbase" for Caenorhabditis Elegans. 
+a single character value specifying the type of initial identifiers for
+input 'geneList'. Current version can take one of the following types: 
+"Ensembl.transcript", "Ensembl.prot", "Ensembl.gene", "Entrez.gene",
+"RefSeq", "Symbol" and "GenBank" for all supported species; "Flybase",
+"FlybaseCG" and "FlybaseProt" for Drosophila Melanogaster; "wormbase"
+for Caenorhabditis Elegans. 
 }
   \item{keepMultipleMappings}{
-a single logical value. If TRUE, the function keeps the entries with multiple 
-mappings (first mapping is kept). If FALSE, the entries with multiple mappings 
-will be discarded.
+a single logical value. If TRUE, the function keeps the entries with
+multiple mappings (first mapping is kept). If FALSE, the entries with
+multiple mappings will be discarded.
 }
 	\item{duplicateRemoverMethod}{
 a single character value specifying the method to remove the duplicates 
-(should the minimum, maximum or average observation for a same construct be kept). 
-Current version provides "min" (minimum), "max" (maximum), "average" and "fc.avg" 
-(fold change average). The minimum and maximum should be understood in terms of 
-absolute values (i.e. min/max effect, no matter the sign). The fold change average 
-method converts the fold changes to ratios, averages them and converts the average 
-back to a fold change.
+(should the minimum, maximum or average observation for a same construct
+be kept). Current version provides "min" (minimum), "max" (maximum),
+"average" and "fc.avg" (fold change average). The minimum and maximum
+should be understood in terms of absolute values (i.e. min/max effect,
+no matter the sign). The fold change average method converts the fold
+changes to ratios, averages them and converts the average back to a fold
+change.
 }
 	\item{orderAbsValue}{
 a single logical value determining whether the values should be converted 
-to absolute value and then ordered (if TRUE), or ordered as they are (if FALSE).	
+to absolute value and then ordered (if TRUE), or ordered as they are (if
+FALSE).	
 }
 	\item{verbose}{
 a single logical value deciding to display detailed messages (when 
@@ -113,11 +114,11 @@ data("data4enrich")
 ##select hits
 hits <- names(data4enrich)[which(abs(data4enrich) > 2)]
 ##set up a list of gene set collections
-PW.KEGG <- KeggGeneSets(species = "Dm")
-gsc.list <- list(PW.KEGG = PW.KEGG)
+PW_KEGG <- KeggGeneSets(species = "Dm")
+gscList <- list(PW_KEGG = PW_KEGG)
 ##create an object of class 'GSCA'
-gsca <- new("GSCA", listOfGeneSetCollections=gsc.list,
-geneList = data4enrich, hits = hits)
+gsca <- new("GSCA", listOfGeneSetCollections=gscList, geneList =
+data4enrich, hits = hits)
 ##print gsca
 summary(gsca, what = c("GeneList", "Hits"))
 ##do preprocessing (data4enrich has already been preprocessed)

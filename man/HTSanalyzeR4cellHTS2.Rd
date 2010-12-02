@@ -4,9 +4,9 @@
 Analysis pipeline for cellHTS2 objects
 }
 \description{
-This function writes an html report following a complete analysis of 
-a dataset with the two wrapper classes 'GSCA' (Gene Set Collection 
-Analysis) and 'NWA' (NetWork Analysis). 
+This function writes an html report following a complete analyses of a
+dataset by two classes 'GSCA' (Gene Set Collection Analysis) and 'NWA'
+(NetWork Analysis). 
 }
 \usage{
 HTSanalysis4CellHTS2(normCellHTSobject, scoreSign="-", scoreMethod="zscore", 
@@ -25,12 +25,12 @@ reportdir="HTSanalyzerReport", verbose=TRUE)
 a normalized, configured and annotated cellHTS object
 }
   \item{scoreSign}{
-a single character value specifying the 'sign' argument for the scoring function 
-from cellHTS2 (see 'scoreReplicates')
+a single character value specifying the 'sign' argument for the scoring
+function from cellHTS2 (see 'scoreReplicates')
 }
   \item{scoreMethod}{
-a single character value specifying the 'method' argument for the scoring function 
-from cellHTS2 (see 'scoreReplicates')
+a single character value specifying the 'method' argument for the scoring
+function from cellHTS2 (see 'scoreReplicates')
 }
   \item{summarizeMethod}{
 a summary argument for the summarization function from cellHTS2 (see 
@@ -38,83 +38,89 @@ a summary argument for the summarization function from cellHTS2 (see
 }
   \item{annotationColumn}{
 a single character value specifying the name of the column in the fData 
-(cellHTSobject) data frame from which the feature identifiers will be extracted
+(cellHTSobject) data frame from which the feature identifiers will be
+extracted
 }
 	\item{species}{
-a single character value specifying the species for which the data 
-should be read. The current version support one of the following 
-species: "Dm" ("Drosophila_melanogaster"), "Hs" ("Homo_sapiens"), 
-"Rn" ("Rattus_norvegicus"), "Mm" ("Mus_musculus"), "Ce" 
-("Caenorhabditis_elegans"). 
+a single character value specifying the species for which the data should
+be read. The current version support one of the following species: "Dm"
+("Drosophila_melanogaster"), "Hs" ("Homo_sapiens"), "Rn" ("Rattus_norvegicus"),
+"Mm" ("Mus_musculus"), "Ce" ("Caenorhabditis_elegans"). 
 }
   \item{initialIDs}{
-a single character value specifying the type of initial identifiers for input 
-'geneList'. Current version can take one of the following types: 
-"Ensembl.transcript", "Ensembl.prot", "Ensembl.gene", "Entrez.gene", "RefSeq", 
-"Symbol" and "GenBank" for all supported species; "Flybase", "FlybaseCG" and 
-"FlybaseProt" for Drosophila Melanogaster; "wormbase" for Caenorhabditis Elegans. 
+a single character value specifying the type of initial identifiers for
+input 'geneList'. Current version can take one of the following types: 
+"Ensembl.transcript", "Ensembl.prot", "Ensembl.gene", "Entrez.gene",
+"RefSeq", "Symbol" and "GenBank" for all supported species; "Flybase",
+"FlybaseCG" and "FlybaseProt" for Drosophila Melanogaster; "wormbase" for
+Caenorhabditis Elegans. 
 }
-	\item{duplicateRemoverMethod}{
+   \item{duplicateRemoverMethod}{
 a single character value specifying the method to remove the duplicates 
-(should the minimum, maximum or average observation for a same construct be kept). 
-Current version provides "min" (minimum), "max" (maximum), "average" and "fc.avg" 
-(fold change average). The minimum and maximum should be understood in terms of 
-absolute values (i.e. min/max effect, no matter the sign). The fold change average 
-method converts the fold changes to ratios, averages them and converts the average 
-back to a fold change.
+(should the minimum, maximum or average observation for a same construct
+be kept). 
+Current version provides "min" (minimum), "max" (maximum), "average" and
+"fc.avg" (fold change average). The minimum and maximum should be understood
+in terms of absolute values (i.e. min/max effect, no matter the sign). The
+fold change average method converts the fold changes to ratios, averages
+them and converts the average back to a fold change.
 }
 	\item{orderAbsValue}{
 a single logical value determining whether the values should be converted 
-to absolute value and then ordered (if TRUE), or ordered as they are (if FALSE).	
+to absolute value and then ordered (if TRUE), or ordered as they are (if
+FALSE).	
 }
   \item{listOfGeneSetCollections}{
-a list of gene set collections (a 'gene set collection' is a list of gene sets). 
-Even if only one collection is being tested,it must be entered as an element of a 
-1-element list, e.g. \code{ListOfGeneSetCollections = list(YourOneGeneSetCollection)}. 
-Naming the elements of listOfGeneSetCollections will result in these names being 
-associated with the relevant dataframes in the output (meaningful names are advised)
+a list of gene set collections (a 'gene set collection' is a list of gene
+sets). Even if only one collection is being tested,it must be entered as
+an element of a 1-element list, e.g. \code{ListOfGeneSetCollections =
+list(YourOneGeneSetCollection)}. Naming the elements of listOfGeneSetCollections
+will result in these names being associated with the relevant dataframes
+in the output (meaningful names are advised)
 }
   \item{cutoffHitsEnrichment}{
-a single numeric or integer value specifying the cutoff that is used in the 
-definition of the hits for the hypergeometric tests in the overrepresentation 
-analysis. This cutoff is used in absolute value, since it is applied on scores, 
-i.e. a cutoff of 2 when using z-scores means that we are selecting values that 
-are two standard deviations away from the median of all samples. Therefore, 
-the cutoff should be a positive number.
+a single numeric or integer value specifying the cutoff that is used in
+the definition of the hits for the hypergeometric tests in the over-
+representation analysis. This cutoff is used in absolute value, since it
+is applied on scores, i.e. a cutoff of 2 when using z-scores means that
+we are selecting values that are two standard deviations away from the
+median of all samples. Therefore, the cutoff should be a positive number.
 }
   \item{pValueCutoff}{
-a single numeric value specifying the cutoff for p-values considered significant
+a single numeric value specifying the cutoff for p-values considered
+significant
 }
   \item{pAdjustMethod}{
-a single character value specifying the p-value adjustment method to be used (see 
-'p.adjust' for details)
+a single character value specifying the p-value adjustment method to be
+used (see 'p.adjust' for details)
 }
   \item{nPermutations}{
-a single integer or numeric value specifying the number of permutations for 
-deriving p-values in GSEA
+a single integer or numeric value specifying the number of permutations
+for deriving p-values in GSEA
 }
   \item{minGeneSetSize}{
-a single integer or numeric value specifying the minimum number of elements in 
-a gene set that must map to elements of the gene universe. Gene sets with fewer 
-than this number are removed from both hypergeometric analysis and GSEA.
+a single integer or numeric value specifying the minimum number of elements
+in a gene set that must map to elements of the gene universe. Gene sets
+with fewer than this number are removed from both hypergeometric analysis
+and GSEA.
 }
   \item{exponent}{
-a single integer or numeric value used in weighting phenotypes in GSEA (see 
-"gseaScores" function)
+a single integer or numeric value used in weighting phenotypes in GSEA
+(see "gseaScores" function)
 }
   \item{keggGSCs}{
-a character vector of names of all KEGG gene set collections. This will help 
-create web links for KEGG terms. 
+a character vector of names of all KEGG gene set collections. This will
+help create web links for KEGG terms. 
 }
   \item{goGSCs}{
 a character vector of names of all GO gene set collections. This will help 
 create web links for GO terms. 
 }
   \item{nwStatsControls}{
-a single character value specifying the name of the controls to be used as 
-a control population in the 2 samples tests (this HAS to be corresponding to 
-how these control wellshave been annotated in the column "controlStatus" of 
-the fData(cellHTSobject) dataframe). If nothing is specified, the function 
+a single character value specifying the name of the controls to be used
+as a control population in the 2 samples tests (this HAS to be corresponding
+to how these control wellshave been annotated in the column "controlStatus"
+of the fData(cellHTSobject) dataframe). If nothing is specified, the function 
 will look for negative controls labelled "neg".
 }
   \item{nwStatsAlternative}{
@@ -139,26 +145,27 @@ a single numeric value specifying the FDR used in the networkAnalysis
 function for the scores calculation. 
 }
   \item{nwAnalysisGenetic}{
-a single logical value indicating if the genetic interaction data from the 
-Biogrid dataset were kept in the network analysis.
+a single logical value indicating if the genetic interaction data from
+the Biogrid dataset were kept in the network analysis.
 }
   \item{interactionMatrix}{
-an interaction matrix including columns 'InteractionType','InteractorA' and 
-'InteractorB'. If this matrix is available, the interactome can be directly 
-built based on it.
+an interaction matrix including columns 'InteractionType','InteractorA'
+and 'InteractorB'. If this matrix is available, the interactome can be
+directly built based on it.
 }
   \item{nwAnalysisOrder}{
 The order used in the networkAnalysis function for the scores calculation.
 }
   \item{ntop}{
-The number of plots to be produced for the GSEA analysis.  For each gene set 
-collection, plots are produced for the "nplots" most significant p values.  
+The number of plots to be produced for the GSEA analysis.  For each gene
+set collection, plots are produced for the "nplots" most significant
+p-values.  
 }
   \item{allSig}{
-a single logical value determining whether or not to generate plots for all 
-significant gene sets. A gene set is significant if its corresponding adjusted 
-p-value is less than the \code{pValueCutoff} set in function \code{analyze}. 
-(see function \code{analyze} for more details)   
+a single logical value determining whether or not to generate plots for
+all significant gene sets. A gene set is significant if its corresponding
+adjusted p-value is less than the \code{pValueCutoff} set in function
+\code{analyze} (see function \code{analyze} for more details).   
  }
   \item{reportDir}{
 a single character value specifying the directory to store reports
@@ -169,28 +176,29 @@ TRUE) or not (when verbose=FALSE)
 }
 }
 \details{
-This function does a gene set overrepresentation analysis (hypergeometric test 
-and GSEA), a search for enriched subnetworks, writes a report and save results 
-as 'RData' in user-specified directory. The GSEA plots will be produced in 
-the working directory and will be fetched, along as the network representation, 
-in that directory. If you move those items the function might not work properly. 
+This function does a gene set overrepresentation analysis (hypergeometric
+test and GSEA), a search for enriched subnetworks, writes a report and
+save results as 'RData' in user-specified directory. The GSEA plots will
+be produced in the working directory and will be fetched, along as the
+network representation, in that directory. If you move those items the
+function might not work properly. 
 
 For the KEGG and GO gene sets, this function produces links to the relevant 
-database entries. These links will only work if the gene set names are in the 
-following format: 
+database entries. These links will only work if the gene set names are in
+the following format: 
 \itemize{
 \item for KEGG 3 letters (species ID) followed by a set of numbers and then 
 any number of non-digit characters
 \item for GO "GO:" immediately followed by the GO term number (digits only) 
 and any number of non-digits characters.
 }
-If the gene set names are not in these format, simply do not tag the gene set 
-collections as "Kegg" or "GO".  This way, the GSEA plots will be produced 
+If the gene set names are not in these format, simply do not tag the gene
+set collections as "Kegg" or "GO".  This way, the GSEA plots will be produced 
 normally but the links to web databases will not be produced.
 }
 \value{
-Produce a set of html pages and save 'GSCA' and 'NWA' objects. The report starts 
-from the page called "index.html" to navigate those pages.
+Produce a set of html pages and save 'GSCA' and 'NWA' objects. The report
+starts from the page called "index.html" to navigate those pages.
 }
 \author{
 Camille Terfve, Xin Wang
@@ -205,42 +213,40 @@ library(BioNet)
 #prepare data from cellHTS2
 experimentName <- "KcViab"
 dataPath <- system.file(experimentName, package = "cellHTS2")
-x <- readPlateList("Platelist.txt", name = experimentName,path = 
-dataPath,verbose=TRUE)
+x <- readPlateList("Platelist.txt", name = experimentName, path=dataPath,
+verbose=TRUE)
 x <- configure(x, descripFile = "Description.txt", confFile = 
 "Plateconf.txt",logFile = "Screenlog.txt", path = dataPath)
-xn <- normalizePlates(x, scale = "multiplicative", log = FALSE,
-method = "median", varianceAdjust = "none")
-xn <- annotate(xn, geneIDFile = "GeneIDs_Dm_HFA_1.1.txt",path = 
-dataPath)
+xn <- normalizePlates(x, scale = "multiplicative", log = FALSE, method =
+"median", varianceAdjust = "none")
+xn <- annotate(xn, geneIDFile = "GeneIDs_Dm_HFA_1.1.txt",path = dataPath)
 cellHTS2DrosoData<-xn
 #prepare a list of gene set collections
-GO.MF <- GOGeneSets(species = "Dm",ontologies = c("MF"))
-GO.BP <- GOGeneSets(species = "Dm",ontologies = c("BP"))
-GO.CC <- GOGeneSets(species = "Dm",ontologies = c("CC"))
-PW.KEGG <- KeggGeneSets(species = "Dm")
-gsc.list <- list(GO.MF = GO.MF, GO.BP = GO.BP, GO.CC = GO.CC, 
-PW.KEGG = PW.KEGG)
+GO_MF <- GOGeneSets(species = "Dm",ontologies = c("MF"))
+PW_KEGG <- KeggGeneSets(species = "Dm")
+gscList <- list(GO_MF = GO_MF, PW_KEGG = PW_KEGG)
 #note: set computer cluster here to do parallel computing
-#options(htsa.cluster=makeCluster(4,"SOCK"))
+#options(cluster=makeCluster(4,"SOCK"))
 HTSanalyzeR4cellHTS2(
 	normCellHTSobject=cellHTS2DrosoData,
 	annotationColumn="GeneID",
 	species=c("Dm"),
 	initialIDs="FlybaseCG",
-	listOfGeneSetCollections=gsc.list,
+	listOfGeneSetCollections=gscList,
 	cutoffHitsEnrichment=2,
-	minGeneSetSize=150,
-	keggGSCs="PW.KEGG",
-	goGSCs=c("GO.MF","GO.BP","GO.CC"),
+	minGeneSetSize=200,
+	keggGSCs="PW_KEGG",
+	goGSCs=c("GO_MF"),
 	allSig=TRUE,
 	reportDir="HTSanalyzerReport",
 	verbose=TRUE
-) 
+)
 #note: stop the cluster if you created
-#if(is(getOption("htsa.cluster"),"cluster")) {
-#	stopCluster(getOption("htsa.cluster"))
-#	options(htsa.cluster=NULL)
+#if(is(getOption("cluster"),"cluster")) {
+#	stopCluster(getOption("cluster"))
+#	options(cluster=NULL)
 #}
+##browse the index page
+browseURL(file.path(getwd(), "HTSanalyzerReport", "index.html"))
 }
 }

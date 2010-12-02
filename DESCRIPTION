@@ -5,8 +5,7 @@ Version: 2.1.0
 Date: 2010-10-19
 Author: Camille Terfve <cdat2@cam.ac.uk>, Xin Wang <Xin.Wang@cancer.org.uk>, John C. Rose <jcr53@cam.ac.uk>, Florian Markowetz <Florian.Markowetz@cancer.org.uk>
 Maintainer: Xin Wang <Xin.Wang@cancer.org.uk>
-Depends:graph, GSEABase, BioNet, cellHTS2, RankProd
-Imports:graph, GSEABase, BioNet, cellHTS2, AnnotationDbi, biomaRt
+Imports: graph, GSEABase, BioNet, cellHTS2, AnnotationDbi, biomaRt
 Suggests: KEGG.db, GO.db, org.Dm.eg.db, GOstats, org.Ce.eg.db, org.Mm.eg.db, org.Rn.eg.db, org.Hs.eg.db, snow
 Description: This package does gene set over-representation of hits, gene set enrichment analysis and network analysis on data sets such as high-throughput RNAi screens. The over-representation analysis is done both by hypergeometric test and GSEA (Subramanian et al., PNAS 2005). The network analysis identifies enriched subnetworks based on algorithms from the BioNet package (Beisser et al., Bioinformatics 2010)
 License: Artistic-2.0
@@ -47,4 +46,3 @@ Collate:
 	writeHtml.R
 	writeReportHTSA.R
 LazyLoad: yes
-Packaged: 2010-11-28 20:25:06 UTC; xinwang
