@@ -45,6 +45,10 @@ a list of gene sets. Each gene set in the list is a character vector.
 a single integer or numeric value used in weighting phenotypes in GSEA
 (see "gseaScores" function)
 }
+  \item{nPermutations}{
+a single integer or numeric value specifying the number of permutations 
+for deriving p-values in GSEA
+}
   \item{mode}{
 a single character value determining to return only a score (if set as
 "score"), or all the necessary elements to make a plot (if "graph")

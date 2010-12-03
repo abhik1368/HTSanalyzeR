@@ -1,61 +1,70 @@
 \name{analyze}
 \alias{analyze}
+\alias{analyze,GSCA-method}
+\alias{analyze,NWA-method}
 \title{
 Gene Set Collection Analysis or NetWork Analysis
 }
 \description{
-This is an S4 method, which can be applied to an object of 
-either class \code{GSCA} or \code{NWA}. When applied to an 
-object of class \code{GSCA}, it will invoke function 
-\code{analyzeGeneSetCollections} to do hypergeometic tests
-and GSEA. When implemented on an object of class \code{NWA},
-it will call function \code{networkAnalysis} to do subnetwork
-identification. 
-}
-\usage{
-For objects of class 'GSCA':
+This is a generic function.
+
+When implemented as the S4 method for objects of class 'GSCA', this 
+function will invoke function \code{analyzeGeneSetCollections} to do 
+hypergeometic tests and GSEA. 
+
+When implemented on an object of class \code{NWA}, it will call 
+function \code{networkAnalysis} to do subnetwork identification. 
+
+To use this function for objects of class \code{GSCA}:
 
 analyze(object, para = list(pValueCutoff = 0.05, pAdjustMethod = "BH", 
 nPermutations = 1000, minGeneSetSize = 15, exponent = 1), verbose = TRUE)
 
-For objects of class 'NWA'
+To use this function for objects of class \code{NWA}:
 
 analyze(object, fdr=0.001, species, verbose=TRUE)
 }
+\usage{
+analyze(object, ...)
+}
 \arguments{
 	\item{object}{
-an object of class 'GSCA' or 'NWA'
+an object. When this function is implemented as the S4 method of class 'GSCA' 
+or 'NWA', this argument is an object of class 'GSCA' or 'NWA'.
 }
-	\item{para}{
-a list of parameters for GSEA and hypergeometric tests
+	\item{...}{
+other arguments depending on class (see below for the arguments supported by 
+class 'GSCA' and/or 'NWA')
 }
-	\item{para$pValueCutoff}{
-a single numeric value specifying the cutoff for p-values considered 
-significant	
+\describe{
+	\item{para:}{
+a list of parameters for GSEA and hypergeometric tests including:
+para$pValueCutoff: a single numeric value specifying the cutoff for p-values 
+considered significant	
 }
-	\item{para$pAdjustMethod}{
+	\item{para$pAdjustMethod:}{
 a single character value specifying the p-value adjustment method 
 to be used (see 'p.adjust' for details)
 }
-	\item{para$nPermutations}{
+	\item{para$nPermutations:}{
 a single integer or numeric value specifying the number of permutations 
 for deriving p-values in GSEA
 }
-	\item{para$minGeneSetSize}{
+	\item{para$minGeneSetSize:}{
 a single integer or numeric value specifying the minimum number of 
 elements in a gene set that must map to elements of the gene universe. 
 Gene sets with fewer than this number are removed from both hypergeometric 
 analysis and GSEA.
 }
-	\item{para$exponent}{
+	\item{para$exponent:}{
 a single integer or numeric value used in weighting phenotypes in GSEA 
 (see 'gseaScores' function)
 }
-	\item{fdr}{
+	\item{fdr:}{
 a single numeric value specifying the false discovery for the scoring 
 of nodes (see BioNet::scoreNodes and Dittrich et al., 2008 for details)	
 }
-	\item{species}{
+	\item{species:}{
 a single character value specifying the species for which the data 
 should be read. The current version support one of the following 
 species: "Dm" ("Drosophila_melanogaster"), "Hs" ("Homo_sapiens"), 
@@ -65,10 +74,12 @@ provided, then the labels of nodes of the identified subnetwork will be
 mapped from Entrez IDs to gene symbols; otherwise, Entrez IDs will be
 used as labels for those nodes.
 }
-	\item{verbose}{
+	\item{verbose:}{
 a single logical value deciding to display detailed messages (when 
 verbose=TRUE) or not (when verbose=FALSE)
 }
+}
+
 }
 \details{
 For objects of class \code{GSCA}:

@@ -1,29 +1,41 @@
 \name{preprocess}
 \alias{preprocess}
+\alias{preprocess,GSCA-method}
+\alias{preprocess,NWA-method}
 \title{
 Preprocessing method for object of class 'GSCA' or 'NWA'
 }
 \description{
-This is an S4 method, which can be applied to an object of either class
-\code{GSCA} or \code{NWA}. This function will filter out invalid data,
-remove duplicated genes, convert annotations to Entrez identifiers, etc.
-}
-\usage{
-For objects of class 'GSCA':
+This is a generic function.
+
+When implemented as the S4 method for objects of class 'GSCA' or 'NWA', 
+this function will filter out invalid data, remove duplicated genes, 
+convert annotations to Entrez identifiers, etc.
+
+To use this function for objects of class \code{GSCA}:
 
 preprocess(object, species="Dm", initialIDs="FlybaseCG", keepMultipleMappings
 =TRUE, duplicateRemoverMethod="max", orderAbsValue=FALSE, verbose=TRUE)
 
-For objects of class 'NWA'
+To use this function for objects of class \code{NWA}:
 
 preprocess(object, species="Dm", initialIDs="FlybaseCG", keepMultipleMappings
 =TRUE, duplicateRemoverMethod="max", verbose=TRUE)
 }
+\usage{
+preprocess(object, ...)
+}
 \arguments{
 	\item{object}{
-an object of class 'GSCA' or 'NWA'
+an object. When this function is implemented as the S4 method of class 'GSCA' 
+or 'NWA', this argument is an object of class 'GSCA' or 'NWA'.
 }
-	\item{species}{
+	\item{...}{
+other arguments depending on class (see below for the arguments supported by 
+class 'GSCA' and/or 'NWA')
+}
+	\describe{
+	\item{species:}{
 a single character value specifying the species for which the data should
 be read. The current version supports one of the following species: "Dm"
 ("Drosophila_melanogaster"), "Hs" ("Homo_sapiens"), "Rn" ("Rattus_
@@ -32,7 +44,7 @@ This is an optional argument here. If it is provided, then the labels of
 nodes of the identified subnetwork will be mapped from Entrez IDs to gene
 symbols; otherwise, Entrez IDs will be used as labels for those nodes.
 }
-  \item{initialIDs}{
+  \item{initialIDs:}{
 a single character value specifying the type of initial identifiers for
 input 'geneList'. Current version can take one of the following types: 
 "Ensembl.transcript", "Ensembl.prot", "Ensembl.gene", "Entrez.gene",
@@ -40,12 +52,12 @@ input 'geneList'. Current version can take one of the following types:
 "FlybaseCG" and "FlybaseProt" for Drosophila Melanogaster; "wormbase"
 for Caenorhabditis Elegans. 
 }
-  \item{keepMultipleMappings}{
+  \item{keepMultipleMappings:}{
 a single logical value. If TRUE, the function keeps the entries with
 multiple mappings (first mapping is kept). If FALSE, the entries with
 multiple mappings will be discarded.
 }
-	\item{duplicateRemoverMethod}{
+	\item{duplicateRemoverMethod:}{
 a single character value specifying the method to remove the duplicates 
 (should the minimum, maximum or average observation for a same construct
 be kept). Current version provides "min" (minimum), "max" (maximum),
@@ -55,14 +67,15 @@ no matter the sign). The fold change average method converts the fold
 changes to ratios, averages them and converts the average back to a fold
 change.
 }
-	\item{orderAbsValue}{
+	\item{orderAbsValue:}{
 a single logical value determining whether the values should be converted 
 to absolute value and then ordered (if TRUE), or ordered as they are (if
-FALSE).	
+FALSE).	This argument is only for class \code{GSCA}.
 }
-	\item{verbose}{
+	\item{verbose:}{
 a single logical value deciding to display detailed messages (when 
 verbose=TRUE) or not (when verbose=FALSE)
+}
 }
 }
 \details{

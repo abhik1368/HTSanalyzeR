@@ -9,9 +9,7 @@ This functions downloads the data from the Biogrid, puts it in the user-
 specified folder and extracts the interactions data for a given species. 
 }
 \usage{
-biogridDataDownload(link="http://thebiogrid.org/downloads/archives/
-Release\%20Archive/BIOGRID-3.0.64/BIOGRID-ORGANISM-3.0.64.tab2.zip", 
-species = "Dm", dataDirectory=".", verbose=TRUE))
+biogridDataDownload(link, species = "Dm", dataDirectory=".", verbose=TRUE)
 }
 \arguments{
   \item{link}{

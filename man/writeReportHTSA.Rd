@@ -1,35 +1,20 @@
 \name{writeReportHTSA}
 \alias{writeReportHTSA}
-\alias{reportAll}
-\alias{report}
 \title{
 Write html reports for enrichment and/or network analyses
 }
 \description{
-\code{writeReportHTSA} writes an html report following a complete analysis
-of a dataset with the objects of class 'GSCA' and 'NWA'. 
+This function writes an html report following a complete analysis
+of a dataset with the objects of class 'GSCA' and/or 'NWA'. 
 
-\code{reportAll} is the S4 method version of \code{writeReportHTSA}.
 
-\code{report} is designed specifically for each class. It can take either
-an object of \code{GSCA} or \code{NWA}, and produce reports for either the
-Gene Set Collection Analysis or the Network Analysis. 
 }
 \usage{
 writeReportHTSA(gsca, nwa, experimentName="Unknown", species=NULL,
 ntop=NULL, allSig=FALSE, keggGSCs=NULL, goGSCs=NULL, reportDir=
 "HTSanalyzerReport")
-
-reportAll(gsca, nwa, experimentName="Unknown", species=NULL, ntop=NULL,
-allSig=FALSE, keggGSCs=NULL, goGSCs=NULL, reportDir="HTSanalyzerReport")
-
-report(object, experimentName="Unknown", species=NULL, ntop=NULL,
-allSig=FALSE, keggGSCs=NULL, goGSCs=NULL, reportDir="HTSanalyzerReport")
 }
 \arguments{
-  \item{object}{
-either an object of class \code{GSCA} or \code{NWA}
-}
   \item{gsca}{
 an object of class \code{GSCA} (see ?GSCA for more details)
 }
@@ -86,20 +71,10 @@ Xin Wang, Camille Terfve
 \examples{
 \dontrun{
 ##(see the vignette for details about the preprocessing of this data set)
-##report for a GSCA object
 data("KcViab.gsca")
-report(object=KcViab.gsca, experimentName="KcViab", species="Dm",
-allSig=TRUE, keggGSCs="PW.KEGG", goGSCs=c("GO.BP","GO.MF","GO.CC"),
-reportDir="HTSanalyzerGSCAReport")
-browseURL(file.path(getwd(), "HTSanalyzerGSCAReport", "index.html"))
-##report for a NWA object
 data("KcViab.nwa")	
-report(object=KcViab.nwa, experimentName="KcViab", species="Dm",
-allSig=TRUE, keggGSCs="PW.KEGG", goGSCs=c("GO.BP","GO.MF","GO.CC"),
-reportDir="HTSanalyzerNWReport")
-browseURL(file.path(getwd(), "HTSanalyzerNWReport", "index.html"))
 ##report both analyses
-reportAll(gsca=KcViab.gsca, nwa=KcViab.nwa, experimentName="KcViab",
+writeReportHTSA(gsca=KcViab.gsca, nwa=KcViab.nwa, experimentName="KcViab",
 species="Dm", allSig=TRUE, keggGSCs="PW.KEGG", goGSCs=c("GO.BP","GO.MF",
 "GO.CC"), reportDir="HTSanalyzerReport")
 browseURL(file.path(getwd(), "HTSanalyzerReport", "index.html"))

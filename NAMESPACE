@@ -1,25 +1,14 @@
 import("graph", "GSEABase","cellHTS2","BioNet","biomaRt")
 import("AnnotationDbi")
-
+exportClasses(
+	"GSCA",
+	"NWA"
+)
 export(
-	"paraCheck",
-	"aggregatePvals",
-	"analyze",
-	"annotationConvertor",
-	"interactome",
-	"preprocess",
-	"show",
-	"summary",
-	"report",
-	"score",
-	"selectHits",
-	"calculateNWAPvals",
-	"reportAll",
-	"plotSubNet",
-	"viewSubNet",
-	"plotGSEA",
-	"viewGSEA",
-	"biogridDataDownload", 
+	   "paraCheck",
+	   "aggregatePvals",
+	   "annotationConvertor",
+	   "biogridDataDownload", 
        "celAnnotationConvertor",
        "cellHTS2OutputStatTests",
        "collectionGsea",
@@ -27,7 +16,6 @@ export(
        "duplicateRemover",
        "FDRcollectionGsea",
        "analyzeGeneSetCollections",
-       "getTopGeneSets",
        "GOGeneSets",
        "gseaPlots",
        "gseaScores",
@@ -39,12 +27,11 @@ export(
        "multiHyperGeoTest",
        "networkAnalysis",
        "networkPlot",
-	"pairwiseGsea",
-	"pairwiseGseaPlot",
-	"pairwisePhenoMannWith",
+	   "pairwiseGsea",
+	   "pairwiseGseaPlot",
+	   "pairwisePhenoMannWith",
        "permutationPvalueCollectionGsea",
        "hyperGeoTest",
-       "writeHits",
        "writeHTSAHtmlHead",
        "writeHTSAHtmlTab",
        "writeHTSAHtmlTail",
@@ -55,5 +42,19 @@ export(
        "makeOverlapTable",
        "writeReportHTSA")
 
-
+exportMethods(
+	"analyze",
+	"reportAll",
+	"plotSubNet",
+	"viewSubNet",
+	"plotGSEA",
+	"viewGSEA",
+    "writeHits",	
+    "getTopGeneSets",	
+	"interactome",
+	"preprocess",
+	"show",
+	"summarize",
+	"report"
+)
 

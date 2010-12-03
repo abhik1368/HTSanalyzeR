@@ -1,43 +1,46 @@
 \name{plotSubNet}
 \alias{plotSubNet}
-\alias{viewSubNet}
+\alias{plotSubNet,NWA-method}
 \title{
-Plot and/or save a figures of the enriched subnetwork
+Plot and save a figures of the enriched subnetwork
 }
 \description{
-viewSubNet:
+This is an generic function. 
 
-an S4 method for objects of class 'NWA', which invokes function 'networkPlot' 
-to plot to screen the subnetwork identified by 'BioNet'.
+When implemented as the S4 method for class 'NWA', function \code{plotSubNet} 
+invokes function 'networkPlot' to plot and save the subnetwork identified 
+by 'BioNet'. 
 
-plotSubNet:
-
-an S4 method for objects of class 'NWA', which invokes function 'networkPlot' 
-to plot and save the subnetwork identified by 'BioNet'. 
-}
-\usage{
-
-viewSubNet(object)
+To use \code{viewSubNet} for objects of class \code{NWA}:
 
 plotSubNet(object, filepath, filename, output, ...)
 }
-\arguments{
-  \item{object}{
-an object of class 'NWA'
+\usage{
+plotSubNet(object, ...)
 }
-  \item{filepath}{
+\arguments{
+	\item{object}{
+an object. When implemented as S4 methods of class 'NWA', this argument 
+is an object of class 'NWA'.
+}
+	\item{...}{
+other arguments. (see below for the arguments supported by class 'NWA')
+}
+\describe{
+	\item{filepath:}{
 a single character value specifying the directory where the figure will
 be stored
 }
-  \item{filename}{
+	\item{filename:}{
 a single character value specifying the name of the figure to save
 }
-  \item{output}{
+	\item{output:}{
 a single character value specifying the format of output image: "pdf"
 or "png"
 }
-  \item{...}{
+	\item{...:}{
 all other arguments for 'pdf' or 'png' such as 'width' and 'height'
+}
 }
 }
 \details{
@@ -76,8 +79,7 @@ keepMultipleMappings=TRUE, duplicateRemoverMethod="max")
 ##do network analysis
 nwa <- analyze(nwa, fdr=0.001, species="Dm")
 graphics.off()
-##plot identified subnetwork
-viewSubNet(nwa)
+##plot and save the identified subnetwork
 plotSubNet(nwa, filepath=".", filename="subnetwork.pdf", 
 output="pdf", width=8, height=8)
 }

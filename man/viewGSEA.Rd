@@ -1,26 +1,39 @@
 \name{viewGSEA}
 \alias{viewGSEA}
+\alias{viewGSEA,GSCA-method}
 \title{
 View the enrichment analysis result of a gene set
 }
 \description{
-This is an S4 method for objects of class 'GSCA' to view a figure
-including the ranked phenotypes, positions of the gene set and the
-location of the maximum enrichment score.  
+This is a generic function.
+
+When implemented as the S4 method for objects of class 'GSCA', this 
+function plot a figure including the ranked phenotypes, positions of 
+the gene set and the location of the maximum enrichment score. 
+
+To use this function for objects of class 'GSCA':
+
+viewGSEA(object, gscName, gsName)  
 }
 \usage{
-viewGSEA(object, gsc, gs) 
+viewGSEA(object, ...) 
 }
 \arguments{
 	\item{object}{
-an object of class 'GSCA'
+an object. When this function is implemented as the S4 method of class 
+'GSCA', this argument is an object of class 'GSCA'.
 }
-	\item{gscName}{
+	\item{...}{
+other arguments. (see below for the arguments supported by class 'GSCA')
+}
+\describe{
+	\item{gscName:}{
 a single character value specifying the name of the gene set collection 
 where the gene set is
 }
-	\item{gsName}{
+	\item{gsName:}{
 a single character value specifying the name of the gene set to be plot
+}
 }
 }
 \details{
@@ -47,18 +60,18 @@ gscList <- list(PW_KEGG = PW_KEGG)
 gsca <- new("GSCA", listOfGeneSetCollections=gscList, geneList =
 data4enrich, hits = hits)
 ##print summary of gsca
-summary(gsca)
+summarize(gsca)
 ##do preprocessing (data4enrich has already been preprocessed)
 gsca <- preprocess(gsca, species="Dm", initialIDs = "Entrez.gene", 
 keepMultipleMappings = TRUE, duplicateRemoverMethod = "max", 
 orderAbsValue = FALSE)
 ##print summary of gsca again
-summary(gsca)
+summarize(gsca)
 ##do hypergeometric tests and GSEA
 gsca <- analyze(gsca, para = list(pValueCutoff = 0.05, pAdjustMethod 
 = "BH", nPermutations = 1000, minGeneSetSize = 100,exponent = 1))
 ##print summary of results
-summary(gsca, what="Result")
+summarize(gsca, what="Result")
 ##print top significant gene sets in GO.BP
 topPWKEGG<-getTopGeneSets(gsca, "GSEA.results", "PW_KEGG", allSig=TRUE)
 ##view a gene set

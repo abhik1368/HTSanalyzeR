@@ -9,7 +9,7 @@ parallel for two phenotypes, for one gene set.
 }
 \usage{
 pairwiseGseaPlot(gl1, gl2, geneSet, exponent=1, output="png", filepath,
-filename)
+filename, ...)
 }
 \arguments{
   \item{gl1}{

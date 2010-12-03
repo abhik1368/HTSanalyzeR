@@ -8,12 +8,16 @@ This function finds subnetworks enriched for genes with significant
 phenotypes based on the package 'BioNet'. 
 }
 \usage{
-networkAnalysis(pvalues,graph,fdr=0.001,verbose=TRUE)
+networkAnalysis(pvalues, graph, fdr=0.001, verbose=TRUE)
 }
 \arguments{
   \item{pvalues}{
 a numeric vector of p-values   
- } 
+} 
+  \item{graph}{
+an object of class \code{graphNEL}, used as the interactome in the network
+analysis
+}
   \item{fdr}{
 a single numeric value specifying the false discovery for the scoring of
 nodes (see BioNet::scoreNodes and Dittrich et al., 2008 for details)

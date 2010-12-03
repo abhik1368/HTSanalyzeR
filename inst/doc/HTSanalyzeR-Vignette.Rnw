@@ -204,7 +204,7 @@ The output of all analyses stored in slot \Robject{result} of the object contain
 A summary method is provided to print summary information about input gene set collections, phenotypes, hits, parameters for hypeogeometric tests and GSEA and results. 
 
 <<gscaSum>>=
-summary(gsca)
+summarize(gsca)
 @
 
 The function \Rfunction{getTopGeneSets} is desinged to retrieve top or all significant gene sets from results of over-representation or GSEA analysis. Basically, the user need to specify the name of results--``HyperGeo.results" or ``GSEA.results", the name(s) of the gene set collection(s) as well as the type of selection--top (by argument \Robject{ntop}) or all (by argument \Robject{allSig}) significant gene sets. 
@@ -340,7 +340,7 @@ The \Rfunction{plotSubNet} function produces a figure of the enriched subnetwork
 Similar to class \Rclass{GSCA}, a summary method is also available for objects of class \Rclass{NWA}. The summary includes information about the size of p-value and phenotype vectors before and after preprocessing, the interactome used, parameters and the subnetwork identified by \Rpackage{BioNet}.
 
 <<nwaSum>>=
-summary(nwa)
+summarize(nwa)
 @
 
 \subsection{Plot subnetworks}

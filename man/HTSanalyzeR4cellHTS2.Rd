@@ -9,16 +9,38 @@ dataset by two classes 'GSCA' (Gene Set Collection Analysis) and 'NWA'
 (NetWork Analysis). 
 }
 \usage{
-HTSanalysis4CellHTS2(normCellHTSobject, scoreSign="-", scoreMethod="zscore", 
-summarizeMethod="mean", annotationColumn="GeneID", species="Dm", initialIDs= 
-"FlybaseCG", duplicateRemoverMethod="max", orderAbsValue=FALSE, 
-listOfGeneSetCollections, cutoffHitsEnrichment=2, pValueCutoff=0.05, 
-pAdjustMethod="BH", nPermutations=1000, minGeneSetSize=15, exponent=1, 
-keggGSCs, goGSCs, nwStatsControls="neg", nwStatsAlternative="two.sided", 
-nwStatsTests="T-test", nwStatsColumns=c("t.test.pvalues.two.samples", 
-"t.test.pvalues.one.sample"), nwAnalysisFdr=0.001, nwAnalysisGenetic=FALSE, 
-interactionMatrix=NULL, nwAnalysisOrder=2, ntop=NULL, allSig=TRUE, 
-reportdir="HTSanalyzerReport", verbose=TRUE)
+HTSanalyzeR4cellHTS2(		
+	normCellHTSobject,
+	scoreSign = "-",
+	scoreMethod = "zscore",
+	summarizeMethod = "mean",
+	annotationColumn = "GeneID",
+	species = "Dm",
+	initialIDs = "FlybaseCG",
+	duplicateRemoverMethod = "max",
+	orderAbsValue = FALSE,
+	listOfGeneSetCollections,
+	cutoffHitsEnrichment = 2,
+	pValueCutoff = 0.05,
+	pAdjustMethod = "BH",
+	nPermutations = 1000,
+	minGeneSetSize = 15,
+	exponent = 1,
+	keggGSCs,
+	goGSCs,
+	nwStatsControls = "neg",
+	nwStatsAlternative = "two.sided",
+	nwStatsTests = "T-test",
+	nwStatsColumns = c("t.test.pvalues.two.samples", "t.test.pvalues.one.sample"),
+	nwAnalysisFdr = 0.001,
+	nwAnalysisGenetic = FALSE,
+	interactionMatrix = NULL,
+	nwAnalysisOrder = 2,
+	ntop = NULL,
+	allSig = TRUE,
+	reportDir = "HTSanalyzerReport",
+	verbose = TRUE
+)
 }
 \arguments{
   \item{normCellHTSobject}{

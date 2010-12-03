@@ -1,47 +1,60 @@
 \name{interactome}
 \alias{interactome}
+\alias{interactome,NWA-method}
 \title{
 Create an interactome from BioGrid data sets
 }
 \description{
-This is an S4 method for objects of class 'NWA' to create an interactome
-before conducting network analysis.
-}
-\usage{
+This is an generic function. 
+
+When implemented as the S4 method for class 'NWA', this function create 
+an interactome before conducting network analysis.
+
+To use this function for objects of class 'NWA':
+
 interactome(object, interactionMatrix, species, link, reportDir = 
 "HTSanalyzerReport", genetic=FALSE, verbose=TRUE)
 }
+\usage{
+interactome(object, ...)
+}
 \arguments{
   \item{object}{
-an object of class 'NWA'
+an object. When this function is implemented as the S4 method of class 'NWA', 
+this argument is an object of class 'NWA'
 }
-  \item{interactionMatrix}{
+  \item{...}{
+other arguments (see below for the arguments supported by class 'NWA')
+}
+  \describe{
+  \item{interactionMatrix:}{
 an interaction matrix including columns 'InteractionType','InteractorA'
 and 'InteractorB'. If this matrix is available, the interactome can be
 directly built based on it.
 }
-  \item{species}{
+  \item{species:}{
 a single character value specifying the species for which the data should 
 be read. The current version support one of the following species: "Dm" 
 ("Drosophila_melanogaster"), "Hs" ("Homo_sapiens"), "Rn" ("Rattus_norvegicus"), 
 "Mm" ("Mus_musculus"), "Ce" ("Caenorhabditis_elegans").
 }	
-  \item{link}{
+  \item{link:}{
 the link (url) from where the data should be downloaded (in tab2 format).
 The default link is the one valid on Nov. 25 2010.
 }
-  \item{reportDir}{
+  \item{reportDir:}{
 a single character value specifying the directory to store reports. Biogrid
 data set will be downloaded and stored in a subdirectory called 'Data' in
 'reportDir'.
 }
-  \item{genetic}{
+  \item{genetic:}{
 a single logical value. If TRUE, genetic interactions will be kept;
 otherwise, they will be removed from the data set.
 }
-  \item{verbose}{
+  \item{verbose:}{
 a single logical value deciding to display detailed messages (when 
 verbose=TRUE) or not (when verbose=FALSE)
+}
 }
 }
 \details{
