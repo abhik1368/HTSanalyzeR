@@ -133,13 +133,13 @@ gscList <- list(PW_KEGG = PW_KEGG)
 gsca <- new("GSCA", listOfGeneSetCollections=gscList, geneList =
 data4enrich, hits = hits)
 ##print gsca
-summary(gsca, what = c("GeneList", "Hits"))
+summarize(gsca, what = c("GeneList", "Hits"))
 ##do preprocessing (data4enrich has already been preprocessed)
 gsca <- preprocess(gsca, species="Dm", initialIDs = "Entrez.gene", 
 keepMultipleMappings = TRUE, duplicateRemoverMethod = "max", 
 orderAbsValue = FALSE)
 ##print updated object
-summary(gsca, what = c("GeneList", "Hits"))
+summarize(gsca, what = c("GeneList", "Hits"))
 }
 }
 

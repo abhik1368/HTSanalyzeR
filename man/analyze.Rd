@@ -148,7 +148,7 @@ gsca <- analyze(gsca, para = list(pValueCutoff = 0.05, pAdjustMethod
 = "BH", nPermutations = 1000, minGeneSetSize = 100,exponent = 1))
 ##updated object
 gsca
-summary(gsca)
+summarize(gsca)
 }
 }
 
