@@ -1,7 +1,7 @@
 \name{celAnnotationConvertor}
 \alias{celAnnotationConvertor}
 \title{
-Conversion between different types of annotations for Caenorhabditis Elegans
+Convert between different types of annotations for Caenorhabditis Elegans
 }
 \description{
 This function converts an initial named data vector to the same vector 
@@ -51,14 +51,14 @@ The entries that could not be mapped to any identifiers are removed from
 the resulting data vector/matrix.
 }
 \value{
-the same vector-matrix but with names-rownames corresponding to a 
+the same vector/matrix but with names/rownames corresponding to a 
 different type of identifiers.
 }
 \author{
 Camille Terfve, Xin Wang
 }
 \seealso{
-drosoAnnotationConvertor, mammalAnnotationConvertor, annotationConvertor
+\code{\link[HTSanalyzeR:drosoAnnotationConvertor]{drosoAnnotationConvertor}}, \code{\link[HTSanalyzeR:mammalAnnotationConvertor]{mammalAnnotationConvertor}}, \code{\link[HTSanalyzeR:annotationConvertor]{annotationConvertor}}
 }
 \examples{
 library(org.Ce.eg.db)

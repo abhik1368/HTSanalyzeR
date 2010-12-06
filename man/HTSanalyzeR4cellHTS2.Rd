@@ -1,12 +1,12 @@
 \name{HTSanalyzeR4cellHTS2}
 \alias{HTSanalyzeR4cellHTS2}
 \title{
-Analysis pipeline for cellHTS2 objects
+An analysis pipeline for cellHTS2 objects
 }
 \description{
 This function writes an html report following a complete analyses of a
-dataset by two classes 'GSCA' (Gene Set Collection Analysis) and 'NWA'
-(NetWork Analysis). 
+dataset based on the two classes \code{\link[HTSanalyzeR:GSCA]{GSCA}} (Gene Set Collection Analysis)
+and \code{\link[HTSanalyzeR:NWA]{NWA}} (NetWork Analysis) of this package. 
 }
 \usage{
 HTSanalyzeR4cellHTS2(		

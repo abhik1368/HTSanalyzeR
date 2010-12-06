@@ -7,14 +7,15 @@ Select top significant gene sets from GSEA results
 \description{
 This is a generic function.
 
-When implemented as the S4 method for objects of class 'GSCA', this function 
+When implemented as the S4 method for objects of class \code{\link[HTSanalyzeR:GSCA]{GSCA}}, this function 
 selects top significant gene sets from GSEA results for user-specified 
-gene collections. If 'ntop' is given, then top 'ntop' gene sets in gene 
-set collections 'gscs' will be selected and their names will be returned. 
-If 'allSig=TRUE', then all significant (adjusted p-value < 'pValueCutoff' 
-see 'help("analyze")') will be selected and their names will be returned.
+gene collections. If 'ntop' is given, then top 'ntop' significant gene sets
+in gene set collections 'gscs' will be selected and their names will be
+returned. If 'allSig=TRUE', then all significant (adjusted p-value <
+'pValueCutoff' see help("analyze")) will be selected and their names will
+be returned.
 
-To use this function for objects of class 'GSCA':
+To use this function for objects of class \code{\link[HTSanalyzeR:GSCA]{GSCA}}:
 
 getTopGeneSets(object, resultName, gscs, ntop=NULL, allSig=FALSE)
 }
@@ -23,11 +24,12 @@ getTopGeneSets(object, ...)
 }
 \arguments{
 	\item{object}{
-an object. When this function is implemented as the S4 method of class 'GSCA', 
-this argument is an object of class 'GSCA'.
+an object. When this function is implemented as the S4 method of class \code{\link[HTSanalyzeR:GSCA]{GSCA}}, 
+this argument is an object of class \code{\link[HTSanalyzeR:GSCA]{GSCA}}.
 }
 	\item{...}{
-other arguments (see below for the arguments supported by class 'GSCA')
+other arguments (see below for the arguments supported by the method of 
+class \code{\link[HTSanalyzeR:GSCA]{GSCA}})
 }
 	\describe{
 	\item{resultName:}{
@@ -62,15 +64,15 @@ Xin Wang \email{xw264@cam.ac.uk}
 library(org.Dm.eg.db)
 library(KEGG.db)
 ##load data for enrichment analyses
-data("data4enrich")
+data("KcViab_Data4Enrich")
 ##select hits
-hits <- names(data4enrich)[which(abs(data4enrich) > 2)]
+hits <- names(KcViab_Data4Enrich)[which(abs(KcViab_Data4Enrich) > 2)]
 ##set up a list of gene set collections
 PW_KEGG <- KeggGeneSets(species = "Dm")
 gscList <- list(PW_KEGG = PW_KEGG)
 ##create an object of class 'GSCA'
 gsca <- new("GSCA", listOfGeneSetCollections=gscList, geneList =
-data4enrich, hits = hits)
+KcViab_Data4Enrich, hits = hits)
 ##print summary of gsca
 summarize(gsca)
 ##do preprocessing (data4enrich has already been preprocessed)

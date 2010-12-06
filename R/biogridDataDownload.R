@@ -2,10 +2,13 @@
 ##user-specified folder and extracts the interactions data for a given 
 ##species.
 
-biogridDataDownload <- function(link="http://thebiogrid.org/downloads/archives/Release%20Archive/BIOGRID-3.0.64/BIOGRID-ORGANISM-3.0.64.tab2.zip",
-	species = "Dm", dataDirectory = ".", verbose = TRUE) {
+biogridDataDownload <- function(link, species = "Dm", dataDirectory = ".", 
+		verbose = TRUE) {
 	#check arguments
-	paraCheck("link", link)
+	if(!missing(link) && !is.null(link))
+		paraCheck("link", link)
+	else 
+		link <- "http://thebiogrid.org/downloads/archives/Release%20Archive/BIOGRID-3.1.71/BIOGRID-ORGANISM-3.1.71.tab2.zip"
 	paraCheck("species", species)
 	paraCheck("dataDirectory", dataDirectory)
 	paraCheck("verbose",verbose)

@@ -1,11 +1,11 @@
 \name{permutationPvalueCollectionGsea}
 \alias{permutationPvalueCollectionGsea}
 \title{
-Compute the GSEA p-values for a collection (list) of gene sets
+Compute the GSEA p-values for a list of gene sets
 }
 \description{
-Compute the nominal p-value associated with a GSEA for a collection of
-gene sets, from the outputs of collectionGsea
+Compute the nominal p-value associated with a GSEA for a list of gene
+sets, from the outputs of the function \code{\link[HTSanalyzeR:collectionGsea]{collectionGsea}}.
 }
 \usage{
 permutationPvalueCollectionGsea(permScores, dataScores)
@@ -13,15 +13,15 @@ permutationPvalueCollectionGsea(permScores, dataScores)
 \arguments{
   \item{permScores}{
 a numeric matrix of permutation-based scores (rows=gene sets, named)
-output from function 'collectionGsea' 
+output from the function \code{\link[HTSanalyzeR:collectionGsea]{collectionGsea}}
 }
   \item{dataScores}{
-a named numeric vector of observed scores output from function
-'collectionGsea' 
+a named numeric vector of observed scores output from the function
+\code{\link[HTSanalyzeR:collectionGsea]{collectionGsea}}
 }
 }
 \value{
-a vector of p-values (named), one for each gene set
+a named numeric vector of p-values, one for each gene set
 }
 \references{
 Subramanian, A., Tamayo, P., Mootha, V. K., Mukherjee, S., Ebert, B. L.,
@@ -34,7 +34,7 @@ Proc. Natl. Acad. Sci. USA 102, 15545-15550.
 Camille Terfve, Xin Wang
 }
 \seealso{
-collectionGsea
+\code{\link[HTSanalyzeR:collectionGsea]{collectionGsea}}
 }
 \examples{
 ##example 1
@@ -55,10 +55,10 @@ library(KEGG.db)
 library(org.Dm.eg.db)
 ##load phenotype vector (see the vignette for details about the
 ##preprocessing of this data set)
-data("data4enrich")
+data("KcViab_Data4Enrich")
 DM_KEGG <- KeggGeneSets(species="Dm")
 GSCscores <- collectionGsea(collectionOfGeneSets=DM_KEGG, geneList=
-data4enrich, exponent=1, nPermutations=1000, minGeneSetSize=100)
+KcViab_Data4Enrich, exponent=1, nPermutations=1000, minGeneSetSize=100)
 GSCpvals <- permutationPvalueCollectionGsea(permScores=
 GSCscores$Permutation.scores, dataScores=GSCscores$Observed.scores)
 }

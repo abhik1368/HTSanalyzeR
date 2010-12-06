@@ -6,7 +6,7 @@ Compute observed and permutation-based enrichment scores for a collection
 }
 \description{
 This function computes observed and permutation-based scores associated
-with a gene set enrichment analysis for a collection of Gene Sets.
+with a gene set enrichment analysis for a collection of gene sets.
 }
 \usage{
 collectionGsea(collectionOfGeneSets, geneList, exponent=1, nPermutations=
@@ -14,7 +14,8 @@ collectionGsea(collectionOfGeneSets, geneList, exponent=1, nPermutations=
 }
 \arguments{
   \item{collectionOfGeneSets}{
-a list of gene sets. Each gene set in the list is a character vector. 
+a list of gene sets. Each gene set in the list is a character vector of
+gene identifiers. 
 }
   \item{geneList}{
 a numeric or integer vector which has been named and ordered. It cannot
@@ -53,6 +54,9 @@ profiles.} Proc. Natl. Acad. Sci. USA 102, 15545-15550.
 \author{
 Camille Terfve, Xin Wang
 }
+\seealso{
+\code{\link[HTSanalyzeR:FDRcollectionGsea]{FDRcollectionGsea}}
+}
 \examples{
 ##example 1
 gl <- runif(100, min=0, max=5)
@@ -72,10 +76,10 @@ library(org.Dm.eg.db)
 library(KEGG.db)
 ##load phenotype vector (see the vignette for details about the
 ##preprocessing of this data set)
-data("data4enrich")
+data("KcViab_Data4Enrich")
 DM_KEGG <- KeggGeneSets(species="Dm")
-GSCscores <- collectionGsea(collectionOfGeneSets=DM_KEGG,
-geneList=data4enrich, exponent=1, nPermutations=1000, minGeneSetSize=150)
+GSCscores <- collectionGsea(collectionOfGeneSets=DM_KEGG, geneList=
+KcViab_Data4Enrich, exponent=1, nPermutations=1000, minGeneSetSize=100)
 GSCpvalues <- permutationPvalueCollectionGsea(permScores=
 GSCscores$Permutation.scores, dataScores=GSCscores$Observed.scores)
 }

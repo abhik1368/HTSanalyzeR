@@ -3,21 +3,21 @@
 \alias{preprocess,GSCA-method}
 \alias{preprocess,NWA-method}
 \title{
-Preprocessing method for object of class 'GSCA' or 'NWA'
+A preprocessing method for objects of class GSCA or NWA
 }
 \description{
 This is a generic function.
 
-When implemented as the S4 method for objects of class 'GSCA' or 'NWA', 
-this function will filter out invalid data, remove duplicated genes, 
+When implemented as the S4 method for objects of class \code{\link[HTSanalyzeR:GSCA]{GSCA}} or \code{\link[HTSanalyzeR:NWA]{NWA}}, 
+this function filters out invalid data, remove duplicated genes, 
 convert annotations to Entrez identifiers, etc.
 
-To use this function for objects of class \code{GSCA}:
+To use this function for objects of class \code{\link[HTSanalyzeR:GSCA]{GSCA}}:
 
 preprocess(object, species="Dm", initialIDs="FlybaseCG", keepMultipleMappings
 =TRUE, duplicateRemoverMethod="max", orderAbsValue=FALSE, verbose=TRUE)
 
-To use this function for objects of class \code{NWA}:
+To use this function for objects of \code{\link[HTSanalyzeR:NWA]{NWA}}:
 
 preprocess(object, species="Dm", initialIDs="FlybaseCG", keepMultipleMappings
 =TRUE, duplicateRemoverMethod="max", verbose=TRUE)
@@ -27,12 +27,12 @@ preprocess(object, ...)
 }
 \arguments{
 	\item{object}{
-an object. When this function is implemented as the S4 method of class 'GSCA' 
-or 'NWA', this argument is an object of class 'GSCA' or 'NWA'.
+an object. When this function is implemented as the S4 method of class \code{\link[HTSanalyzeR:GSCA]{GSCA}} 
+or \code{\link[HTSanalyzeR:NWA]{NWA}}, this argument is an object of class 'GSCA' or \code{\link[HTSanalyzeR:NWA]{NWA}}.
 }
 	\item{...}{
 other arguments depending on class (see below for the arguments supported by 
-class 'GSCA' and/or 'NWA')
+class \code{\link[HTSanalyzeR:GSCA]{GSCA}} and/or \code{\link[HTSanalyzeR:NWA]{NWA}})
 }
 	\describe{
 	\item{species:}{
@@ -82,19 +82,19 @@ verbose=TRUE) or not (when verbose=FALSE)
 
 This function will potentially do the following preprocessing steps:
 \describe{	
-	\item{1:}{ filter out pvalues (slot \code{pvalues} of class \code{NWA}), 
-	phenotypes (slot \code{phenotypes} of class \code{NWA}) and data for 
-	enrichment (slot \code{geneList} of class \code{GSCA}) with NA values 
-	or without valid names, and invalid gene names (the \code{hits} slot of class 
+	\item{1:}{ filter out p-values (the slot \code{pvalues} of class \code{NWA}), 
+	phenotypes (the slot \code{phenotypes} of class \code{NWA}) and data for 
+	enrichment (the slot \code{geneList} of class \code{GSCA}) with NA values 
+	or without valid names, and invalid gene names (the slot \code{hits} of class 
 	\code{GSCA});
 }
-	\item{2:}{ invoke function \code{duplicateRemover} to curate duplicated genes 
-	in slot \code{pvalues}, \code{phenotypes} of class \code{NWA}, and slot \code{geneList} 
-	and \code{hits} of class \code{GSCA};
+	\item{2:}{ invoke function \code{duplicateRemover} to remove duplicated genes 
+	in the slot \code{pvalues}, \code{phenotypes} of class \code{NWA}, and the
+	slot \code{geneList} and \code{hits} of class \code{GSCA};
 }
 	\item{3:}{ invoke function \code{annotationConvertor} to convert annotations from
-	\code{initialIDs} to Entrez identifiers. Please note that slot \code{hits} and 
-	names of slot \code{geneList} in class \code{GSCA}, slot \code{pvalues} and 
+	\code{initialIDs} to Entrez identifiers. Please note that the slot \code{hits} and 
+	the names of the slot \code{geneList} in class \code{GSCA}, the slot \code{pvalues} and 
 	\code{phenotypes} in class \code{NWA} must have the same type of annotation 
 	specified by \code{initialIDs};
 }	
@@ -102,36 +102,36 @@ This function will potentially do the following preprocessing steps:
 	class \code{GSCA}. 
 }
 }
-See function \code{duplicateRemover} for more details about how to remove duplicated 
+See the function \code{\link[HTSanalyzeR:duplicateRemover]{duplicateRemover}} for more details about how to remove duplicated 
 genes.
 
-See function \code{annotationConvertor} for more details about how to convert 
+See function \code{\link[HTSanalyzeR:annotationConvertor]{annotationConvertor}} for more details about how to convert 
 annotations.
 }
 \value{
-In the end, this function will return an updated object of class \code{GSCA} 
-or \code{NWA}.  
+In the end, this function will return an updated object of class \code{\link[HTSanalyzeR:GSCA]{GSCA}}
+or \code{\link[HTSanalyzeR:NWA]{NWA}}.  
 }
 \author{
 Xin Wang \email{xw264@cam.ac.uk}
 }
 \seealso{
-\code{duplicateRemover}, \code{annotationConvertor}
+\code{\link[HTSanalyzeR:duplicateRemover]{duplicateRemover}}, \code{\link[HTSanalyzeR:annotationConvertor]{annotationConvertor}}
 }
 \examples{
 \dontrun{
 library(org.Dm.eg.db)
 library(KEGG.db)
 ##load data for enrichment analyses
-data("data4enrich")
+data("KcViab_Data4Enrich")
 ##select hits
-hits <- names(data4enrich)[which(abs(data4enrich) > 2)]
+hits <- names(KcViab_Data4Enrich)[which(abs(KcViab_Data4Enrich) > 2)]
 ##set up a list of gene set collections
 PW_KEGG <- KeggGeneSets(species = "Dm")
 gscList <- list(PW_KEGG = PW_KEGG)
 ##create an object of class 'GSCA'
 gsca <- new("GSCA", listOfGeneSetCollections=gscList, geneList =
-data4enrich, hits = hits)
+KcViab_Data4Enrich, hits = hits)
 ##print gsca
 summarize(gsca, what = c("GeneList", "Hits"))
 ##do preprocessing (data4enrich has already been preprocessed)

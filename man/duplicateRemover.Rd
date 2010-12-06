@@ -1,7 +1,7 @@
 \name{duplicateRemover}
 \alias{duplicateRemover}
 \title{
-Remove the duplicates in a gene list
+Remove duplicates in a gene list
 }
 \description{
 This function gets rid of the duplicates in a gene list. It is used to 
@@ -30,6 +30,9 @@ a gene list (increasing) with duplicates removed, as a single named vector
 }
 \author{
 Camille Terfve, John C. Rose and Xin Wang
+}
+\seealso{
+\code{\link[HTSanalyzeR:preprocess]{preprocess}}
 }
 \examples{
 x<-c(5,1,3,-2,6)

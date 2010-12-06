@@ -2,16 +2,16 @@
 \alias{viewGSEA}
 \alias{viewGSEA,GSCA-method}
 \title{
-View the enrichment analysis result of a gene set
+Plot on the screen a figure of GSEA results of one gene set
 }
 \description{
 This is a generic function.
 
-When implemented as the S4 method for objects of class 'GSCA', this 
-function plot a figure including the ranked phenotypes, positions of 
-the gene set and the location of the maximum enrichment score. 
+When implemented as the S4 method for objects of class \code{\link[HTSanalyzeR:GSCA]{GSCA}}, this 
+function plots a figure of the positions of the gene sets in the ranked
+phenotypes and the location of the enrichment score. 
 
-To use this function for objects of class 'GSCA':
+To use this function for objects of class \code{\link[HTSanalyzeR:GSCA]{GSCA}}:
 
 viewGSEA(object, gscName, gsName)  
 }
@@ -21,10 +21,10 @@ viewGSEA(object, ...)
 \arguments{
 	\item{object}{
 an object. When this function is implemented as the S4 method of class 
-'GSCA', this argument is an object of class 'GSCA'.
+\code{\link[HTSanalyzeR:GSCA]{GSCA}}, this argument is an object of class \code{\link[HTSanalyzeR:GSCA]{GSCA}}.
 }
 	\item{...}{
-other arguments. (see below for the arguments supported by class 'GSCA')
+other arguments. (see below for the arguments supported by class \code{\link[HTSanalyzeR:GSCA]{GSCA}})
 }
 \describe{
 	\item{gscName:}{
@@ -37,12 +37,17 @@ a single character value specifying the name of the gene set to be plot
 }
 }
 \details{
-We suggest to 'getTopGeneSets' first to have an idea of the names of top 
-significant gene sets, and then choose to plot.
+We suggest to print the names of top significant gene sets using the
+function \code{\link[HTSanalyzeR:getTopGeneSets]{getTopGeneSets}} before
+plotting the GSEA results.
 }
 
 \author{
 Xin Wang \email{xw264@cam.ac.uk}
+}
+
+\seealso{
+\code{\link[HTSanalyzeR:plotGSEA]{plotGSEA}}, \code{\link[HTSanalyzeR:gseaPlots]{gseaPlots}}
 }
 
 \examples{
@@ -50,15 +55,15 @@ Xin Wang \email{xw264@cam.ac.uk}
 library(org.Dm.eg.db)
 library(KEGG.db)
 ##load data for enrichment analyses
-data("data4enrich")
+data("KcViab_Data4Enrich")
 ##select hits
-hits <- names(data4enrich)[which(abs(data4enrich) > 2)]
+hits <- names(KcViab_Data4Enrich)[which(abs(KcViab_Data4Enrich) > 2)]
 ##set up a list of gene set collections
 PW_KEGG <- KeggGeneSets(species = "Dm")
 gscList <- list(PW_KEGG = PW_KEGG)
 ##create an object of class 'GSCA'
 gsca <- new("GSCA", listOfGeneSetCollections=gscList, geneList =
-data4enrich, hits = hits)
+KcViab_Data4Enrich, hits = hits)
 ##print summary of gsca
 summarize(gsca)
 ##do preprocessing (data4enrich has already been preprocessed)

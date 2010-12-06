@@ -35,7 +35,7 @@ Proc. Natl. Acad. Sci. USA 102, 15545-15550.
 Camille Terfve, Xin Wang
 }
 \seealso{
-collectionGsea, permutationPvalueCollectionGsea
+\code{\link[HTSanalyzeR:collectionGsea]{collectionGsea}}, \code{\link[HTSanalyzeR:permutationPvalueCollectionGsea]{permutationPvalueCollectionGsea}}
 }
 \examples{
 ##example 1
@@ -55,10 +55,10 @@ dataScores=GSCscores$Observed.scores)
 \dontrun{
 library(org.Dm.eg.db)
 library(KEGG.db)
-data("data4enrich")
+data("KcViab_Data4Enrich")
 DM_KEGG <- KeggGeneSets(species="Dm")
 GSCscores <- collectionGsea(collectionOfGeneSets=DM_KEGG, geneList=
-data4enrich, exponent=1, nPermutations=1000, minGeneSetSize=150)
+KcViab_Data4Enrich, exponent=1, nPermutations=1000, minGeneSetSize=100)
 GSCfdrs <- FDRcollectionGsea(permScores=GSCscores$Permutation.scores,
 dataScores=GSCscores$Observed.scores)
 }

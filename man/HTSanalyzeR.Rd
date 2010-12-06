@@ -8,8 +8,7 @@ HTSanalyzeR Package Overview
 
 \description{
 This package does enrichment (hypergeometric tests and GSEA) and network
-analyses (based on the package 'BioNet') on data sets such as high
-throughput RNA interference screens. 
+analyses (based on the package 'BioNet') for high-throughput screens. 
 }
 
 \details{
@@ -17,7 +16,7 @@ throughput RNA interference screens.
 Package: \tab HTSAnalyzeR\cr
 Type: \tab Package\cr
 Version: \tab 2.1.0\cr
-Date: \tab 2010-11-26\cr
+Date: \tab 2010-12-05\cr
 License: \tab Artistic-2.0\cr
 LazyLoad: \tab yes\cr
 	}
@@ -25,13 +24,13 @@ LazyLoad: \tab yes\cr
 The most important classes in this package are 'GSCA' (Gene Set Collection
 Analyses) and 'NWA' (NetWork Analyses). As an example, a pipeline (see
 function 'HTSanalyzeR4cellHTS2') is developed in this package for cellHTS2
-screen analyses. Based on these two classes, users can design their own
-pipelines specifically for their own data sets.   
+screen analyses. Based on these two classes and other functions, users can 
+design their own pipelines specifically for their own data sets.   
 
 Full help on classes and associated functions is available from within
 class help pages.
 
-Introductory information on the pipeline for cellHTS2 data set is available
+Introductory information on the use of classes and pipeline are available
 in the vignette, type\code{openVignette()}.
 
 A full listing of documented topics is available in HTML view by typing

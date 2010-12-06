@@ -7,8 +7,8 @@ drosoAnnotationConvertor <- function(geneList, initialIDs = "Entrez.gene",
 	finalIDs = "Entrez.gene", keepMultipleMappings = TRUE, verbose = TRUE) {
 	##check arguments
 	paraCheck("genelist.general",geneList)
-	paraCheck("initialIDs",initialIDs)
-	paraCheck("finalIDs",finalIDs)
+	paraCheck("dro.initialIDs",initialIDs)
+	paraCheck("dro.finalIDs",finalIDs)
 	paraCheck("keepMultipleMappings",keepMultipleMappings)
 	paraCheck("verbose",verbose)
 	##Determine the environment to be used for the mapping

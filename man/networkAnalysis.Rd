@@ -33,7 +33,7 @@ interactome to identify the maximum scoring subnetwork based on the BioNet
 package.
 }
 \value{
-a subnetwork module of class 'graphNEL' 
+a subnetwork module of class \code{graphNEL}
 }
 \references{
 Beisser D, Klau GW, Dandekar T, Muller T, Dittrich MT. BioNet: an R-Package
@@ -48,18 +48,18 @@ exact approach.} Bioinformatics 2008 24(13):i223-i231.
 Camille Terfve, Xin Wang
 }
 \seealso{
-networkPlot, NWA-class
+\code{\link[HTSanalyzeR:networkPlot]{networkPlot}}, \code{\link[HTSanalyzeR:viewSubNet]{viewSubNet}}, \code{\link[HTSanalyzeR:plotSubNet]{plotSubNet}}
 }
 \examples{
 \dontrun{
 library(BioNet)
 ##load pvalues (see the vignette for details about the preprocessing of
 ##this data set)
-data("pvalues")
+data("KcViab_PVals")
 ##load interactome
-data("Biogrid.Dm.interactome")
+data("Biogrid_DM_Interactome")
 ##identify subnetworks
-enrichedSubNet <- networkAnalysis(pvalues=pvalues,
-graph=Biogrid.Dm.interactome, fdr=0.001, verbose=TRUE)	
+enrichedSubNet <- networkAnalysis(pvalues=KcViab_PVals,
+graph=Biogrid_DM_Interactome, fdr=0.001, verbose=TRUE)	
 }
 }

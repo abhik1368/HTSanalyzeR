@@ -11,6 +11,7 @@ htmlAttrVectorPaste(vec)
 }
 \arguments{
 \item{vec}{
+the vector which will be collapsed
 }
 }
 \details{

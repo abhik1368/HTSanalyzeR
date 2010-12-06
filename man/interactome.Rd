@@ -7,10 +7,10 @@ Create an interactome from BioGrid data sets
 \description{
 This is an generic function. 
 
-When implemented as the S4 method for class 'NWA', this function create 
+When implemented as the S4 method for class \code{\link[HTSanalyzeR:NWA]{NWA}}, this function creates 
 an interactome before conducting network analysis.
 
-To use this function for objects of class 'NWA':
+To use this function for objects of class \code{\link[HTSanalyzeR:NWA]{NWA}}:
 
 interactome(object, interactionMatrix, species, link, reportDir = 
 "HTSanalyzerReport", genetic=FALSE, verbose=TRUE)
@@ -20,11 +20,12 @@ interactome(object, ...)
 }
 \arguments{
   \item{object}{
-an object. When this function is implemented as the S4 method of class 'NWA', 
+an object. When this function is implemented as the S4 method of class \code{\link[HTSanalyzeR:NWA]{NWA}}, 
 this argument is an object of class 'NWA'
 }
   \item{...}{
-other arguments (see below for the arguments supported by class 'NWA')
+other arguments (see below for the arguments supported by the method of
+class \code{\link[HTSanalyzeR:NWA]{NWA}})
 }
   \describe{
   \item{interactionMatrix:}{
@@ -64,38 +65,38 @@ analysis. Users can either input an interaction matrix including columns
 'link' and 'genetic' to download data set from Biogrid and extract
 corresponding interactions to build the interactome. 
 
-Another way to set up the interactome is to input a 'graphNEL' object
-when the 'NWA' object is created (i.e. nwa=new("NWA", pvalues, phenotypes,
+Another way to set up the interactome is to input a \code{graphNEL} object
+when the \code{\link[HTSanalyzeR:NWA]{NWA}} object is created (i.e. nwa=new("NWA", pvalues, phenotypes,
 interactome)).    
 }
 \value{
 In the end, this function will return an updated object with slot
-'interactome' as an object of class 'graphNEL'.
+'interactome' as an object of class \code{graphNEL}.
 }
 
 \author{
 Xin Wang \email{xw264@cam.ac.uk}
 }
 \seealso{
-\code{biogridDataDownload}, \code{NWA}
+\code{\link[HTSanalyzeR:biogridDataDownload]{biogridDataDownload}}, \code{\link[HTSanalyzeR:NWA]{NWA}}
 }
 \examples{
 \dontrun{
 ##example 1, input interactome when initializing an 'NWA' object
 ##load p-values and phenotypes
-data("pvalues","data4enrich")
+data("KcViab_PVals","KcViab_Data4Enrich")
 ##load Biogrid interactome for Drosophila Melanogaster
-data("Biogrid.Dm.interactome")
+data("Biogrid_DM_Interactome")
 ##create a NWA (NetWork Analysis) object
-nwa <- new("NWA",pvalues=pvalues, phenotypes=data4enrich, 
-interactome=Biogrid.Dm.interactome)
+nwa <- new("NWA",pvalues=KcViab_PVals, phenotypes=KcViab_Data4Enrich, 
+interactome=Biogrid_DM_Interactome)
 ##print nwa
 nwa
 
 library(BioNet)
 ##example 2, build an interactome from Biogrid data base
 ##create a NWA (NetWork Analysis) object
-nwa <- new("NWA", pvalues=pvalues, phenotypes=data4enrich)
+nwa <- new("NWA", pvalues=KcViab_PVals, phenotypes=KcViab_Data4Enrich)
 ##print nwa
 nwa
 ##download data from Biogrid and build the interactome

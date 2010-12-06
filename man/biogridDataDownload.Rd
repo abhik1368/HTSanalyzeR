@@ -1,20 +1,22 @@
 \name{biogridDataDownload}
 \alias{biogridDataDownload}
 \title{
-Get a network interaction matrix from The Biogrid website for a given 
-species
+Extract a network interaction matrix from a data set downloaded from
+Biogrid
 }
 \description{
-This functions downloads the data from the Biogrid, puts it in the user-
-specified folder and extracts the interactions data for a given species. 
+This function downloads an interaction data set from the Biogrid into
+an user-specified folder and extracts an interaction matrix for a given
+species. 
 }
 \usage{
 biogridDataDownload(link, species = "Dm", dataDirectory=".", verbose=TRUE)
 }
 \arguments{
   \item{link}{
-the link (url) from where the data should be downloaded (in tab2 format). 
-The default link is the one valid on Nov. 25 2010.
+the link (url) from where the data should be downloaded (in tab2 format).
+If this argument is missing or NULL, the default link (version 3.1.71,
+valid on Dec. 5 2010) will be used.
 }
   \item{species}{
 a single character value specifying the species for which the data should 
@@ -27,7 +29,7 @@ the directory to store downloaded file.
 }
   \item{verbose}{
 a single logical value to decide to display detailed messages (when 
-verbose=TRUE) or not (when verbose=FALSE)
+verbose=TRUE) or not (when verbose=FALSE).
 }
 }
 \details{
@@ -47,7 +49,7 @@ Nucleic Acids Research 2006 34(Database Issue):D535-D539
 Camille Terfve, Xin Wang
 }
 \seealso{
-networkAnalysis
+\code{\link[HTSanalyzeR:networkAnalysis]{networkAnalysis}}, \code{\link[HTSanalyzeR:preprocess]{preprocess}}
 }
 \examples{
 \dontrun{

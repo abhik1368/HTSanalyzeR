@@ -1,12 +1,12 @@
 \name{multiHyperGeoTest}
 \alias{multiHyperGeoTest}
 \title{
- Hypergeometric test on gene set collections
+ Hypergeometric tests on a list of gene sets
 }
 \description{
-This function performs hypergeometric tests for over-representation of
-hits, on a list of gene sets. This function applies the hyperGeoTest
-function to an entire list of gene sets and returns a data frame.
+This function performs hypergeometric tests for overrepresentation of
+hits, on a list of gene sets. This function applies the function
+\code{\link[HTSanalyzeR:hyperGeoTest]{hyperGeoTest}} to an entire list of gene sets and returns a data frame.
 }
 \usage{
 multiHyperGeoTest(collectionOfGeneSets, universe, hits, minGeneSetSize =
@@ -46,7 +46,7 @@ per gene set)
 John C. Rose, Xin Wang
 }
 \seealso{
-hyperGeoTest
+\code{\link[HTSanalyzeR:hyperGeoTest]{hyperGeoTest}}
 }
 \examples{
 ##example 1
@@ -65,11 +65,11 @@ library(org.Dm.eg.db)
 library(KEGG.db)
 ##load phenotype vector (see the vignette for details about the
 ##preprocessing of this data set)
-data("data4enrich")
+data("KcViab_Data4Enrich")
 DM_KEGG <- KeggGeneSets(species="Dm")
 ##Do multiple hypergeometric tests
 hypgeoResults <- multiHyperGeoTest(collectionOfGeneSets=DM_KEGG,
-universe=names(data4enrich), hits=names(data4enrich)[which(abs(
-data4enrich) > 2)], minGeneSetSize = 15, pAdjustMethod = "BH")
+universe=names(KcViab_Data4Enrich), hits=names(KcViab_Data4Enrich)[which(abs(
+KcViab_Data4Enrich) > 2)], minGeneSetSize = 15, pAdjustMethod = "BH")
 }
 }

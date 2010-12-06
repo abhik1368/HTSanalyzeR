@@ -2,16 +2,16 @@
 \alias{reportAll}
 \alias{reportAll,GSCA_Or_NULL,NWA_Or_NULL-method}
 \title{
-Write html reports for enrichment and network analyses
+Write html reports for both the enrichment and network analyses
 }
 \description{
 This is a generic function.
 
-When implemented as the method of class \code{GSCA} and \code{NWA}, 
-\code{reportAll} produces a report for both the results of Gene Set 
-Collection Analysis and the Network Analysis. 
+When implemented as the method of class \code{\link[HTSanalyzeR:GSCA]{GSCA}} and \code{\link[HTSanalyzeR:NWA]{NWA}}, 
+this function produces a report for both the results of Gene Set Collection
+Analysis and the Network Analysis. 
 
-To use \code{reportAll} for objects of class \code{GSCA} and \code{NWA}:
+To use \code{reportAll} for objects of class \code{\link[HTSanalyzeR:GSCA]{GSCA}} and \code{\link[HTSanalyzeR:NWA]{NWA}}:
 
 reportAll(gsca, nwa, experimentName="Unknown", species=NULL, ntop=NULL,
 allSig=FALSE, keggGSCs=NULL, goGSCs=NULL, reportDir="HTSanalyzerReport")
@@ -21,14 +21,14 @@ reportAll(gsca, nwa, ...)
 }
 \arguments{
   \item{gsca}{
-an object of class \code{GSCA} (see ?GSCA for more details)
+an object of class \code{\link[HTSanalyzeR:GSCA]{GSCA}} (see help(GSCA))
 }
   \item{nwa}{
-an object of class \code{NWA} (see ?NWA for more details)
+an object of class \code{\link[HTSanalyzeR:NWA]{NWA}} (see help(NWA))
 }
   \item{...}{
-other arguments. (see below for the arguments supported by class 'NWA' 
-and 'GSCA')
+other arguments. (see below for the arguments supported by the method of
+class \code{\link[HTSanalyzeR:NWA]{NWA}} and \code{\link[HTSanalyzeR:GSCA]{GSCA}})
 }
 \describe{
   \item{experimentName:}{
@@ -44,7 +44,7 @@ norvegicus"), "Mm" ("Mus_musculus"), "Ce" ("Caenorhabditis_elegans").
   \item{ntop:}{
 a single integer value specifying the number of plots to be produced for
 the GSEA analysis.  For each gene set collection, plots are produced for
-the 'ntop' most significant p-values.  
+the top 'ntop' most significant p-values.  
 }
   \item{allSig:}{
 a single logical value determining whether or not to generate plots for
@@ -67,10 +67,10 @@ a single character value specifying the directory to store reports
 
 }
 \details{
-These functions take the objects of the two wrapper classes (\code{GSCA}
-and \code{NWA}) and write a report in user-specified directory. An index
-html file containing a summary of all results and hyperlink tables to
-more detailed results will be generated in the root directory. The other
+This function takes in the objects of the two wrapper classes (\code{GSCA}
+and \code{NWA}) and writes a report into the user-specified directory.
+An index html file containing a summary of all results and hyperlinked tabs
+to more detailed results will be generated in the root directory. The other
 html files will be stored in a subdirectory called 'html'. All images
 including GSEA plots and subnetwork figure will be produced in a sub-
 directory called 'image'. All documents or text files such as the files
@@ -80,15 +80,18 @@ be stored in a subdirectory called 'doc'.
 \author{
 Xin Wang, Camille Terfve
 }
+\seealso{
+\code{\link[HTSanalyzeR:report]{report}}, \code{\link[HTSanalyzeR:writeReportHTSA]{writeReportHTSA}}
+}
 \examples{
 \dontrun{
 ##(see the vignette for details about the preprocessing of this data set)
-data("KcViab.gsca")
-data("KcViab.nwa")	
+data("KcViab_GSCA")
+data("KcViab_NWA")	
 ##report both analyses
-reportAll(gsca=KcViab.gsca, nwa=KcViab.nwa, experimentName="KcViab",
-species="Dm", allSig=TRUE, keggGSCs="PW.KEGG", goGSCs=c("GO.BP","GO.MF",
-"GO.CC"), reportDir="HTSanalyzerReport")
+reportAll(gsca=KcViab_GSCA, nwa=KcViab_NWA, experimentName="KcViab",
+species="Dm", allSig=TRUE, keggGSCs="PW_KEGG", goGSCs=c("GO_BP","GO_MF",
+"GO_CC"), reportDir="HTSanalyzerReport")
 browseURL(file.path(getwd(), "HTSanalyzerReport", "index.html"))
 }
 }

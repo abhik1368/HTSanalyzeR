@@ -8,9 +8,8 @@
 A class for Gene Set Collection Analyses
 }
 \description{
-This class includes methods to do gene set enrichment analysis 
-and hypergeometric tests on a vector of phenotypes from experiments
-such as RNA interference screening. 
+This S4 class includes methods to do gene set enrichment analysis 
+and hypergeometric tests for high-throughput screens. 
 }
 \section{Objects from the Class}{ 
 Objects of class \code{GSCA} can be created from \code{
@@ -36,13 +35,13 @@ the examples below)
 		a list of parameters for hypergeometric tests and GSEA. These 
 		parameters are \code{pValueCutoff}, \code{pAdjustMethod}, \code{nPermutations}, 
 		\code{minGeneSetSize} and \code{exponent} (see function
-		\code{analyzeGeneSetCollections} for detailed descriptions about
+		\code{\link[HTSanalyzeR:analyzeGeneSetCollections]{analyzeGeneSetCollections}} for detailed descriptions about
 		these parameters). 
 		}
 		
 		\item{\code{result}:}{
 		a list of results (see the returned values in function 
-		\code{analyzeGeneSetCollections}).
+		\code{\link[HTSanalyzeR:analyzeGeneSetCollections]{analyzeGeneSetCollections}}).
 		}
 		
 		\item{\code{summary}:}{
@@ -51,7 +50,7 @@ the examples below)
 		}
 		
 		\item{\code{preprocessed}:}{
-		a logical value specifying whether or not input data has been 
+		a single logical value specifying whether or not input data has been 
 		preprocessed.
 		}
 	}
@@ -62,10 +61,10 @@ the examples below)
 	\describe{	
 		\item{\code{preprocess}}{ 
 		do preprocessing on input gene list and hit list including: 
-		a) removing NAs in \code{geneList} and \code{hits}; 
-		b) invoking function \code{duplicateRemover} to process
-		duplicated phenotypes (see \code{duplicateRemover} for more details); 
-		c) invoking function \code{annotationConvertor} to convert annotations; 
+		a) removing NAs in the \code{geneList} and \code{hits}; 
+		b) invoking function \code{\link[HTSanalyzeR:duplicateRemover]{duplicateRemover}} to process
+		duplicated phenotypes (see \code{\link[HTSanalyzeR:duplicateRemover]{duplicateRemover}} for more details); 
+		c) invoking function \code{\link[HTSanalyzeR:annotationConvertor]{annotationConvertor}} to convert annotations; 
 		d) ranking phenotypes in a decreasing order.
 		}
 		\item{\code{analyze}}{
@@ -101,6 +100,7 @@ the examples below)
   \code{\link[HTSanalyzeR:summarize]{summarize}}
   \code{\link[HTSanalyzeR:getTopGeneSets]{getTopGeneSets}}
   \code{\link[HTSanalyzeR:writeHits]{writeHits}}
+  \code{\link[HTSanalyzeR:viewGSEA]{viewGSEA}}
   \code{\link[HTSanalyzeR:plotGSEA]{plotGSEA}}
   \code{\link[HTSanalyzeR:report]{report}}
 }
@@ -109,15 +109,15 @@ the examples below)
 library(org.Dm.eg.db)
 library(KEGG.db)
 ##load data for enrichment analyses
-data("data4enrich")
+data("KcViab_Data4Enrich")
 ##select hits
-hits <- names(data4enrich)[which(abs(data4enrich) > 2)]
+hits <- names(KcViab_Data4Enrich)[which(abs(KcViab_Data4Enrich) > 2)]
 ##set up a list of gene set collections
 PW_KEGG <- KeggGeneSets(species = "Dm")
 gscs <- list(PW_KEGG = PW_KEGG)
 ##create an object of class 'GSCA'
-gsca <- new("GSCA", listOfGeneSetCollections=gscs, geneList = data4enrich,
-hits = hits)
+gsca <- new("GSCA", listOfGeneSetCollections=gscs, geneList = 
+KcViab_Data4Enrich, hits = hits)
 ##do preprocessing (data4enrich has already been preprocessed)
 gsca <- preprocess(gsca, species="Dm", initialIDs = "Entrez.gene", 
 keepMultipleMappings = TRUE, duplicateRemoverMethod = "max", 

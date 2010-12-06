@@ -3,11 +3,11 @@
 \alias{NWA-class}
 \docType{class}
 \title{
-A class for NetWork Analyses
+A class for NetWork Analysis
 }
 \description{
-This class includes methods to do network analysis on a vector of p-values 
-from experiments such as RNA interference screening. 
+This class includes methods to do network analysis for a vector of p-values 
+computed from high-throughput screens. 
 }
 \section{Objects from the Class}{ 
 Objects of class \code{NWA} can be created from \code{
@@ -90,6 +90,7 @@ the examples below)
   \code{\link[HTSanalyzeR:analyze]{analyze}}
   \code{\link[HTSanalyzeR:summarize]{summarize}}
   \code{\link[HTSanalyzeR:interactome]{interactome}}
+  \code{\link[HTSanalyzeR:viewSubNet]{viewSubNet}}
   \code{\link[HTSanalyzeR:plotSubNet]{plotSubNet}}
   \code{\link[HTSanalyzeR:report]{report}}
 }
@@ -97,12 +98,12 @@ the examples below)
 \dontrun{
 library(BioNet)
 ##load p-values and phenotypes
-data("pvalues","data4enrich")
+data("KcViab_PVals","KcViab_Data4Enrich")
 ##load Biogrid interactome for Drosophila Melanogaster
-data("Biogrid.Dm.interactome")
+data("Biogrid_DM_Interactome")
 ##create a NWA (NetWork Analysis) object
-nwa <- new("NWA", pvalues=pvalues, phenotypes=data4enrich, interactome=
-Biogrid.Dm.interactome)
+nwa <- new("NWA", pvalues=KcViab_PVals, phenotypes=KcViab_Data4Enrich, 
+interactome=Biogrid_DM_Interactome)
 ##preprocessing
 nwa <- preprocess(nwa, species="Dm", initialIDs="Entrez.gene", 
 keepMultipleMappings=TRUE, duplicateRemoverMethod="max")
@@ -116,7 +117,7 @@ graphics.off()
 viewSubNet(nwa)
 ##report as html pages
 report(object=nwa, experimentName="NWATest", species="Dm", allSig=TRUE,
-keggGSCs="PW.KEGG", goGSCs=c("GO.BP", "GO.MF", "GO.CC"), reportDir=
+keggGSCs="PW_KEGG", goGSCs=c("GO_BP", "GO_MF", "GO_CC"), reportDir=
 "NWATestReport")
 ##browse the index page of the report
 browseURL(file.path(getwd(), "NWATestReport", "index.html"))

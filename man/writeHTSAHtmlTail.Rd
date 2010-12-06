@@ -11,6 +11,8 @@ writeHTSAHtmlTail(htmlfile)
 }
 \arguments{
 \item{htmlfile}{
+a single character value specifying the name of the html file where
+the head message will be stored
 }
 }
 \details{

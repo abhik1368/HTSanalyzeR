@@ -1,12 +1,12 @@
 \name{gseaPlots}
 \alias{gseaPlots}
 \title{
-Plot figures of GSEA results for one gene set
+Plot GSEA results for one gene set
 }
 \description{
 This function takes in the output of gseaScores and the gene list, and
 plot a figure of the ranked phenotypes, positions of the gene set and
-the location of the maximum enrichment score.  
+the location of the enrichment score.  
 }
 \usage{
 gseaPlots(runningScore, enrichmentScore, positions, geneList)
@@ -38,18 +38,21 @@ Proc. Natl. Acad. Sci. USA 102, 15545-15550.
 \author{
 Camille Terfve, Xin Wang
 }
+\seealso{
+\code{\link[HTSanalyzeR:plotGSEA]{plotGSEA}}, \code{\link[HTSanalyzeR:viewGSEA]{viewGSEA}}
+}
 \examples{
 \dontrun{
 library(org.Dm.eg.db)
 library(KEGG.db)
 ##load phenotype vector (see the vignette for details about the
 ##preprocessing of this data set)
-data("data4enrich")
+data("KcViab_Data4Enrich")
 DM_KEGG <- KeggGeneSets(species="Dm")
-GSCscores <- gseaScores(geneList=data4enrich, geneSet=DM_KEGG[[1]],
+GSCscores <- gseaScores(geneList=KcViab_Data4Enrich, geneSet=DM_KEGG[[1]],
 exponent=1, mode="graph")
 gseaPlots(runningScore=GSCscores$runningScore, enrichmentScore=
 GSCscores$enrichmentScore, positions=GSCscores$positions,
-geneList=data4enrich)
+geneList=KcViab_Data4Enrich)
 }
 }

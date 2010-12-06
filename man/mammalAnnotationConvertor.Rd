@@ -50,14 +50,14 @@ and therefore only maps from any identifier to an Entrez gene id or from
 an Entrez gene ID to any identifier.
 }
 \value{
-the same data vector-matrix but with another type of identifiers as
-names-row names
+the same data vector/matrix but with another type of identifiers as
+names/row names
 }
 \author{
 Camille Terfve, Xin Wang
 }
 \seealso{
-drosoAnnotationConvertor, celAnnotationConvertor, annotationConvertor
+\code{\link[HTSanalyzeR:drosoAnnotationConvertor]{drosoAnnotationConvertor}}, \code{\link[HTSanalyzeR:celAnnotationConvertor]{celAnnotationConvertor}}, \code{\link[HTSanalyzeR:annotationConvertor]{annotationConvertor}}
 }
 \examples{
 ##example 1: convert a named vector

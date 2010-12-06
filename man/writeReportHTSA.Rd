@@ -5,9 +5,7 @@ Write html reports for enrichment and/or network analyses
 }
 \description{
 This function writes an html report following a complete analysis
-of a dataset with the objects of class 'GSCA' and/or 'NWA'. 
-
-
+of a dataset with the objects of class \code{\link[HTSanalyzeR:GSCA]{GSCA}} and/or \code{\link[HTSanalyzeR:NWA]{NWA}}. 
 }
 \usage{
 writeReportHTSA(gsca, nwa, experimentName="Unknown", species=NULL,
@@ -16,10 +14,10 @@ ntop=NULL, allSig=FALSE, keggGSCs=NULL, goGSCs=NULL, reportDir=
 }
 \arguments{
   \item{gsca}{
-an object of class \code{GSCA} (see ?GSCA for more details)
+an object of class \code{\link[HTSanalyzeR:GSCA]{GSCA}} 
 }
   \item{nwa}{
-an object of class \code{NWA} (see ?NWA for more details)
+an object of class \code{\link[HTSanalyzeR:NWA]{NWA}}
 }
   \item{experimentName}{
 a single character value specifying the name of the experiment (just
@@ -33,14 +31,14 @@ norvegicus"), "Mm" ("Mus_musculus"), "Ce" ("Caenorhabditis_elegans").
 }
   \item{ntop}{
 a single integer value specifying the number of plots to be produced for
-the GSEA analysis.  For each gene set collection, plots are produced for
-the 'ntop' most significant p-values.  
+the GSEA analysis. For each gene set collection, plots are produced for
+the 'ntop' most significant gene sets.  
 }
   \item{allSig}{
 a single logical value determining whether or not to generate plots for
 all significant gene sets. A gene set is significant if its corresponding
 adjusted p-value is less than the \code{pValueCutoff} set in function
-\code{analyze}. (see function \code{analyze} for more details)   
+\code{\link[HTSanalyzeR:analyze]{analyze}}.    
  }
   \item{keggGSCs}{
 a character vector of names of all KEGG gene set collections. This will
@@ -55,28 +53,31 @@ a single character value specifying the directory to store reports
 }
 }
 \details{
-These functions take the objects of the two wrapper classes (\code{GSCA}
-and \code{NWA}) and write a report in user-specified directory. An index
-html file containing a summary of all results and hyperlink tables to
-more detailed results will be generated in the root directory. The other
-html files will be stored in a subdirectory called 'html'. All images
-including GSEA plots and subnetwork figure will be produced in a sub-
-directory called 'image'. All documents or text files such as the files
+This function takes in the objects of the two wrapper classes (\code{\link[HTSanalyzeR:GSCA]{GSCA}}
+and \code{\link[HTSanalyzeR:NWA]{NWA}}) and writes a report into a user-specified directory.
+An index html file containing a summary of all results and hyperlinked tabs
+linking to more detailed results will be generated in the root directory.
+The other html files will be stored in a subdirectory called 'html'. All
+images including the GSEA plots and subnetwork figure will be produced in
+a subdirectory called 'image'. All documents or text files such as the files
 containing significant gene sets of the hypergeometric test results will
 be stored in a subdirectory called 'doc'. 
 }
 \author{
 Xin Wang, Camille Terfve
 }
+\seealso{
+\code{\link[HTSanalyzeR:report]{report}}, \code{\link[HTSanalyzeR:reportAll]{reportAll}}
+}
 \examples{
 \dontrun{
 ##(see the vignette for details about the preprocessing of this data set)
-data("KcViab.gsca")
-data("KcViab.nwa")	
+data("KcViab_GSCA")
+data("KcViab_NWA")	
 ##report both analyses
-writeReportHTSA(gsca=KcViab.gsca, nwa=KcViab.nwa, experimentName="KcViab",
-species="Dm", allSig=TRUE, keggGSCs="PW.KEGG", goGSCs=c("GO.BP","GO.MF",
-"GO.CC"), reportDir="HTSanalyzerReport")
+writeReportHTSA(gsca=KcViab_GSCA, nwa=KcViab_NWA, experimentName="KcViab",
+species="Dm", allSig=TRUE, keggGSCs="PW_KEGG", goGSCs=c("GO_BP","GO_MF",
+"GO_CC"), reportDir="HTSanalyzerReport")
 browseURL(file.path(getwd(), "HTSanalyzerReport", "index.html"))
 }
 }

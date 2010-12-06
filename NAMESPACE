@@ -5,7 +5,6 @@ exportClasses(
 	"NWA"
 )
 export(
-	   "paraCheck",
 	   "aggregatePvals",
 	   "annotationConvertor",
 	   "biogridDataDownload", 
@@ -32,14 +31,6 @@ export(
 	   "pairwisePhenoMannWith",
        "permutationPvalueCollectionGsea",
        "hyperGeoTest",
-       "writeHTSAHtmlHead",
-       "writeHTSAHtmlTab",
-       "writeHTSAHtmlTail",
-       "writeHTSAHtmlTable",
-       "GenHTSAHtmlRowUnit",
-       "htmlAttrVectorPaste",
-       "makeGSEAplots",
-       "makeOverlapTable",
        "writeReportHTSA")
 
 exportMethods(

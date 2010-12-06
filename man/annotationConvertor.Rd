@@ -1,7 +1,7 @@
 \name{annotationConvertor}
 \alias{annotationConvertor}
 \title{
-Conversion between different types of identifiers
+Convert between different types of identifiers
 }
 \description{
 This function converts an initial named data vector to the same vector but 
@@ -66,7 +66,7 @@ the same data vector/matrix but with names/row names converted.
 Xin Wang, Camille Terfve
 }
 \seealso{
-mammalAnnotationConvertor, celAnnotationConvertor, drosoAnnotationConvertor
+\code{\link[HTSanalyzeR:mammalAnnotationConvertor]{mammalAnnotationConvertor}}, \code{\link[HTSanalyzeR:celAnnotationConvertor]{celAnnotationConvertor}}, \code{\link[HTSanalyzeR:drosoAnnotationConvertor]{drosoAnnotationConvertor}}
 }
 \examples{
 library(org.Dm.eg.db)

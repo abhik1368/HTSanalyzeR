@@ -6,15 +6,16 @@
 \alias{show,GSCA-method}
 \alias{show,NWA-method}
 \title{
-Print summary information about an object of class GSCA or NWA
+Print summary information for an object of class GSCA or NWA
 }
 \description{
 This is a generic function.
 
-When implemented as the S4 method for objects of class 'GSCA' or 'NWA', 
-this function prints a summary of slots specified by users. 
+When implemented as the S4 method for objects of class \code{\link[HTSanalyzeR:GSCA]{GSCA}} or \code{\link[HTSanalyzeR:NWA]{NWA}}, 
+this function prints a summary of information about the slots of these
+classes. 
 
-To use this function for objects of class \code{GSCA} or \code{NWA}:
+To use this function for objects of class \code{\link[HTSanalyzeR:GSCA]{GSCA}} or \code{\link[HTSanalyzeR:NWA]{NWA}}:
 
 summarize(object, what="ALL")
 }
@@ -23,12 +24,13 @@ summarize(object, ...)
 }
 \arguments{
 	\item{object}{
-an object. When this function is implemented as the S4 method of class 'GSCA' 
-or 'NWA', this argument is an object of class 'GSCA' or 'NWA'.
+an object. When this function is implemented as the S4 method of class
+\code{\link[HTSanalyzeR:GSCA]{GSCA}} or \code{\link[HTSanalyzeR:NWA]{NWA}}, this argument is an object of class
+\code{\link[HTSanalyzeR:GSCA]{GSCA}} or \code{\link[HTSanalyzeR:NWA]{NWA}}.
 }
 	\item{...}{
 other arguments depending on class (see below for the arguments supported by 
-class 'GSCA' and 'NWA')
+the method of class \code{\link[HTSanalyzeR:GSCA]{GSCA}} and \code{\link[HTSanalyzeR:NWA]{NWA}})
 }
 \describe{
 	\item{what:}{
@@ -39,14 +41,14 @@ what to print.
 
 }
 \details{
-For an object of class 'GSCA', key words are 'GSC' (slot
-'listOfGeneSetCollections'), 'GeneList' (slot 'geneList'), 'Hits'
-(slot 'hits'), 'Para' (slot 'para'),  'Result' (slot 'result') and 'ALL'
-(all slots). 
+For an object of class \code{\link[HTSanalyzeR:GSCA]{GSCA}}, key words are 'GSC' (the slot
+'listOfGeneSetCollections'), 'GeneList' (the slot 'geneList'), 'Hits'
+(the slot 'hits'), 'Para' (the slot 'para'),  'Result' (the slot 'result')
+and 'ALL' (all slots). 
 
-For an object of class 'NWA', key words include 'Pval' (slot 'pvalue'), 
-'Phenotype' (slot 'phenotype'), 'Interactome' (slot 'interactome'),
-'Para' (slot 'fdr'), 'Result' (slot 'result') and 'ALL' (all slots).
+For an object of class \code{\link[HTSanalyzeR:GSCA]{NWA}}, key words include 'Pval' (the slot 'pvalue'), 
+'Phenotype' (the slot 'phenotype'), 'Interactome' (the slot 'interactome'),
+'Para' (the slot 'fdr'), 'Result' (the slot 'result') and 'ALL' (all slots).
 }
 
 \author{
@@ -58,15 +60,15 @@ Xin Wang \email{xw264@cam.ac.uk}
 library(org.Dm.eg.db)
 library(KEGG.db)
 ##load data for enrichment analyses
-data("data4enrich")
+data("KcViab_Data4Enrich")
 ##select hits
-hits <- names(data4enrich)[which(abs(data4enrich) > 2)]
+hits <- names(KcViab_Data4Enrich)[which(abs(KcViab_Data4Enrich) > 2)]
 ##set up a list of gene set collections
 PW_KEGG <- KeggGeneSets(species = "Dm")
 gscList <- list(PW_KEGG = PW_KEGG)
 ##create an object of class 'GSCA'
 gsca <- new("GSCA", listOfGeneSetCollections=gscList, geneList =
-data4enrich, hits = hits)
+KcViab_Data4Enrich, hits = hits)
 ##print summary of gsca
 summarize(gsca)
 ##do preprocessing (data4enrich has already been preprocessed)

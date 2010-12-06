@@ -11,10 +11,14 @@ writeHTSAHtmlSummary(gsca=NULL, nwa=NULL, htmlfile)
 }
 \arguments{
 \item{gsca}{
+an object of class \code{GSCA}
 }
 \item{nwa}{
+an object of class \code{NWA}
 }
 \item{htmlfile}{
+a single character value specifying the name of the html file where
+the head message will be stored
 }
 }
 \details{

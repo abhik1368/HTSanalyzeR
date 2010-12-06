@@ -7,8 +7,8 @@ celAnnotationConvertor <- function(geneList, initialIDs="Entrez.gene",
 	finalIDs="Entrez.gene", keepMultipleMappings=TRUE, verbose=TRUE) {
 	##check arguments
 	paraCheck("genelist.general", geneList)
-	paraCheck("initialIDs", initialIDs)
-	paraCheck("finalIDs", finalIDs)
+	paraCheck("cel.initialIDs", initialIDs)
+	paraCheck("cel.finalIDs", finalIDs)
 	paraCheck("keepMultipleMappings", keepMultipleMappings)
 	paraCheck("verbose", verbose)
 	fromto<-"dummystring"

@@ -1,8 +1,8 @@
 \name{analyzeGeneSetCollections}
 \alias{analyzeGeneSetCollections}
 \title{
-Enrichment analysis by hypergeometric test and GSEA (Gene Set Enrichment 
-Analysis)
+Hypergeometric tests and Gene Set Enrichment Analyses on a list of gene
+set collections
 }
 \description{
 This function takes a list of gene set collections, a named phenotype 
@@ -53,7 +53,7 @@ analysis and GSEA.
 }
   \item{exponent}{
 a single integer or numeric value used in weighting phenotypes in GSEA 
-(see "gseaScores" function)
+(see the function \code{\link[HTSanalyzeR:gseaScores]{gseaScores}})
 }
   \item{verbose}{
 a single logical value deciding to display detailed messages (when 
@@ -86,6 +86,9 @@ list contains all of these results in a single dataframe.}
 \author{
 John C. Rose, Xin Wang
 }
+\seealso{
+\code{\link[HTSanalyzeR:analyze]{analyze}}
+}
 \examples{
 \dontrun{
 library(org.Dm.eg.db)
@@ -93,16 +96,16 @@ library(GO.db)
 library(KEGG.db)
 ##load phenotype vector (see the vignette for details about the 
 ##preprocessing of this data set)
-data("data4enrich")
+data("KcViab_Data4Enrich")
 ##Create a list of gene set collections for Drosophila melanogaster (Dm)
-GO_MF<-GOGeneSets(species="Dm",ontologies="MF")
-PW_KEGG<-KeggGeneSets(species="Dm")
-ListGSC<-list(GO_MF=GO_MF, PW_KEGG=PW_KEGG)
+GO_MF <- GOGeneSets(species="Dm", ontologies="MF")
+PW_KEGG <- KeggGeneSets(species="Dm")
+ListGSC <- list(GO_MF=GO_MF, PW_KEGG=PW_KEGG)
 ##Conduct enrichment analyses
 GSCAResults <- analyzeGeneSetCollections(
 		listOfGeneSetCollections=ListGSC,
-		geneList=data4enrich,
-		hits=names(data4enrich)[which(abs(data4enrich)>2)],
+		geneList=KcViab_Data4Enrich,
+		hits=names(KcViab_Data4Enrich)[which(abs(KcViab_Data4Enrich)>2)],
 		pAdjustMethod="BH",
 		nPermutations=1000,
 		minGeneSetSize=200,

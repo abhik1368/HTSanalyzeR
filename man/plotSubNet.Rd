@@ -2,16 +2,16 @@
 \alias{plotSubNet}
 \alias{plotSubNet,NWA-method}
 \title{
-Plot and save a figures of the enriched subnetwork
+Plot and save a figure of the enriched subnetwork
 }
 \description{
 This is an generic function. 
 
-When implemented as the S4 method for class 'NWA', function \code{plotSubNet} 
-invokes function 'networkPlot' to plot and save the subnetwork identified 
-by 'BioNet'. 
+When implemented as the S4 method for class \code{\link[HTSanalyzeR:NWA]{NWA}}, this function 
+invokes the function \code{\link[HTSanalyzeR:networkPlot]{networkPlot}} to plot and save the subnetwork identified 
+by the 'BioNet' package. 
 
-To use \code{viewSubNet} for objects of class \code{NWA}:
+To use this function for objects of class \code{NWA}:
 
 plotSubNet(object, filepath, filename, output, ...)
 }
@@ -20,11 +20,12 @@ plotSubNet(object, ...)
 }
 \arguments{
 	\item{object}{
-an object. When implemented as S4 methods of class 'NWA', this argument 
-is an object of class 'NWA'.
+an object. When implemented as S4 methods of class \code{\link[HTSanalyzeR:NWA]{NWA}}, this argument 
+is an object of class \code{\link[HTSanalyzeR:NWA]{NWA}}.
 }
 	\item{...}{
-other arguments. (see below for the arguments supported by class 'NWA')
+other arguments. (see below for the arguments supported by the method of
+class \code{\link[HTSanalyzeR:NWA]{NWA}})
 }
 \describe{
 	\item{filepath:}{
@@ -39,37 +40,38 @@ a single character value specifying the format of output image: "pdf"
 or "png"
 }
 	\item{...:}{
-all other arguments for 'pdf' or 'png' such as 'width' and 'height'
+all other arguments for the function \code{pdf} or \code{png} such as
+the argument 'width' and 'height'
 }
 }
 }
 \details{
-After the 'analyze' step for an object of class 'NWA', users can generate
-the enriched subnetwork identified by package 'BioNet'. If slot 'phenotype'
-has been input when initializing the object, this function will send it to
-function 'networkPlot' as the argument 'phenotypeVector' to highlight nodes
-in different colors. If the argument 'species' of function 'analyze' has
-been assigned, labels of nodes of this subnetwork will be mapped to gene
-symbols corresponding to the species; otherwise, Entrez identifiers will
-be used as these labels.    
+After the analyses step for an object of class 'NWA', users can generate
+the enriched subnetwork identified by the 'BioNet' package. If the slot
+'phenotype' has been input when initializing the object, this function
+will send it to the function \code{\link[HTSanalyzeR:networkPlot]{networkPlot}} as the argument \code{phenotypeVector}
+to highlight nodes in different colors. If the argument \code{species} of the
+function \code{\link[HTSanalyzeR:analyze]{analyze}} has been assigned, labels of
+nodes of this subnetwork will be mapped to gene symbols corresponding to
+the species; otherwise, Entrez identifiers will be used as the labels.    
 }
 
 \author{
 Xin Wang \email{xw264@cam.ac.uk}
 }
 \seealso{
-\code{networkPlot}, \code{analyze}, \code{NWA}
+\code{networkPlot}, \code{viewSubNet}, \code{analyze}
 }
 \examples{
 \dontrun{
 library(BioNet)
 ##load p-values and phenotypes
-data("pvalues","data4enrich")
+data("KcViab_Data4Enrich","KcViab_PVals")
 ##load Biogrid interactome for Drosophila Melanogaster
-data("Biogrid.Dm.interactome")
+data("Biogrid_DM_Interactome")
 ##create a NWA (NetWork Analysis) object
-nwa <- new("NWA", pvalues=pvalues, phenotypes=data4enrich, 
-interactome=Biogrid.Dm.interactome)
+nwa <- new("NWA", pvalues=KcViab_PVals, phenotypes=KcViab_Data4Enrich, 
+interactome=Biogrid_DM_Interactome)
 ##preprocessing
 nwa <- preprocess(nwa, species="Dm", initialIDs="Entrez.gene", 
 keepMultipleMappings=TRUE, duplicateRemoverMethod="max")

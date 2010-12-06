@@ -11,8 +11,10 @@ paraCheck(name, para)
 }
 \arguments{
 \item{name}{
+a single character value specifying the name of the variable to check
 }
 \item{para}{
+the argument to check
 }
 }
 \details{

@@ -1,13 +1,13 @@
 \name{pairwisePhenoMannWith}
 \alias{pairwisePhenoMannWith}
 \title{
-Mann-Whitney test for shift in location of genes from gene sets on a pair
+Mann-Whitney U test for shift in location of genes from gene sets on a pair
 of phenotypes
 }
 \description{
-This function performs a Mann-Whitney test for shift in location of genes
+This function performs a Mann-Whitney U test for shift in location of genes
 from gene sets, on a pair of phenotypes. It looks for gene sets that are
-represented towards the 2 different ends of two ranked lists of genes,
+represented towards the two different ends of two ranked lists of genes,
 i.e. whose phenotype distribution is located around two different values
 in the two phenotypes list, rather than spread on the whole list in both
 lists.
@@ -19,17 +19,18 @@ pairwisePhenoMannWith(gl1, gl2, gsc, minGeneSetSize=15, pAdjustMethod="BH")
   \item{gl1}{
 a named numeric or integer vector where names are gene identifiers of the
 same type as the ones in the gene set collection, and values are the
-measurement on phenotype 1 corresponding to those genes this vector MUST
+measurement on phenotype one corresponding to those genes this vector MUST
 be ordered (decreasing or increasing)
 }
   \item{gl2}{
 a named numeric or integer vector where names are gene identifiers of the
 same type as the ones in the gene set collection, and values are the
-measurement on phenotype 2 corresponding to those genes this vector MUST
+measurement on phenotype two corresponding to those genes this vector MUST
 be ordered
 }
   \item{gsc}{
-a list of gene sets. Each gene set in the list is a character vector. 
+a list of gene sets, each of which in the list is a character vector of
+gene identifiers. 
 }
   \item{minGeneSetSize}{
 a single numeric or integer value specifying the minimum size required
@@ -41,12 +42,15 @@ used (see 'p.adjust' for details)
 }
 }
 \value{
-a table with a row for each gene set, containing the p value for the
-Mann-Whitney test, and the adjusted p-value. The table is ordered by the
+a table with a row for each gene set, containing the p-value for the
+Mann-Whitney U test, and the adjusted p-value. The table is ordered by the
 p-value column.
 }
 \author{
 Camille Terfve, Xin Wang
+}
+\seealso{
+\code{\link[HTSanalyzeR:pairwiseGseaPlot]{pairwiseGseaPlot}}, \code{\link[HTSanalyzeR:pairwiseGsea]{pairwiseGsea}}
 }
 \examples{
 gl1 <- runif(100, min=-5, max=5)

@@ -8,19 +8,19 @@ Gene Set Collection Analysis or NetWork Analysis
 \description{
 This is a generic function.
 
-When implemented as the S4 method for objects of class 'GSCA', this 
-function will invoke function \code{analyzeGeneSetCollections} to do 
+When implemented as the S4 method for objects of class \code{\link[HTSanalyzeR:GSCA-class]{GSCA}},
+this function will invoke function  \code{\link[HTSanalyzeR:analyzeGeneSetCollections]{analyzeGeneSetCollections}} to do 
 hypergeometic tests and GSEA. 
 
-When implemented on an object of class \code{NWA}, it will call 
-function \code{networkAnalysis} to do subnetwork identification. 
+When implemented on an object of class \code{\link[HTSanalyzeR:NWA-class]{NWA}}, it will call 
+function \code{\link[HTSanalyzeR:networkAnalysis]{networkAnalysis}} to do subnetwork identification. 
 
-To use this function for objects of class \code{GSCA}:
+To use this function for objects of class \code{\link[HTSanalyzeR:GSCA-class]{GSCA}}:
 
 analyze(object, para = list(pValueCutoff = 0.05, pAdjustMethod = "BH", 
 nPermutations = 1000, minGeneSetSize = 15, exponent = 1), verbose = TRUE)
 
-To use this function for objects of class \code{NWA}:
+To use this function for objects of class \code{\link[HTSanalyzeR:NWA-class]{NWA}}:
 
 analyze(object, fdr=0.001, species, verbose=TRUE)
 }
@@ -34,13 +34,16 @@ or 'NWA', this argument is an object of class 'GSCA' or 'NWA'.
 }
 	\item{...}{
 other arguments depending on class (see below for the arguments supported by 
-class 'GSCA' and/or 'NWA')
+the method of class 'GSCA' or 'NWA')
 }
 \describe{
 	\item{para:}{
 a list of parameters for GSEA and hypergeometric tests including:
 para$pValueCutoff: a single numeric value specifying the cutoff for p-values 
 considered significant	
+}
+	\item{para$pValueCutoff}{
+a single numeric value specifying the cutoff for p-values considered significant
 }
 	\item{para$pAdjustMethod:}{
 a single character value specifying the p-value adjustment method 
@@ -82,28 +85,28 @@ verbose=TRUE) or not (when verbose=FALSE)
 
 }
 \details{
-For objects of class \code{GSCA}:
+For objects of class \code{\link[HTSanalyzeR:GSCA-class]{GSCA}}:
 
-This function will store the results from function \code{analyzeGeneSetCollections} 
+This function will store the results from function \code{\link[HTSanalyzeR:analyzeGeneSetCollections]{analyzeGeneSetCollections}} 
 in slot \code{result}, and update information about these results to 
-slot \code{summary} of class \code{GSCA}. 
+slot \code{summary} of class \code{\link[HTSanalyzeR:GSCA-class]{GSCA}}. 
 
-See function \code{analyzeGeneSetCollections} for the detailed information
+See function \code{\link[HTSanalyzeR:analyzeGeneSetCollections]{analyzeGeneSetCollections}} for the detailed information
 about the returned results.
 
-For objects of class \code{NWA}:
+For objects of class \code{\link[HTSanalyzeR:NWA-class]{NWA}}:
 
 This function will store the subnetwork module identified by BioNet (if 
 \code{species} is given, labels of nodes will also be mapped from Entrez IDs 
 to gene symbols), and update information about these results to slot 
-\code{summary} of class \code{NWA}.
+\code{summary} of class \code{\link[HTSanalyzeR:NWA-class]{NWA}}.
 
-See function \code{networkAnalysis} for the detailed information about the
+See function \code{\link[HTSanalyzeR:networkAnalysis]{networkAnalysis}} for the detailed information about the
 returned results.
 }
 \value{
-In the end, this function will return an updated object of class \code{GSCA} 
-or \code{NWA}.  
+In the end, this function will return an updated object of class \code{\link[HTSanalyzeR:GSCA-class]{GSCA}} 
+or \code{\link[HTSanalyzeR:NWA-class]{NWA}}.  
 }
 \references{
 Beisser D, Klau GW, Dandekar T, Muller T, Dittrich MT. \emph{BioNet: an R-Package 
@@ -119,22 +122,22 @@ i223-i231.
 Xin Wang \email{xw264@cam.ac.uk}
 }
 \seealso{
-\code{analyzeGeneSetCollection}, \code{networkAnalysis}
+\code{\link[HTSanalyzeR:analyzeGeneSetCollections]{analyzeGeneSetCollections}}, \code{\link[HTSanalyzeR:networkAnalysis]{networkAnalysis}}
 }
 \examples{
 \dontrun{
 library(org.Dm.eg.db)
 library(KEGG.db)
 ##load data for enrichment analyses
-data("data4enrich")
+data("KcViab_Data4Enrich")
 ##select hits
-hits <- names(data4enrich)[which(abs(data4enrich) > 2)]
+hits <- names(KcViab_Data4Enrich)[which(abs(KcViab_Data4Enrich) > 2)]
 ##set up a list of gene set collections
-PW.KEGG <- KeggGeneSets(species = "Dm")
-gsc.list <- list(PW.KEGG = PW.KEGG)
+PW_KEGG <- KeggGeneSets(species = "Dm")
+gscList <- list(PW_KEGG = PW_KEGG)
 ##create an object of class 'GSCA'
-gsca <- new("GSCA", listOfGeneSetCollections=gsc.list,
-geneList = data4enrich, hits = hits)
+gsca <- new("GSCA", listOfGeneSetCollections=gscList,
+geneList = KcViab_Data4Enrich, hits = hits)
 ##print gsca
 gsca
 ##do preprocessing (data4enrich has already been preprocessed)

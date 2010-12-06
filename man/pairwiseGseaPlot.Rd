@@ -1,11 +1,11 @@
 \name{pairwiseGseaPlot}
 \alias{pairwiseGseaPlot}
 \title{
-Produce a collection of plots for GSEA by pairs of phenotypes
+Produce plots for pairwise GSEA results
 }
 \description{
-Function that produces plots from the GSEA analysis, but plotting in
-parallel for two phenotypes, for one gene set.
+This function plots results of the GSEA analyses for one gene set for
+two phenotypes in parallel .
 }
 \usage{
 pairwiseGseaPlot(gl1, gl2, geneSet, exponent=1, output="png", filepath,
@@ -15,13 +15,13 @@ filename, ...)
   \item{gl1}{
 a named numeric or integer vector where names are gene identifiers of
 the same type as the ones in the gene set collection, and values are the
-measurement on phenotype 2 corresponding to those genes. This vector
+measurement on phenotype one corresponding to those genes. This vector
 MUST be ordered
 }
   \item{gl2}{
 a named numeric or integer vector where names are gene identifiers of
 the same type as the ones in the gene set collection, and values are the
-measurement on phenotype 2 corresponding to those genes this vector MUST
+measurement on phenotype two corresponding to those genes this vector MUST
 be ordered
 }
   \item{geneSet}{
@@ -65,6 +65,9 @@ Proc. Natl. Acad. Sci. USA 102, 15545-15550.
 }
 \author{
 Camille Terfve, Xin Wang
+}
+\seealso{
+\code{\link[HTSanalyzeR:pairwiseGsea]{pairwiseGsea}}, \code{\link[HTSanalyzeR:pairwisePhenoMannWith]{pairwisePhenoMannWith}}
 }
 \examples{
 \dontrun{

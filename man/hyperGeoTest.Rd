@@ -4,10 +4,10 @@
 Performs hypergeometric tests for over-representation analysis
 }
 \description{
-This function takes in a single gene set (GeneSet), a vector (GeneList)
-of gene symbols for all tested genes, a vector of "hits" (hits), and a
-p-value adjustment method. It outputs a vector containing the size of
-the gene universe, the size of the gene set within this universe (i.e.
+This function takes in a single gene set (geneSet), a vector of gene
+identifiers for all tested genes (universe), a vector of "hits" (hits),
+and a p-value adjustment method. It outputs a vector containing the size
+of the gene universe, the size of the gene set within this universe (i.e.
 how many genes from the universe map to this gene set), the total number
 of hits, the number of hits expected to occur in the gene set, the actual
 hits observed in the gene set, and the pvalue from a hypergeometric test.
@@ -60,10 +60,11 @@ library(org.Dm.eg.db)
 library(KEGG.db)
 ##load phenotype vector (see the vignette for details about the
 ##preprocessing of this data set)
-data("data4enrich")
+data("KcViab_Data4Enrich")
 ##Prepare kegg gene sets
 DM_KEGG<-KeggGeneSets(species="Dm")
 ##Do the tests
 hypgeoResults <- hyperGeoTest(geneSet=DM_KEGG[[1]], universe=
-names(data4enrich), hits=names(data4enrich)[which(abs(data4enrich) > 2)])
+names(KcViab_Data4Enrich), hits=names(KcViab_Data4Enrich)[which(abs(
+KcViab_Data4Enrich) > 2)])
 }

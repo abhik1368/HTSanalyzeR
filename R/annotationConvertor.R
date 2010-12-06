@@ -9,8 +9,7 @@ annotationConvertor<-function(geneList, species="Dm",
 	
 	##check arguments
 	paraCheck("genelist.general", geneList)
-	paraCheck("initialIDs", initialIDs)
-	paraCheck("finalIDs", finalIDs)
+
 	paraCheck("keepMultipleMappings", keepMultipleMappings)
 	paraCheck("verbose", verbose)
 	
@@ -19,30 +18,40 @@ annotationConvertor<-function(geneList, species="Dm",
 		##check species
 		paraCheck(name = "species", para = species)	
 		if(species == "Dm") {
+			paraCheck("dro.initialIDs", initialIDs)
+			paraCheck("dro.finalIDs", finalIDs)
 			if(!("package:org.Dm.eg.db" %in% search())) 
 				library(org.Dm.eg.db)
 			geneListEntrez <- drosoAnnotationConvertor(
 				geneList = geneList, initialIDs = initialIDs, 
 				finalIDs = finalIDs, verbose = verbose)
 		} else if(species == "Hs") {
+			paraCheck("mam.initialIDs", initialIDs)
+			paraCheck("mam.finalIDs", finalIDs)
 			if(!("package:org.Hs.eg.db" %in% search())) 
 				library(org.Hs.eg.db)
 			geneListEntrez <- mammalAnnotationConvertor( 
 				geneList = geneList, initialIDs = initialIDs, 
 				finalIDs = finalIDs, species = species, verbose = verbose)
 		} else if(species == "Rn") {
+			paraCheck("mam.initialIDs", initialIDs)
+			paraCheck("mam.finalIDs", finalIDs)
 			if(!("package:org.Rn.eg.db" %in% search())) 
 				library(org.Rn.eg.db)
 			geneListEntrez <- mammalAnnotationConvertor(
 				geneList = geneList, initialIDs = initialIDs, 
 				finalIDs = finalIDs, species = species, verbose = verbose)
 		} else if(species == "Mm") {
+			paraCheck("mam.initialIDs", initialIDs)
+			paraCheck("mam.finalIDs", finalIDs)
 			if(!("package:org.Mm.eg.db" %in% search())) 
 				library(org.Mm.eg.db)
 			geneListEntrez <- mammalAnnotationConvertor(
 				geneList = geneList, initialIDs = initialIDs, 
 				finalIDs = finalIDs, species = species, verbose = verbose)
 		} else if(species == "Ce") {
+			paraCheck("cel.initialIDs", initialIDs)
+			paraCheck("cel.finalIDs", finalIDs)
 			if(!("package:org.Ce.eg.db" %in% search())) 
 				library(org.Ce.eg.db)
 			geneListEntrez <- celAnnotationConvertor(

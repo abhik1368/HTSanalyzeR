@@ -7,11 +7,11 @@ Plot and save figures of GSEA results of top significant gene sets
 \description{
 This is a generic function.
 
-When implemented as the S4 method for objects of class 'GSCA', this function 
+When implemented as the S4 method for objects of class \code{\link[HTSanalyzeR:GSCA]{GSCA}}, this function 
 plots figures of the ranked phenotypes, positions of the gene set and the 
-location of the maximum enrichment score for top significant gene sets.  
+location of the enrichment score for top significant gene sets.  
 
-To use this function for objects of class 'GSCA':
+To use this function for objects of class \code{\link[HTSanalyzeR:GSCA]{GSCA}}:
 
 plotGSEA(object, gscs, ntop=NULL, allSig=FALSE, filepath=".", output=
 "png", ...)
@@ -21,11 +21,12 @@ plotGSEA(object, ...)
 }
 \arguments{
 	\item{object}{
-an object. When this function is implemented as the S4 method of class 'GSCA', 
-this argument is an object of class 'GSCA'.
+an object. When this function is implemented as the S4 method of class \code{\link[HTSanalyzeR:GSCA]{GSCA}}, 
+this argument is an object of class \code{\link[HTSanalyzeR:GSCA]{GSCA}}.
 }
 	\item{...}{
-other arguments. (see below for the arguments supported by class 'GSCA')
+other arguments. (see below for the arguments supported by the method of
+class \code{\link[HTSanalyzeR:GSCA]{GSCA}})
 }
 \describe{
 	\item{gscs:}{
@@ -49,21 +50,26 @@ a single character value specifying the format of output image: "pdf" or
 "png"
 }
 	\item{...}{
-other arguments used by function png() or pdf() such as width and height
+other arguments used by the function \code{png} or \code{pdf} such as
+'width' and 'height'
 }
 }
 
 }
 \details{
 To use this function to make GSEA plots of top significance, users can
-only choose one method, either assign 'ntop' a integer or set 'allSig =
-TRUE'. Exceptions will occur if both methods are used, or no method is
-used. Please also note that 'ntop' is a cutoff for all gene set collections
-in 'gscs'.
+only choose one method, either assign a integer to the argument 'ntop'
+or set the argument 'allSig' to 'TRUE'. Exceptions will occur if both
+methods are used, or no method is used. Please also note that the argument
+'ntop' is a cutoff for all gene set collections in the argument 'gscs'.
 
 We suggest to summarize(gsca, what="Result") first to have an idea of how
 many significant gene sets there are, and then choose to plot them all
 or just top few ones.
+}
+
+\seealso{
+\code{\link[HTSanalyzeR:viewGSEA]{viewGSEA}}, \code{\link[HTSanalyzeR:gseaPlots]{gseaPlots}}
 }
 
 \author{
@@ -75,15 +81,15 @@ Xin Wang \email{xw264@cam.ac.uk}
 library(org.Dm.eg.db)
 library(KEGG.db)
 ##load data for enrichment analyses
-data("data4enrich")
+data("KcViab_Data4Enrich")
 ##select hits
-hits <- names(data4enrich)[which(abs(data4enrich) > 2)]
+hits <- names(KcViab_Data4Enrich)[which(abs(KcViab_Data4Enrich) > 2)]
 ##set up a list of gene set collections
 PW_KEGG <- KeggGeneSets(species = "Dm")
 gscList <- list(PW_KEGG = PW_KEGG)
 ##create an object of class 'GSCA'
-gsca <- new("GSCA", listOfGeneSetCollections=gscList,
-geneList = data4enrich, hits = hits)
+gsca <- new("GSCA", listOfGeneSetCollections=gscList, geneList = 
+KcViab_Data4Enrich, hits = hits)
 ##print summary of gsca
 summarize(gsca)
 ##do preprocessing (data4enrich has already been preprocessed)

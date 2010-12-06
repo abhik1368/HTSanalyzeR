@@ -5,8 +5,8 @@ Create gene set collections (lists) based on Kegg pathways terms
 }
 \description{
 This function creates gene set collections (lists) based on Kegg pathways
-terms. It is species-specific, and returns a GeneSetCollection objects
-with the elements of the gene sets represented by Entrez Gene IDs.
+terms. It is species-specific, and returns a list of gene set collections
+(lists) with the elements of the gene sets represented by Entrez Gene IDs.
 }
 \usage{
 KeggGeneSets(species="Dm")
@@ -29,7 +29,7 @@ genes as entrez gene IDs
 Camille Terfve, Xin Wang
 }
 \seealso{
-GOGeneSets
+\code{\link[HTSanalyzeR:GOGeneSets]{GOGeneSets}}
 }
 \examples{
 library(org.Dm.eg.db)

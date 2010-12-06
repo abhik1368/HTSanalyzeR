@@ -1,7 +1,7 @@
 \name{drosoAnnotationConvertor}
 \alias{drosoAnnotationConvertor}
 \title{
-Conversion between different types of identifiers for Drosophila Melanogaster
+Convert between different types of identifiers for Drosophila Melanogaster
 }
 \description{
 This function converts an initial named data vector to the same vector
@@ -56,7 +56,7 @@ the same data vector/matrix but with names/row names converted.
 Camille Terfve, Xin Wang
 }
 \seealso{
-mammalAnnotationConvertor, celAnnotationConvertor, annotationConvertor
+\code{\link[HTSanalyzeR:mammalAnnotationConvertor]{mammalAnnotationConvertor}}, \code{\link[HTSanalyzeR:celAnnotationConvertor]{celAnnotationConvertor}}, \code{\link[HTSanalyzeR:annotationConvertor]{annotationConvertor}}
 }
 \examples{
 library(org.Dm.eg.db)

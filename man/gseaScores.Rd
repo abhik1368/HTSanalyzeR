@@ -6,10 +6,10 @@
 Compute enrichment scores for GSEA (Gene Set Enrichment Analysis)
 }
 \description{
-'gseaScores' computes enrichment scores for GSEA, running score and
-position of hits for a gene set.
+'gseaScores' computes the enrichment score, running scores and
+positions of hits for a gene set.
 
-'gseaScoresBatch' computes enrichment score for both input 'geneList'
+'gseaScoresBatch' computes enrichment scores for both input 'geneList'
 and its permutations for one gene set.
 
 'gseaScoresBatchParallel' computes enrichment scores for both input
@@ -65,11 +65,11 @@ match.
 a single numeric value of the enrichment score
   }
   \item{runningScore}{
-a numeric vector of running enrichment scores (only in mode "graph")
+a numeric vector of running scores (only in mode "graph")
   }
   \item{positions}{
-a numeric vector specifying positions in the gene list of the genes in
-the gene set (only in mode "graph")
+a numeric vector of positions in the gene list of the genes in the gene
+set (only in mode "graph")
 }
 
 * gseaScoresBatch will return a list consisting of:
@@ -116,19 +116,20 @@ library(org.Dm.eg.db)
 library(snow)
 ##load phenotype vector (see the vignette for details about the
 ##preprocessing of this data set)
-data("data4enrich")
+data("KcViab_Data4Enrich")
 DM_KEGG <- KeggGeneSets(species="Dm")
 ##GSEA for input gene list for a single gene set
-test <- gseaScores(geneList=data4enrich, geneSet=DM_KEGG[[1]], exponent=1,
-mode="graph")
+test <- gseaScores(geneList=KcViab_Data4Enrich, geneSet=DM_KEGG[[1]], 
+exponent=1, mode="graph")
 ##GSEA for both input gene list and permutation tests for multiple gene
 ##sets in parallel
 nPermutations <- 100
-glPerm <- sapply(1:nPermutations, function(n) names(data4enrich)[
-sample(1:length(data4enrich), length(data4enrich), replace=FALSE)])
-glPerm<-cbind(names(data4enrich), glPerm)
+glPerm <- sapply(1:nPermutations, function(n) names(KcViab_Data4Enrich)[
+sample(1:length(KcViab_Data4Enrich), length(KcViab_Data4Enrich), 
+replace=FALSE)])
+glPerm<-cbind(names(KcViab_Data4Enrich), glPerm)
 options(cluster=makeCluster(4,"SOCK"))
-gseaBatchPar <- gseaScoresBatchParallel(geneList=data4enrich,
+gseaBatchPar <- gseaScoresBatchParallel(geneList=KcViab_Data4Enrich,
 geneNames.perm=glPerm, collectionOfGeneSets=DM_KEGG[1:10], nPermutations=100,
 exponent=1)
 if(is(getOption("cluster"),"cluster")) {

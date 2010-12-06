@@ -5,7 +5,7 @@ GSEA on a pair of phenotypes
 }
 \description{
 This function performs pairwise GSEA: it looks for gene sets that are
-specifically over-represented towards the 2 different ends of two ranked
+specifically overrepresented towards the two different ends of two ranked
 lists of genes, in a gene set collection.
 }
 \usage{
@@ -16,17 +16,17 @@ minGeneSetSize=15, pAdjustMethod="BH")
   \item{gl1}{
 a named numeric or integer vector where names are gene identifiers of
 the same type as the ones in the gene set collection, and values are
-the measurement on phenotype 1 corresponding to those genes this vector
+the measurement on phenotype one corresponding to those genes this vector
 MUST be ordered (decreasing or increasing)
 }
   \item{gl2}{
 a named numeric or integer vector where names are gene identifiers of
 the same type as the ones in the gene set collection, and values are the
-measurement on phenotype 2 corresponding to those genes this vector MUST
+measurement on phenotype two corresponding to those genes this vector MUST
 be ordered
 }
   \item{gsc}{
-a list of gene sets. Each gene set in the list is a character vector. 
+a list of gene sets, each of which in the list is a character vector. 
 }
   \item{exponent}{
 a single numeric or integer value (set as 1 by default) specifying the
@@ -46,12 +46,12 @@ used (see 'p.adjust' for details)
 }
 }
 \value{
-a table with a row for each gene set, containing the p values for the
+a table with a row for each gene set, containing the p-values for the
 GSEA, and the observed scores for each of the phenotypes independently.
-The table is ordered by the p value column.
+The table is ordered by the p-value column.
 }
 \details{
-phenotypes 1 and 2 must be measured on the same genes, i.e. the two
+phenotypes one and two must be measured on the same genes, i.e. the two
 vectors gl1 and gl2 must have the same length and their names must match,
 but the two vectors must be ordered separately, i.e.one phenotype vector
 is ordered based on the values of that phenotype only
@@ -65,6 +65,9 @@ Proc. Natl. Acad. Sci. USA 102, 15545-15550.
 }
 \author{
 Camille Terfve, Xin Wang
+}
+\seealso{
+\code{\link[HTSanalyzeR:pairwiseGseaPlot]{pairwiseGseaPlot}}, \code{\link[HTSanalyzeR:pairwisePhenoMannWith]{pairwisePhenoMannWith}}
 }
 \examples{
 gl1 <- runif(100, min=-5, max=5)

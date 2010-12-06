@@ -40,7 +40,7 @@ setMethod(
 			.Object@summary$input["p-values", "input"] <- length(pvalues)
 			.Object@summary$input["phenotypes", "input"] <- length(phenotypes)
 
-			.Object@summary$db[1, "name"] <- "Biogrid"
+			.Object@summary$db[1, "name"] <- "Unknown"
 			if(!is.null(interactome)) {
 				.Object@summary$db[1, "node No"] <- numNodes(interactome)
 				.Object@summary$db[1, "edge No"] <- numEdges(interactome)
@@ -140,7 +140,7 @@ setMethod(
 		"interactome",
 		"NWA",
 		function(object, interactionMatrix = NULL, species, 
-			link = "http://thebiogrid.org/downloads/archives/Release%20Archive/BIOGRID-3.0.64/BIOGRID-ORGANISM-3.0.64.tab2.zip",
+			link = "http://thebiogrid.org/downloads/archives/Release%20Archive/BIOGRID-3.1.71/BIOGRID-ORGANISM-3.1.71.tab2.zip",
 			reportDir = "HTSanalyzerReport", genetic = FALSE, verbose = TRUE) {
 			##check arguments
 			cat("-Creating interactome ...\n")
@@ -169,9 +169,11 @@ setMethod(
 				InteractionsData <- biogridDataDownload(link = link,
 					species = species, dataDirectory = biogridDataDir, 
 					verbose = verbose)
+				object@summary$db[1, "name"] <- "Biogrid"
 			} else {
 				paraCheck(name = "interactionMatrix", para = interactionMatrix)
 				InteractionsData <- interactionMatrix
+				object@summary$db[1, "name"] <- "User-input"
 			}
 			##If it is specified that genetic interactions should be 
 			##discarded, remove those rows			
