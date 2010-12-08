@@ -5,6 +5,7 @@
 \alias{KcViab_GSCA}
 \alias{KcViab_NWA}
 \alias{Biogrid_DM_Interactome}
+\alias{Biogrid_DM_Mat}
 
 \title{A Sample data set of the package HTSanalyzeR}
 
