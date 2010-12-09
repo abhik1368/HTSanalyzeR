@@ -204,12 +204,18 @@ setMethod(
 					stop("Wrong gene set collection names specified in 'goGSCs'!\n")
 			}
 			appendGOTerm<-function(df) {
-				data.frame(Gene.Set.Term=Term(rownames(df)),df, stringsAsFactors=FALSE)
+				goterms<-Term(rownames(df))
+				goterms[which(is.na(goterms))]<-"NA"
+				names(goterms)[which(is.na(names(goterms)))]<-rownames(df)[which(is.na(names(goterms)))]
+				data.frame(Gene.Set.Term=goterms,df, stringsAsFactors=FALSE)
 			}
 			appendKEGGTerm<-function(df) {
 				dfRownames<-rownames(df)
 				gsKEGG<-sapply(dfRownames, function(c) substr(c,4,nchar(c)))
-				newdf<-data.frame(Gene.Set.Term=unlist(mget(gsKEGG, env=KEGGPATHID2NAME)),df, stringsAsFactors=FALSE)
+				keggterms<-unlist(mget(gsKEGG, env=KEGGPATHID2NAME, ifnotfound=NA))
+				keggterms[which(is.na(keggterms))]<-"NA"
+				names(keggterms)[which(is.na(names(keggterms)))]<-rownames(df)[which(is.na(names(keggterms)))]
+				newdf<-data.frame(Gene.Set.Term=keggterms,df, stringsAsFactors=FALSE)
 				rownames(newdf)<-rownames(df)
 				return(newdf)
 			}	
