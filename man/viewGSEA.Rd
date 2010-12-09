@@ -54,33 +54,14 @@ Xin Wang \email{xw264@cam.ac.uk}
 \dontrun{
 library(org.Dm.eg.db)
 library(KEGG.db)
-##load data for enrichment analyses
-data("KcViab_Data4Enrich")
-##select hits
-hits <- names(KcViab_Data4Enrich)[which(abs(KcViab_Data4Enrich) > 2)]
-##set up a list of gene set collections
-PW_KEGG <- KeggGeneSets(species = "Dm")
-gscList <- list(PW_KEGG = PW_KEGG)
-##create an object of class 'GSCA'
-gsca <- new("GSCA", listOfGeneSetCollections=gscList, geneList =
-KcViab_Data4Enrich, hits = hits)
-##print summary of gsca
-summarize(gsca)
-##do preprocessing (data4enrich has already been preprocessed)
-gsca <- preprocess(gsca, species="Dm", initialIDs = "Entrez.gene", 
-keepMultipleMappings = TRUE, duplicateRemoverMethod = "max", 
-orderAbsValue = FALSE)
-##print summary of gsca again
-summarize(gsca)
-##do hypergeometric tests and GSEA
-gsca <- analyze(gsca, para = list(pValueCutoff = 0.05, pAdjustMethod 
-= "BH", nPermutations = 1000, minGeneSetSize = 100,exponent = 1))
+##load sample data
+data("KcViab_GSCA")
 ##print summary of results
-summarize(gsca, what="Result")
+summarize(KcViab_GSCA, what="Result")
 ##print top significant gene sets in GO.BP
-topPWKEGG<-getTopGeneSets(gsca, "GSEA.results", "PW_KEGG", allSig=TRUE)
+topPWKEGG<-getTopGeneSets(KcViab_GSCA, "GSEA.results", "PW_KEGG", allSig=TRUE)
 ##view a gene set
-viewGSEA(gsca, "PW_KEGG", topPWKEGG[["PW_KEGG"]][1])
+viewGSEA(KcViab_GSCA, "PW_KEGG", topPWKEGG[["PW_KEGG"]][1])
 }
 }
 

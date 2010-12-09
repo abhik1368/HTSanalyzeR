@@ -90,6 +90,7 @@ HTSanalyzeR4cellHTS2 <- function(
 		pAdjustMethod = pAdjustMethod, nPermutations = nPermutations, 
 		minGeneSetSize = minGeneSetSize,exponent = exponent), 
 		verbose = verbose)
+	gsca <- appendGSTerms(gsca, keggGSCs=keggGSCs, goGSCs=goGSCs)
 	################################
 	##2. 	Network analysis
 	################################	

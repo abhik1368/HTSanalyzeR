@@ -232,6 +232,7 @@ library(GO.db)
 library(KEGG.db)
 library(cellHTS2)
 library(BioNet)
+library(igraph)
 #prepare data from cellHTS2
 experimentName <- "KcViab"
 dataPath <- system.file(experimentName, package = "cellHTS2")

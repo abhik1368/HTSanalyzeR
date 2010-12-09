@@ -4,8 +4,8 @@
 \alias{KcViab_PVals}
 \alias{KcViab_GSCA}
 \alias{KcViab_NWA}
-\alias{Biogrid_DM_Interactome}
 \alias{Biogrid_DM_Mat}
+\alias{Biogrid_DM_Interactome}
 
 \title{A Sample data set of the package HTSanalyzeR}
 
@@ -53,5 +53,6 @@ Genome-wide RNAi analysis of growth and viability in Drosophila cells,
     data("KcViab_GSCA")
     data("KcViab_NWA")
     data("Biogrid_DM_Interactome")
+    data("Biogrid_DM_Mat")
 }
 \keyword{datasets}

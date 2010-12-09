@@ -11,12 +11,16 @@ GenHTSAHtmlRowUnit(content, href.attr=NULL,td.attr=NULL,header=FALSE)
 }
 \arguments{
 \item{content}{
+the content of the table unit
 }
 \item{href.attr}{
+attributes of hyperlinks
 }
 \item{td.attr}{
+attributes of a standard cell
 }
 \item{header}{
+a logical value specifying whether the unit is a table header unit
 }
 }
 \details{

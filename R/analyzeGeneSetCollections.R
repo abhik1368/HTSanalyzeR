@@ -89,20 +89,8 @@ analyzeGeneSetCollections <- function(listOfGeneSetCollections, geneList,
 		HGTresults[[i]][,"Adjusted.Pvalue"]<<-Adjusted.Pvalue
 		}
 	})
-	HGTAll<-NULL
-	##Combine results from each individual gene set collection into one 
-	##large dataframe of all results
-	sapply(1:numGeneSetCollections, function(i) {
-			HGTAll<<-rbind(HGTAll, HGTresults[[i]])
-		}
-	)
-	##Results are ordered by adjusted p-values from lowest to highest
-	HGTAll<-HGTAll[order(HGTAll[,"Adjusted.Pvalue"]),,drop=FALSE]
-	##The dataframe of all results is added as the last element
-	##in the hypergeometric results list
-	HGTresults[[numGeneSetCollections+1]]<-HGTAll
 	
-	result.names<-c(names(listOfGeneSetCollections),"All.collections")
+	result.names<-names(listOfGeneSetCollections)
 	names(HGTresults)<-result.names
 	cat("-Hypergeometric analysis complete\n\n")		
 	######################
@@ -154,7 +142,7 @@ analyzeGeneSetCollections <- function(listOfGeneSetCollections, geneList,
 			test.pvalues.collection, gsea.adjust.pval, test.FDR.collection)			
 		colnames(test.GSEA.results) <- c("Observed.score", "Pvalue", 
 			"Adjusted.Pvalue", "FDR")
-		GSEA.results.list <- vector("list", (numGeneSetCollections+1))
+		GSEA.results.list <- vector("list", (numGeneSetCollections))
 		##Extract results dataframe for each gene set collection and 
 		##orders them by adjusted p-value
 		sapply(1 : numGeneSetCollections, function(i) {
@@ -169,18 +157,10 @@ analyzeGeneSetCollections <- function(listOfGeneSetCollections, geneList,
 				}
 			}
 		)	
-		##Produce data frame containing results for all gene set collections
-		GSEA.all<-NULL
-		sapply(1:numGeneSetCollections, function(i) {
-				GSEA.all <<- rbind(GSEA.all, GSEA.results.list[[i]])
-			}
-		)	
-		GSEA.all <- GSEA.all[order(GSEA.all[, "Adjusted.Pvalue"]), , 
-			drop=FALSE]		
-		GSEA.results.list[[numGeneSetCollections + 1]] <- GSEA.all
+
 		names(GSEA.results.list) <- result.names
 	} else {
-		GSEA.results.list <- vector("list", (numGeneSetCollections+1))
+		GSEA.results.list <- vector("list", (numGeneSetCollections))
 		sapply(1 : numGeneSetCollections, function(i) {
 				GSEA.results.list[[i]] <<- matrix(, nrow=0, ncol=4)
 				colnames(GSEA.results.list[[i]]) <<- c("Observed.score", 
@@ -192,12 +172,9 @@ analyzeGeneSetCollections <- function(listOfGeneSetCollections, geneList,
 	##pvalues < pValueCutoff
 	sign.hgt<-lapply(HGTresults, function(x) {
 		if(nrow(x)>0) {
-			pvs<-x[,"Pvalue"]
-			a<-which(pvs<pValueCutoff)
-			if(length(a)==1) {
-				x<-x[a,,drop=FALSE]
-			} else {
-				x<-x[a,,drop=FALSE]
+			a<-which(x[,"Pvalue"]<pValueCutoff)
+			x<-x[a,,drop=FALSE]
+			if(length(a)>1) {
 				x<-x[order(x[,"Pvalue"]),,drop=FALSE]
 			}
 		}
@@ -208,10 +185,8 @@ analyzeGeneSetCollections <- function(listOfGeneSetCollections, geneList,
 	sign.hgt.adj<-lapply(HGTresults, function(x) {
 		if(nrow(x)>0) {
 			a<-which(x[,"Adjusted.Pvalue"]<pValueCutoff)
-			if (length(a)==1){
-				x<-x[a,,drop=FALSE]
-			} else {
-				x<-x[a,,drop=FALSE]
+			x<-x[a,,drop=FALSE]
+			if (length(a)>1) {
 				x<-x[order(x[,"Adjusted.Pvalue"]),,drop=FALSE]
 			}
 		}
@@ -220,10 +195,8 @@ analyzeGeneSetCollections <- function(listOfGeneSetCollections, geneList,
 	sign.gsea<-lapply(GSEA.results.list, function(x) {
 		if(nrow(x)>0) {
 			a<-which(x[,"Pvalue"]<pValueCutoff)
-			if (length(a)==1){
-				x<-x[a,,drop=FALSE]
-			}else{
-				x<-x[a,,drop=FALSE]
+			x<-x[a,,drop=FALSE]
+			if (length(a)>1) {
 				x<-x[order(x[,"Pvalue"]),,drop=FALSE]
 			}
 		}
@@ -232,10 +205,8 @@ analyzeGeneSetCollections <- function(listOfGeneSetCollections, geneList,
 	sign.gsea.adj<-lapply(GSEA.results.list, function(x) {
 		if(nrow(x)>0) {
 			a<-which(x[,"Adjusted.Pvalue"]<=pValueCutoff)
-			if(length(a)==1) {
-				x<-x[a,,drop=FALSE]
-			} else {
-				x<-x[a,,drop=FALSE]
+			x<-x[a,,drop=FALSE]
+			if(length(a)>1) {
 				x<-x[order(x[,"Adjusted.Pvalue"]),,drop=FALSE]
 			}
 		}
@@ -244,7 +215,7 @@ analyzeGeneSetCollections <- function(listOfGeneSetCollections, geneList,
 	overlap.adj<-list()
 	##identify gene set collections with significant pvalues and/or 
 	##adjusted pvalues from both GSEA and hypergeometric testing
-	sapply(1:(numGeneSetCollections+1), function(i) {
+	sapply(1:numGeneSetCollections, function(i) {
 			a1 <- intersect(rownames(sign.gsea[[i]]), 
 				rownames(sign.hgt[[i]]))
 			a2 <- intersect(rownames(sign.gsea.adj[[i]]), 
@@ -258,8 +229,10 @@ analyzeGeneSetCollections <- function(listOfGeneSetCollections, geneList,
 			GSEA.Adj.Pvalue <- 
 				GSEA.results.list[[i]][a2, "Adjusted.Pvalue", drop=FALSE]		
 			overlap[[i]] <<- cbind(Hypergeometric.Pvalue, GSEA.Pvalue)
+			colnames(overlap[[i]])<<-c("HyperGeo.Pvalue","GSEA.Pvalue")
 			overlap.adj[[i]] <<- 
 				cbind(Hypergeometric.Adj.Pvalue, GSEA.Adj.Pvalue)
+			colnames(overlap.adj[[i]])<<-c("HyperGeo.Adj.Pvalue","GSEA.Adj.Pvalue")
 		}
 	)
 	names(overlap) <- result.names	

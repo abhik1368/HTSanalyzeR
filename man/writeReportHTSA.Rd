@@ -72,8 +72,14 @@ Xin Wang, Camille Terfve
 \examples{
 \dontrun{
 ##(see the vignette for details about the preprocessing of this data set)
+library(KEGG.db)
+library(GO.db)
+library(AnnotationDbi)
 data("KcViab_GSCA")
 data("KcViab_NWA")	
+##append gene set terms to results
+KcViab_GSCA<-appendGSTerms(KcViab_GSCA, keggGSCs="PW_KEGG", 
+goGSCs=c("GO_BP","GO_MF","GO_CC"))
 ##report both analyses
 writeReportHTSA(gsca=KcViab_GSCA, nwa=KcViab_NWA, experimentName="KcViab",
 species="Dm", allSig=TRUE, keggGSCs="PW_KEGG", goGSCs=c("GO_BP","GO_MF",

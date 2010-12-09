@@ -55,6 +55,8 @@ paraCheck <- function(name, para) {
  	if(name=="gscs") {
 		if(!is.list(para))
 			stop("'listOfGeneSetCollections' must be a list of gene set collections!\n")
+		if(is.null(names(para)))
+			stop("'listOfGeneSetCollections' must be a list of named gene set collections!\n")
 		if(!all(unlist(lapply(para,is.list))))
 			stop("Each gene set collection in 'listOfGeneSetCollections' must be a list of gene sets!\n")
 		if(any(unlist(lapply(para,length))==0))
@@ -248,12 +250,24 @@ paraCheck <- function(name, para) {
 			stop("'filename' should be a character!\n")
 	}
 	if(name=="ntop") {
-		if(!(is.integer(para) || is.numeric(para)) || length(para)!=1)
-			stop("'ntop' should be a integer or numeric value! \n")
+		if(!(is.integer(para) || is.numeric(para)) || length(para)!=1 || para<=0)
+			stop("'ntop' should be a integer or numeric value >0 ! \n")
 	}
 	if(name=="allSig") {
 		if(!is.logical(para) || length(para)!=1)
 			stop("'allSig' should be a logical value!\n")
+	}
+	if(name=="gsNameType") {
+		if(!is.character(para) || length(para)!=1 || !(para%in% c("id","term","none")))
+			stop("'gsNameType' should be a single character value: 'id', 'term' or 'none'!\n")		
+	}
+	if(name=="displayEdgeLabel") {
+		if(!is.logical(para) || length(para)!=1)
+			stop("'displayEdgeLabel' should be a logical value!\n")		
+	}
+	if(name=="layout") {
+		if(!is.character(para) || length(para)!=1 || !(para%in%c("layout.fruchterman.reingold", "layout.spring", "layout.circle", "layout.kamada.kawai")))
+			stop("'layout' must be one of 'layout.fruchterman.reingold', 'layout.spring', 'layout.circle' and 'layout.kamada.kawai'!\n")
 	}
 	if(name=="resultName") {
 		if(!is.character(para) || length(para)!=1)

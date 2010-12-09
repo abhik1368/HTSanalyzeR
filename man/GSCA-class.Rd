@@ -71,6 +71,9 @@ the examples below)
 		do hypergeometric tests and Gene Set Enrichment Analysis based on
 		input parameter list \code{para}.
 		}
+		\item{\code{appendGSTerms}}{
+		append gene set terms to GSCA results
+		}
 		\item{\code{summarize}}{
 		print summary information of \code{listOfGeneSetCollections},
 		\code{geneList}, \code{hits}, \code{para}, and \code{result}.
@@ -88,6 +91,12 @@ the examples below)
 		\item{\code{plotGSEA}}{
 		plot and save figures for Gene Set Enrichment Analysis.
 		}
+		\item{\code{viewEnrichMap}}{
+		plot an enrichment map for GSEA results
+		}
+		\item{\code{plotEnrichMap}}{
+		plot and save an enrichment map for GSEA results
+		}
 		\item{\code{report}}{
 		generate html reports.
 		}
@@ -97,17 +106,22 @@ the examples below)
 \seealso{
   \code{\link[HTSanalyzeR:preprocess]{preprocess}}
   \code{\link[HTSanalyzeR:analyze]{analyze}}
+  \code{\link[HTSanalyzeR:appendGSTerms]{appendGSTerms}}
   \code{\link[HTSanalyzeR:summarize]{summarize}}
   \code{\link[HTSanalyzeR:getTopGeneSets]{getTopGeneSets}}
   \code{\link[HTSanalyzeR:writeHits]{writeHits}}
   \code{\link[HTSanalyzeR:viewGSEA]{viewGSEA}}
   \code{\link[HTSanalyzeR:plotGSEA]{plotGSEA}}
+  \code{\link[HTSanalyzeR:viewEnrichMap]{viewEnrichMap}}
+  \code{\link[HTSanalyzeR:plotEnrichMap]{plotEnrichMap}}
   \code{\link[HTSanalyzeR:report]{report}}
 }
 \examples{
 \dontrun{
 library(org.Dm.eg.db)
 library(KEGG.db)
+library(AnnotationDbi)
+library(igraph)
 ##load data for enrichment analyses
 data("KcViab_Data4Enrich")
 ##select hits
@@ -124,13 +138,19 @@ keepMultipleMappings = TRUE, duplicateRemoverMethod = "max",
 orderAbsValue = FALSE)
 ##do hypergeometric tests and GSEA
 gsca <- analyze(gsca, para = list(pValueCutoff = 0.05, pAdjustMethod 
-= "BH", nPermutations = 1000, minGeneSetSize = 100, exponent = 1))
+= "BH", nPermutations = 1000, minGeneSetSize = 60, exponent = 1))
 ##print summary information
 summarize(gsca)
 ##get all significant gene sets in "PW_KEGG"
 sigGSs<-getTopGeneSets(gsca, "GSEA.results", "PW_KEGG", allSig=TRUE)
 ##view a GSEA figure
 viewGSEA(gsca, gscName="PW_KEGG", gsName=sigGSs[["PW_KEGG"]][1])
+dev.off()
+##append gene set terms to results
+gsca<-appendGSTerms(gsca, keggGSCs="PW_KEGG")
+##view an enrichment map
+eb<-viewEnrichMap(gsca, gscs="PW_KEGG", allSig=TRUE, gsNameType="term", 
+displayEdgeLabel=FALSE, layout="layout.fruchterman.reingold")
 ##write html reports
 report(object = gsca, experimentName = "GSCATest", species = "Dm", 
 allSig = TRUE, keggGSCs = "PW_KEGG", reportDir="GSCATestReport")

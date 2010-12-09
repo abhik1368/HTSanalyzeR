@@ -66,22 +66,19 @@ verbose=TRUE) or not (when verbose=FALSE)
 }
 \value{
 \item{HyperGeo.results}{a list of dataframes containing the results for 
-all gene set collections in the input,and the last element of this list 
-contains all of these results in a single dataframe.}
+all gene set collections in the input.}
 \item{GSEA.results}{a similar list of dataframes containing the results 
 from GSEA. As an example, to access the GSEA results for a gene set 
 collection named "MyGeneSetCollection", one would enter:
 output$GSEA.results$MyGeneSetCollection}
 \item{Sig.pvals.in.both}{a list of dataframes containing the gene sets 
 with p-values considered significant in both hypergeometric test and 
-GSEA, before pvalue correction.  Each element of the list contains the 
-results for one gene set collection, and the last element of this list 
-contains all of these results in a single dataframe.}
+GSEA, before pvalue correction. Each element of the list contains the 
+results for one gene set collection.}
 \item{Sig.adj.pvals.in.both}{a list of dataframes containing the gene 
 sets with p-values considered significant in both hypergeometric test 
-and GSEA, after pvalue correction.  Each element of the list contains 
-the results for one gene set collection, and the last element of this 
-list contains all of these results in a single dataframe.}
+and GSEA, after pvalue correction. Each element of the list contains 
+the results for one gene set collection.}
 }
 \author{
 John C. Rose, Xin Wang

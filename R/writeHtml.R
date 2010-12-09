@@ -31,19 +31,23 @@ writeHTSAHtmlTab<-function(enrichmentAnalysis,tab=c("GSCA","NWA"),htmlfile,rootd
 		cat('<td class="tabs"> <h3> Hypergeometric tests </h3> </td>', append = TRUE, file = htmlfile)
 		for(i in 1:l.HyperGeo.results){
 			cat(paste('\n <td class="tabs"> <h3><a href="',file.path(rootdir,"html",paste("hyperg",i,".html",sep="")),'" title="',sep=""), append = TRUE, file = htmlfile)
-			cat(paste(names(enrichmentAnalysis$HyperGeo.results)[i],' Hyperg. Tests">','here</a></h3> </td>',sep=""), append = TRUE, file = htmlfile)
+			cat(paste(names(enrichmentAnalysis$HyperGeo.results)[i],' Hyperg. Tests">','result</a></h3> </td>',sep=""), append = TRUE, file = htmlfile)
 		}
 		cat("\n </tr> <tr>", append = TRUE, file = htmlfile)
 		cat('<td class="tabs"> <h3> GSEA </h3> </td>', append = TRUE, file = htmlfile)	
 		for(i in 1:l.GSEA.results){
 			cat(paste('\n <td class="tabs"> <h3><a href="',file.path(rootdir,"html",paste("gsea",i,".html",sep="")),'" title="',sep=""), append = TRUE, file = htmlfile)
-			cat(paste(names(enrichmentAnalysis$GSEA.results)[i],' GSEA">','here</a></h3> </td>',sep=""), append = TRUE, file = htmlfile)
+			cat(paste(names(enrichmentAnalysis$GSEA.results)[i],' GSEA">','result</a></h3> ',sep=""), append = TRUE, file = htmlfile)
+			cat(paste('<h3><a href="', file.path(rootdir,"html",paste("gsea",i,"_map.html",sep="")),
+				'"title=',names(enrichmentAnalysis$GSEA.results)[i],'enrichment map">map</a></h3>',sep=""), append=TRUE, file=htmlfile)	
+			
+			cat("</td>",append=TRUE, file=htmlfile)
 		}
 		cat("\n </tr> <tr>", append = TRUE, file = htmlfile)	
 		cat('<td class="tabs"> <h3> Enrichment Summary </h3> </td>', append = TRUE, file = htmlfile)
 		for(i in 1:l.Sig.adj.pvals.in.both){
 			cat(paste('\n <td class="tabs"> <h3><a href="',file.path(rootdir,"html",paste("enrichment",i,".html",sep="")),'" title="',sep=""), append = TRUE, file = htmlfile)
-			cat(paste(names(enrichmentAnalysis$Sig.adj.pvals.in.both)[i],' Enrichment.summary">','here</a></h3> </td>',sep=""), append = TRUE, file = htmlfile)
+			cat(paste(names(enrichmentAnalysis$Sig.adj.pvals.in.both)[i],' Enrichment.summary">','result</a></h3> </td>',sep=""), append = TRUE, file = htmlfile)
 		}
 		cat("\n </tr>", append = TRUE, file = htmlfile)
 	}
@@ -120,8 +124,8 @@ writeHTSAHtmlTable<-function(dat.tab, href.tab=NULL, signif.tab=NULL, row.attr.t
 	##produce the name part of the table and append it to file 
 	cat(paste('\n <hr/> \n <br>', tab.name,' <br>','\n',sep=""),"\n",file=htmlfile,append=TRUE)
 	if(!is.null(dat.tab)) {
-		if(!is.matrix(dat.tab))
-			stop("input dat.tab must be a matrix including all data to display in the table")
+		if(!is.matrix(dat.tab) && !is.data.frame(dat.tab))
+			stop("input dat.tab must be a matrix or data.frame including all data to display in the table")
 		if(!is.null(href.tab) && length(dim(href.tab))!=3) 
 			stop("input href.tab must be a 3d array specifying href, target and title of hyperlinks")
 		if(!is.null(signif.tab) && !is.matrix(signif.tab))

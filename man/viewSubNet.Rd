@@ -41,25 +41,10 @@ Xin Wang \email{xw264@cam.ac.uk}
 }
 \examples{
 \dontrun{
-library(BioNet)
-##load p-values and phenotypes
-data("KcViab_Data4Enrich","KcViab_PVals")
-##load Biogrid interactome for Drosophila Melanogaster
-data("Biogrid_DM_Interactome")
-##create a NWA (NetWork Analysis) object
-nwa <- new("NWA", pvalues=KcViab_PVals, phenotypes=KcViab_Data4Enrich, 
-interactome=Biogrid_DM_Interactome)
-##preprocessing
-nwa <- preprocess(nwa, species="Dm", initialIDs="Entrez.gene", 
-keepMultipleMappings=TRUE, duplicateRemoverMethod="max")
-##To create an interactome:
-##nwa<-interactome(nwa, species="Dm", reportDir="HTSanalyzerReport",
-##genetic=FALSE)
-##do network analysis
-nwa <- analyze(nwa, fdr=0.001, species="Dm")
-graphics.off()
+##load sample data
+data("KcViab_NWA")
 ##plot to screen the identified subnetwork
-viewSubNet(nwa)
+viewSubNet(KcViab_NWA)
 }
 }
 

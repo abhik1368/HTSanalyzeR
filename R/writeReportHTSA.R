@@ -59,7 +59,6 @@ writeReportHTSA <- function(gsca = NULL, nwa = NULL, experimentName = "Unknown",
 	if(Rep.gsca) {
 		##check gscs
 		gscs <- names(gsca@listOfGeneSetCollections)
-		rslt.gscs <- names(gsca@result$GSEA.results)
 	}
 	##check species
 	if(!is.null(species)) {
@@ -118,6 +117,30 @@ writeReportHTSA <- function(gsca = NULL, nwa = NULL, experimentName = "Unknown",
 	##           	GSCA pages	 		     #
 	##########################################
 	if(Rep.gsca) {
+		numGeneSetCollections<-length(gsca@listOfGeneSetCollections)
+		##Combine results from each individual gene set collection into one
+		sapply(c("HyperGeo.results","GSEA.results","Sig.pvals.in.both","Sig.adj.pvals.in.both"), function(rslt) {
+					##large dataframe of all results
+					gsca@result[[rslt]][["All.collections"]]<<-NULL
+					sapply(1:numGeneSetCollections, function(i) {
+								gsca@result[[rslt]][["All.collections"]]<<-
+										rbind(gsca@result[[rslt]][["All.collections"]], gsca@result[[rslt]][[i]])
+							}
+					)
+					if(nrow(gsca@result[[rslt]][["All.collections"]])>0) {
+						##Results are ordered by adjusted p-values from lowest to highest
+						if(rslt %in% c("HyperGeo.results","GSEA.results"))
+							gsca@result[[rslt]][["All.collections"]]<<-
+									gsca@result[[rslt]][["All.collections"]][order(gsca@result[[rslt]][["All.collections"]][,"Adjusted.Pvalue"]),,drop=FALSE]	
+						else if(rslt=="Sig.pvals.in.both") 
+							gsca@result[[rslt]][["All.collections"]]<<-
+									gsca@result[[rslt]][["All.collections"]][order(gsca@result[[rslt]][["All.collections"]][,"GSEA.Pvalue"]),,drop=FALSE]		
+						else if(rslt=="Sig.adj.pvals.in.both")
+							gsca@result[[rslt]][["All.collections"]]<<-
+									gsca@result[[rslt]][["All.collections"]][order(gsca@result[[rslt]][["All.collections"]][,"GSEA.Adj.Pvalue"]),,drop=FALSE]							
+					}		
+				})
+		rslt.gscs <- names(gsca@result$GSEA.results)
 		for(i in 1:length(rslt.gscs)) {
 			##########################################
 			##           	HyperGeo pages 		     #
@@ -137,13 +160,14 @@ writeReportHTSA <- function(gsca = NULL, nwa = NULL, experimentName = "Unknown",
 			writeHTSAHtmlTab(enrichmentAnalysis = gsca@result, 
 				tab = c("GSCA", "NWA")[c(Rep.gsca, Rep.nwa)], 
 				htmlfile = htmlfile, rootdir = "..", index = TRUE)
+		
 			##Produce table
 			gs.names <- rownames(gsca@result$HyperGeo.results[[rslt.gscs[i]]])
 			##data table
-			dat.tab <- signif(gsca@result$HyperGeo.results[[rslt.gscs[i]]], digits = 4)
-			dat.tab <- cbind(rownames(dat.tab), dat.tab)
-			colnames(dat.tab)[1] <- "Gene Set name"
-			
+			allcol.names<-colnames(gsca@result$HyperGeo.results[[rslt.gscs[i]]])
+			gsca@result$HyperGeo.results[[rslt.gscs[i]]][,setdiff(allcol.names,"Gene.Set.Term")] <- signif(gsca@result$HyperGeo.results[[rslt.gscs[i]]][,setdiff(allcol.names,"Gene.Set.Term")], digits = 4)
+			dat.tab <- data.frame(Gene.Set.name=rownames(gsca@result$HyperGeo.results[[rslt.gscs[i]]]), gsca@result$HyperGeo.results[[rslt.gscs[i]]], stringsAsFactors=FALSE)
+			##colnames(dat.tab)[1] <- "Gene.Set.name"
 			this.row <- nrow(gsca@result$HyperGeo.results[[rslt.gscs[i]]])
 			this.col <- ncol(gsca@result$HyperGeo.results[[rslt.gscs[i]]])
 			if(this.row>0) {
@@ -176,14 +200,16 @@ writeReportHTSA <- function(gsca = NULL, nwa = NULL, experimentName = "Unknown",
 					href.tab[, 1, 2] <- "_blank"
 					href.tab[, 1, 3] <- gs.names
 				}
-				href.tab[names(hyper.filenames[[1]]), 6, 1] <- 
-					paste("../doc/", hyper.filenames[[1]], ".txt", sep = "")
-				href.tab[names(hyper.filenames[[1]]), 6, 2] <- "_blank"
-				href.tab[names(hyper.filenames[[1]]), 6, 3] <- "Observed.hits"
+				if(length(hyper.filenames[[1]])>0) {
+					href.tab[names(hyper.filenames[[1]]), which(allcol.names=="Observed.Hits")+1, 1] <- 
+							paste("../doc/", hyper.filenames[[1]], ".txt", sep = "")
+					href.tab[names(hyper.filenames[[1]]), which(allcol.names=="Observed.Hits")+1, 2] <- "_blank"
+					href.tab[names(hyper.filenames[[1]]), which(allcol.names=="Observed.Hits")+1, 3] <- "Observed.hits"					
+				}
 				##highlight table
 				signif.tab <- matrix(NA, this.row, this.col+1)
 				colnames(signif.tab) <- rep("class", this.col+1)
-				signif.tab[which(gsca@result$HyperGeo.results[[rslt.gscs[i]]][, 7] < gsca@para$pValueCutoff), 8] <- "signif"
+				signif.tab[which(gsca@result$HyperGeo.results[[rslt.gscs[i]]][, "Adjusted.Pvalue"] < gsca@para$pValueCutoff), which(allcol.names=="Adjusted.Pvalue")+1] <- "signif"
 				##row attribute table
 				row.attr.tab <- matrix("even", this.row, 1)
 				colnames(row.attr.tab) <- "class"
@@ -203,19 +229,38 @@ writeReportHTSA <- function(gsca = NULL, nwa = NULL, experimentName = "Unknown",
 			##########################################
 			##           	GSEA pages	 		     #
 			##########################################
-			if(rslt.gscs[i] %in% gscs)
-				plotGSEA(object = gsca, gscs = rslt.gscs[i], ntop = ntop, 
-					allSig = allSig, filepath = dirs['image'], output="png", width=800, height=800)
 			gsea.filenames <- getTopGeneSets(object = gsca, resultName = "GSEA.results", 
-				gscs = rslt.gscs[i], ntop = ntop, allSig = allSig)
+					gscs = rslt.gscs[i], ntop = ntop, allSig = allSig)
+			if(length(gsea.filenames[[1]])>0) {
+				if(rslt.gscs[i] %in% gscs)
+					plotGSEA(object = gsca, gscs = rslt.gscs[i], ntop = ntop, 
+							allSig = allSig, filepath = dirs['image'], output="png", width=800, height=800)
+				if(rslt.gscs[i] %in% gscs) 
+					map.gscs<-rslt.gscs[i]		
+				else if(rslt.gscs[i]=="All.collections") 
+					map.gscs<-gscs
+				if("Gene.Set.Term" %in% colnames(gsca@result$GSEA.results[[rslt.gscs[i]]]))
+					gsNameType<-"term"
+				else 
+					gsNameType<-"id"
+				plotEnrichMap(gsca, gscs=map.gscs, ntop=ntop, allSig=allSig, gsNameType=gsNameType, displayEdgeLabel=FALSE, 
+						layout="layout.fruchterman.reingold", filepath=dirs['image'], filename=paste("gsea_map",i,".png",sep=""), 
+						output="png", width=800, height=800, pointsize=18)				
+			}
 			htmlfile <- file.path(dirs['html'], paste("gsea", i, ".html", sep = ""))
+			maphtmlfile <- file.path(dirs['html'], paste("gsea", i, "_map.html", sep = ""))
 			##create htmls
 			writeHTSAHtmlHead(experimentName = experimentName, 
 				htmlfile = htmlfile, rootdir = "..")
+			writeHTSAHtmlHead(experimentName = experimentName, 
+				htmlfile = maphtmlfile, rootdir = "..")
 			##Produce the tabs
 			writeHTSAHtmlTab(enrichmentAnalysis = gsca@result, 
 				tab = c("GSCA","NWA")[c(Rep.gsca,Rep.nwa)], 
 				htmlfile = htmlfile, rootdir = "..", index = TRUE)
+			writeHTSAHtmlTab(enrichmentAnalysis = gsca@result, 
+				tab = c("GSCA","NWA")[c(Rep.gsca,Rep.nwa)], 
+				htmlfile = maphtmlfile, rootdir = "..", index = TRUE)
 			##Produce table
 			gs.names <- rownames(gsca@result$GSEA.results[[rslt.gscs[i]]])
 			top.gs.id <- match(names(gsea.filenames[[1]]), gs.names)
@@ -223,11 +268,13 @@ writeReportHTSA <- function(gsca = NULL, nwa = NULL, experimentName = "Unknown",
 			this.row <- nrow(gsca@result$GSEA.results[[rslt.gscs[i]]])
 			this.col <- ncol(gsca@result$GSEA.results[[rslt.gscs[i]]])
 			if(this.row>0) {
-				dat.tab <- signif(gsca@result$GSEA.results[[rslt.gscs[i]]], digits = 4)
-				dat.tab <- cbind(rownames(dat.tab), dat.tab, rep("", this.row))
-				dat.tab[top.gs.id, this.col+2] <- "plot"
-				colnames(dat.tab)[1] <- "Gene Set name"
-				colnames(dat.tab)[this.col+2] <- "Plots"
+				allcol.names<-colnames(gsca@result$GSEA.results[[rslt.gscs[i]]])
+				gsca@result$GSEA.results[[rslt.gscs[i]]][,setdiff(allcol.names,"Gene.Set.Term")] <- signif(gsca@result$GSEA.results[[rslt.gscs[i]]][,setdiff(allcol.names,"Gene.Set.Term")], digits = 4)
+				dat.tab <- data.frame(Gene.Set.name=rownames(gsca@result$GSEA.results[[rslt.gscs[i]]]), gsca@result$GSEA.results[[rslt.gscs[i]]], Plots=rep("", this.row), stringsAsFactors=FALSE)
+				if(length(gsea.filenames[[1]])>0)
+					dat.tab[top.gs.id, this.col+2] <- "plot"
+				##colnames(dat.tab)[1] <- "Gene.Set.name"
+				##colnames(dat.tab)[this.col+2] <- "Plots"
 				##hyperlink table 
 				href.tab <- array(NA, dim = c(this.row, this.col+2, 3))
 				dimnames(href.tab)[[3]] <- c("href", "target", "title")				
@@ -255,13 +302,15 @@ writeReportHTSA <- function(gsca = NULL, nwa = NULL, experimentName = "Unknown",
 					href.tab[, 1, 2] <- "_blank"
 					href.tab[, 1, 3] <- gs.names
 				}
-				href.tab[top.gs.id, 6, 1] <- paste("../image/gsea_plots", gsea.filenames[[1]], ".png", sep="")
-				href.tab[top.gs.id, 6, 2] <- "_blank"
-				href.tab[top.gs.id, 6, 3] <- "gseaplots"
+				if(length(gsea.filenames[[1]])>0) {
+					href.tab[top.gs.id, this.col+2, 1] <- paste("../image/gsea_plots", gsea.filenames[[1]], ".png", sep="")
+					href.tab[top.gs.id, this.col+2, 2] <- "_blank"
+					href.tab[top.gs.id, this.col+2, 3] <- "gseaplots"	
+				}
 				##highlight table
 				signif.tab <- matrix(NA, this.row, this.col+2)
 				colnames(signif.tab) <- rep("class", this.col+2)
-				signif.tab[which(gsca@result$GSEA.results[[rslt.gscs[i]]][,3] < gsca@para$pValueCutoff), 4] <- "signif"
+				signif.tab[which(gsca@result$GSEA.results[[rslt.gscs[i]]][,which(allcol.names=="Adjusted.Pvalue")] < gsca@para$pValueCutoff), which(allcol.names=="Adjusted.Pvalue")+1] <- "signif"
 				##row attribute table
 				row.attr.tab <- matrix("even", this.row, 1)
 				colnames(row.attr.tab) <- "class"
@@ -276,8 +325,14 @@ writeReportHTSA <- function(gsca = NULL, nwa = NULL, experimentName = "Unknown",
 						tab.name = paste(rslt.gscs[i], ' GSEA', sep=""),
 						htmlfile = htmlfile
 				)
+				##place enrichment map to maphtml
+				if(length(gsea.filenames[[1]])>0)
+					cat('<table class="enrichment map"><tr><td> <img src="../image/gsea_map', 
+						i, '.png" align="top" width="800" height="800"> </td></tr></table>', 
+						sep = "", append = TRUE, file = maphtmlfile)
 			}
 			writeHTSAHtmlTail(htmlfile = htmlfile)	
+			writeHTSAHtmlTail(htmlfile = maphtmlfile)	
 			##########################################
 			##	     enrichment summary pages	 	 #
 			##########################################
@@ -292,9 +347,10 @@ writeReportHTSA <- function(gsca = NULL, nwa = NULL, experimentName = "Unknown",
 			this.row <- nrow(gsca@result$Sig.adj.pvals.in.both[[rslt.gscs[i]]])
 			this.col <- ncol(gsca@result$Sig.adj.pvals.in.both[[rslt.gscs[i]]])
 			if(this.row > 0) {
-				dat.tab <- signif(gsca@result$Sig.adj.pvals.in.both[[rslt.gscs[i]]], digits = 4)
-				dat.tab <- cbind(rownames(dat.tab), dat.tab)
-				colnames(dat.tab)[1] <- "Gene Set name"
+				allcol.names<-colnames(gsca@result$Sig.adj.pvals.in.both[[rslt.gscs[i]]])
+				gsca@result$Sig.adj.pvals.in.both[[rslt.gscs[i]]][,setdiff(allcol.names,"Gene.Set.Term")] <- signif(gsca@result$Sig.adj.pvals.in.both[[rslt.gscs[i]]][,setdiff(allcol.names,"Gene.Set.Term")], digits = 4)
+				dat.tab <- data.frame(Gene.Set.name=rownames(gsca@result$Sig.adj.pvals.in.both[[rslt.gscs[i]]]), gsca@result$Sig.adj.pvals.in.both[[rslt.gscs[i]]], stringsAsFactors=FALSE)
+				##colnames(dat.tab)[1] <- "Gene.Set.name"
 				##row attribute table
 				row.attr.tab <- matrix("even", this.row, 1)
 				colnames(row.attr.tab) <- "class"

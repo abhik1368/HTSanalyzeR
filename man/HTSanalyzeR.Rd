@@ -15,7 +15,7 @@ analyses (based on the package 'BioNet') for high-throughput screens.
 	\tabular{ll}{
 Package: \tab HTSAnalyzeR\cr
 Type: \tab Package\cr
-Version: \tab 2.2.0\cr
+Version: \tab 2.3.0\cr
 Date: \tab 2010-12-08\cr
 License: \tab Artistic-2.0\cr
 LazyLoad: \tab yes\cr
