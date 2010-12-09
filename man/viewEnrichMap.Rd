@@ -2,18 +2,19 @@
 \alias{viewEnrichMap}
 \alias{viewEnrichMap,GSCA-method}
 \title{
-Plot on the screen a figure of the enrichment map for GSEA results
+Plot a figure of the enrichment map for GSEA or Hypergeometric tests
 }
 \description{
 This is a generic function.
 
 When implemented as the S4 method for objects of class \code{\link[HTSanalyzeR:GSCA]{GSCA}}, this function 
-will plot and save an enrichment map for GSEA results.  
+will plot an enrichment map for GSEA or Hypergeometric test results.  
 
 To use this function for objects of class \code{\link[HTSanalyzeR:GSCA]{GSCA}}:
 
-viewEnrichMap(object, gscs, ntop=NULL, allSig=TRUE, gsNameType="id", 
-displayEdgeLabel=TRUE, layout="layout.fruchterman.reingold")
+viewEnrichMap(object, resultName="GSEA.results", gscs, ntop=NULL, 
+allSig=TRUE, gsNameType="id", displayEdgeLabel=TRUE, layout=
+"layout.fruchterman.reingold")
 }
 \usage{
 viewEnrichMap(object, ...)
@@ -28,13 +29,16 @@ other arguments. (see below for the arguments supported by the method of
 class \code{\link[HTSanalyzeR:GSCA]{GSCA}})
 }
 \describe{
+	\item{resultName:}{
+a single character value: 'HyperGeo.results' or 'GSEA.results'
+} 
 	\item{gscs:}{
 a character vector specifying the names of gene set collections of which
-the top significant gene sets will be plot
+the top significant gene sets will be plotted
 }
 	\item{ntop:}{
-a single integer or numeric value specifying to plot how many gene sets
-of top significance.  
+a single integer or numeric value specifying how many gene sets of top 
+significance will be plotted.  
 }
 	\item{allSig:}{
 a single logical value. If 'TRUE', all significant gene sets (GSEA
@@ -52,7 +56,7 @@ the edges in the enrichment map
 }
 	\item{layout:}{
 a single character value specifying the layout of the enrichment map. 
-(see help(layout) of the package \code{igraph})
+(see \code{help(layout)} of the package \code{igraph})
 }
 }
 
@@ -61,12 +65,13 @@ a single character value specifying the layout of the enrichment map.
 The idea of this function is similar to the PLoS one paper by Merico et al. 
 
 An enrichment map is a network to help better visualize and interpret the 
-GSEA results. In an enrichment map, the nodes represent gene sets and the 
-edges denote the Jaccard similarity coefficient of two gene sets. Nodes are 
-colored by the sign of the enrichment scores (red:+, blue: -) and scaled 
-according to the adjusted GSEA p-values (the darker the more significant). 
-The size of nodes illustrates the size of gene sets, while the width of 
-edges denotes the Jaccard coefficient.    
+GSEA or Hypergeometric test results. In an enrichment map, the nodes 
+represent gene sets and the edges denote the Jaccard similarity coefficient 
+between two gene sets. Node colors are scaled according to the adjusted 
+p-values (the darker the more significant). For GSEA, nodes are colored by 
+the sign of the enrichment scores (red:+, blue: -). The size of nodes 
+illustrates the size of gene sets, while the width of edges denotes the 
+Jaccard coefficient.    
 }
 \value{
 an object of \code{igraph} with all attributes about the enrichement map

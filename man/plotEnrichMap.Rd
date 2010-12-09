@@ -2,19 +2,20 @@
 \alias{plotEnrichMap}
 \alias{plotEnrichMap,GSCA-method}
 \title{
-Plot and save an enrichment map for GSEA
+Plot and save an enrichment map for results of GSEA or hypergeometric tests
 }
 \description{
 This is a generic function.
 
 When implemented as the S4 method for objects of class \code{\link[HTSanalyzeR:GSCA]{GSCA}}, this function 
-will plot and save an enrichment map for GSEA results.  
+will plot and save an enrichment map for GSEA or Hypergeometric test results.  
 
 To use this function for objects of class \code{\link[HTSanalyzeR:GSCA]{GSCA}}:
 
-plotEnrichMap(object, gscs, ntop=NULL, allSig=TRUE, gsNameType="id", 
-displayEdgeLabel=TRUE, layout="layout.fruchterman.reingold", 
-filepath=".", filename="test.png", output="png", ...)
+plotEnrichMap(object, resultName="GSEA.results", gscs, ntop=NULL, 
+allSig=TRUE, gsNameType="id", displayEdgeLabel=TRUE, layout=
+"layout.fruchterman.reingold", filepath=".", filename="test.png", 
+output="png", ...)
 }
 \usage{
 plotEnrichMap(object, ...)
@@ -29,18 +30,21 @@ other arguments. (see below for the arguments supported by the method of
 class \code{\link[HTSanalyzeR:GSCA]{GSCA}})
 }
 \describe{
+	\item{resultName:}{
+a single character value: 'HyperGeo.results' or 'GSEA.results'
+} 
 	\item{gscs:}{
 a character vector specifying the names of gene set collections of which
-the top significant gene sets will be plot
+the top significant gene sets will be plotted
 }
 	\item{ntop:}{
-a single integer or numeric value specifying to plot how many gene sets
-of top significance.  
+a single integer or numeric value indicating how many gene sets of top 
+significance will be plotted.  
 }
 	\item{allSig:}{
-a single logical value. If 'TRUE', all significant gene sets (GSEA
-adjusted p-value < 'pValueCutoff' of slot 'para') will be used; otherwise,
-only top 'ntop' gene sets will be used.
+a single logical value. If 'TRUE', all significant gene sets (adjusted 
+p-value < 'pValueCutoff' of slot 'para') will be used; otherwise, only 
+top 'ntop' gene sets will be used.
 }
 	\item{gsNameType:}{
 a single character value specifying the type of the gene set names that 

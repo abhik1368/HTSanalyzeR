@@ -3,11 +3,11 @@
 \alias{NWA-class}
 \docType{class}
 \title{
-A class for NetWork Analysis
+An S4 class for NetWork Analysis on high-throughput screens
 }
 \description{
-This class includes methods to do network analysis for a vector of p-values 
-computed from high-throughput screens. 
+This class includes a series of methods to do network analysis for 
+high-throughput screens. 
 }
 \section{Objects from the Class}{ 
 Objects of class \code{NWA} can be created from \code{
@@ -33,8 +33,8 @@ the examples below)
 		}
 		
 		\item{\code{result}:}{
-		a list of subnetwork module identified by 'BioNet' and a vector of 
-		labels for nodes of the subnetwork module.
+		a list consisting of subnetwork module identified by BioNet and a 
+		vector of labels for nodes of the subnetwork module.
 		}
 		
 		\item{\code{summary}:}{
@@ -54,7 +54,8 @@ the examples below)
 	function.
 	\describe{	
 		\item{\code{preprocess}}{ 
-		do preprocessing on input gene list and hit list including: 
+		do preprocessing for the input vector of p-values and the vector 
+		of phenotypes including: 
 		a) removing NAs in \code{p-values} and \code{phenotypes}; 
 		b) invoking function \code{duplicateRemover} to process
 		duplicated phenotypes and p-values (see \code{duplicateRemover}
@@ -63,21 +64,21 @@ the examples below)
 		annotations; 
 		}
 		\item{\code{analyze}}{
-		invoke function \code{networkAnalysis} to identify sub-networks
-		based on input parameter list \code{para}.
+		invoke function \code{networkAnalysis} to identify enriched sub-
+		networks based on input parameter list \code{para}.
 		}
 		\item{\code{summarize}}{
-		print summary information of \code{p-values}, \code{phenotypes},
+		print summary information about \code{p-values}, \code{phenotypes},
 		\code{interactome} and \code{result}.
 		}
 		\item{\code{interactome}}{
 		build an interactome for the network analysis.
 		}
 		\item{\code{viewSubNet}}{
-		plot a figure to screen for identified subnetwork.
+		plot a figure of identified subnetwork.
 		}
 		\item{\code{plotSubNet}}{
-		plot and save a figure for identified subnetwork.
+		plot and save a figure of identified subnetwork.
 		}
 		\item{\code{report}}{
 		generate html reports.
@@ -107,7 +108,7 @@ interactome=Biogrid_DM_Interactome)
 ##preprocessing
 nwa <- preprocess(nwa, species="Dm", initialIDs="Entrez.gene", 
 keepMultipleMappings=TRUE, duplicateRemoverMethod="max")
-##To create an interactome:
+##To create an interactome
 nwa <- interactome(nwa, species="Dm", reportDir="HTSanalyzerReport",
 genetic=FALSE)
 ##do network analysis
@@ -115,7 +116,7 @@ nwa <- analyze(nwa, fdr=0.001, species="Dm")
 graphics.off()
 ##view identified subnetwork
 viewSubNet(nwa)
-##report as html pages
+##report to html pages
 report(object=nwa, experimentName="NWATest", species="Dm", allSig=TRUE,
 keggGSCs="PW_KEGG", goGSCs=c("GO_BP", "GO_MF", "GO_CC"), reportDir=
 "NWATestReport")

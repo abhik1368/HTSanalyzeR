@@ -9,7 +9,7 @@ This is a generic function.
 
 When implemented as the S4 method for objects of class \code{\link[HTSanalyzeR:GSCA-class]{GSCA}},
 this function finds corresponding annotation terms for KEGG and GO gene sets 
-and inserts a column named "Gene.Set.Term" to each dataframe in GSCA results. 
+and inserts a column named "Gene.Set.Term" to each dataframe in the GSCA results. 
 
 To use this function for objects of class \code{\link[HTSanalyzeR:GSCA-class]{GSCA}}:
 
@@ -28,16 +28,11 @@ other arguments depending on class (see below for the arguments supported by
 the method of class 'GSCA')
 }
 \describe{
-	\item{para:}{
-a list of parameters for GSEA and hypergeometric tests including:
-para$pValueCutoff: a single numeric value specifying the cutoff for p-values 
-considered significant	
-}
   \item{keggGSCs:}{
-a character vector of names of all KEGG gene set collections. 
+a character vector of names of all KEGG gene set collections
 }
   \item{goGSCs:}{
-a character vector of names of all GO gene set collections.
+a character vector of names of all GO gene set collections
 }
 }
 
@@ -76,7 +71,7 @@ gsca <- new("GSCA", listOfGeneSetCollections=gscList,
 geneList = KcViab_Data4Enrich, hits = hits)
 ##print gsca
 gsca
-##do preprocessing (data4enrich has already been preprocessed)
+##do preprocessing (KcViab_Data4Enrich has already been preprocessed)
 gsca <- preprocess(gsca, species="Dm", initialIDs = "Entrez.gene", 
 keepMultipleMappings = TRUE, duplicateRemoverMethod = "max", 
 orderAbsValue = FALSE)

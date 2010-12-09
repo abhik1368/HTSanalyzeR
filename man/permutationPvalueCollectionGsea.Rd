@@ -12,8 +12,8 @@ permutationPvalueCollectionGsea(permScores, dataScores)
 }
 \arguments{
   \item{permScores}{
-a numeric matrix of permutation-based scores (rows=gene sets, named)
-output from the function \code{\link[HTSanalyzeR:collectionGsea]{collectionGsea}}
+a numeric matrix of permutation-based scores, of which each row is named and 
+corresponds to a gene set, output from the function \code{\link[HTSanalyzeR:collectionGsea]{collectionGsea}}
 }
   \item{dataScores}{
 a named numeric vector of observed scores output from the function
@@ -21,7 +21,7 @@ a named numeric vector of observed scores output from the function
 }
 }
 \value{
-a named numeric vector of p-values, one for each gene set
+a named numeric vector of p-values, each of which corresponds to a gene set
 }
 \references{
 Subramanian, A., Tamayo, P., Mootha, V. K., Mukherjee, S., Ebert, B. L.,

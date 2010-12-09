@@ -60,12 +60,12 @@ a summary argument for the summarization function from cellHTS2 (see
 }
   \item{annotationColumn}{
 a single character value specifying the name of the column in the fData 
-(cellHTSobject) data frame from which the feature identifiers will be
+(cellHTSobject) dataframe from which the feature identifiers will be
 extracted
 }
 	\item{species}{
 a single character value specifying the species for which the data should
-be read. The current version support one of the following species: "Dm"
+be read. The current version supports one of the following species: "Dm"
 ("Drosophila_melanogaster"), "Hs" ("Homo_sapiens"), "Rn" ("Rattus_norvegicus"),
 "Mm" ("Mus_musculus"), "Ce" ("Caenorhabditis_elegans"). 
 }
@@ -74,14 +74,14 @@ a single character value specifying the type of initial identifiers for
 input 'geneList'. Current version can take one of the following types: 
 "Ensembl.transcript", "Ensembl.prot", "Ensembl.gene", "Entrez.gene",
 "RefSeq", "Symbol" and "GenBank" for all supported species; "Flybase",
-"FlybaseCG" and "FlybaseProt" for Drosophila Melanogaster; "wormbase" for
-Caenorhabditis Elegans. 
+"FlybaseCG" and "FlybaseProt" in addition for Drosophila Melanogaster; 
+"wormbase" in addition for Caenorhabditis Elegans. 
 }
    \item{duplicateRemoverMethod}{
 a single character value specifying the method to remove the duplicates 
 (should the minimum, maximum or average observation for a same construct
 be kept). 
-Current version provides "min" (minimum), "max" (maximum), "average" and
+The current version provides "min" (minimum), "max" (maximum), "average" and
 "fc.avg" (fold change average). The minimum and maximum should be understood
 in terms of absolute values (i.e. min/max effect, no matter the sign). The
 fold change average method converts the fold changes to ratios, averages
@@ -140,8 +140,8 @@ create web links for GO terms.
 }
   \item{nwStatsControls}{
 a single character value specifying the name of the controls to be used
-as a control population in the 2 samples tests (this HAS to be corresponding
-to how these control wellshave been annotated in the column "controlStatus"
+as a control population in the two-sample tests (this HAS to be corresponding
+to how these control wells have been annotated in the column "controlStatus"
 of the fData(cellHTSobject) dataframe). If nothing is specified, the function 
 will look for negative controls labelled "neg".
 }
@@ -151,10 +151,9 @@ a single character value specifying the alternative hypothesis: "two.sided",
 }
   \item{nwStatsTests}{
 a single character value specifying the tests to be performed: "T-test", 
-"MannWhitney" or "RankProduct". If nothing is specified, all 3 tests will 
-be performed. Be aware that the rank product test is slower than the other 
-2, and returns a percent false discovery (equivalent to a FDR, not a p-value) 
-this one requires the package "RankProduct".
+"MannWhitney" or "RankProduct". If nothing is specified, all three tests will 
+be performed. Be aware that the Rank Product test is slower than the other 
+two, and returns a percent false discovery (equivalent to a FDR, not a p-value).
 }
   \item{nwStatsColumns}{
 a character vector of any (relevant, i.e. that is produced in the tests) 
@@ -164,27 +163,27 @@ combination of "t.test.pvalues.two.samples", "t.test.pvalues.one.sample",
 }
   \item{nwAnalysisFdr}{
 a single numeric value specifying the FDR used in the networkAnalysis 
-function for the scores calculation. 
+function for the scores calculation
 }
   \item{nwAnalysisGenetic}{
-a single logical value indicating if the genetic interaction data from
-the Biogrid dataset were kept in the network analysis.
+a single logical value indicating if the genetic interaction data of
+the Biogrid dataset were kept in the network analysis
 }
   \item{interactionMatrix}{
-an interaction matrix including columns 'InteractionType','InteractorA'
+an interaction matrix including columns 'InteractionType', 'InteractorA'
 and 'InteractorB'. If this matrix is available, the interactome can be
 directly built based on it.
 }
   \item{nwAnalysisOrder}{
-The order used in the networkAnalysis function for the scores calculation.
+the order used in the networkAnalysis function for the scores calculation
 }
   \item{ntop}{
-The number of plots to be produced for the GSEA analysis.  For each gene
+the number of plots to be produced for the GSEA analysis.  For each gene
 set collection, plots are produced for the "nplots" most significant
 p-values.  
 }
   \item{allSig}{
-a single logical value determining whether or not to generate plots for
+a single logical value indicating whether or not to generate plots for
 all significant gene sets. A gene set is significant if its corresponding
 adjusted p-value is less than the \code{pValueCutoff} set in function
 \code{analyze} (see function \code{analyze} for more details).   
@@ -193,33 +192,30 @@ adjusted p-value is less than the \code{pValueCutoff} set in function
 a single character value specifying the directory to store reports
 }
   \item{verbose}{
-a single logical value deciding to display detailed messages (when verbose= 
+a single logical value indicating to display detailed messages (when verbose= 
 TRUE) or not (when verbose=FALSE)
 }
 }
 \details{
-This function does a gene set overrepresentation analysis (hypergeometric
-test and GSEA), a search for enriched subnetworks, writes a report and
-save results as 'RData' in user-specified directory. The GSEA plots will
-be produced in the working directory and will be fetched, along as the
-network representation, in that directory. If you move those items the
-function might not work properly. 
+This pipeline function performs gene set over-representation, enrichment 
+analyses and identifies enriched subnetworks, writes a report and saves results 
+as 'RData' in the user-specified directory. 
 
 For the KEGG and GO gene sets, this function produces links to the relevant 
-database entries. These links will only work if the gene set names are in
-the following format: 
+database entries. To make the report more readable, the user can append a column 
+named 'Gene.Set.Term' to each dataframe in the result slot of the object of 
+class \code{\link[HTSanalyzeR:GSCA]{GSCA}} using the method \code{\link[HTSanalyzeR:appendGSTerms]{appendGSTerms}}.
+To ensure that the function works properly, the gene set ID should comply with 
+the following requirements:   
 \itemize{
 \item for KEGG 3 letters (species ID) followed by a set of numbers and then 
 any number of non-digit characters
 \item for GO "GO:" immediately followed by the GO term number (digits only) 
 and any number of non-digits characters.
 }
-If the gene set names are not in these format, simply do not tag the gene
-set collections as "Kegg" or "GO".  This way, the GSEA plots will be produced 
-normally but the links to web databases will not be produced.
 }
 \value{
-Produce a set of html pages and save 'GSCA' and 'NWA' objects. The report
+Produce a set of html pages and save \code{\link[HTSanalyzeR:GSCA]{GSCA}} and \code{\link[HTSanalyzeR:NWA]{NWA}} objects. The report
 starts from the page called "index.html" to navigate those pages.
 }
 \author{

@@ -1,10 +1,10 @@
 \name{pairwiseGseaPlot}
 \alias{pairwiseGseaPlot}
 \title{
-Produce plots for pairwise GSEA results
+Produce a plot for pairwise GSEA result on one gene set
 }
 \description{
-This function plots results of the GSEA analyses for one gene set for
+This function plots results of the GSEA analyses on one gene set for
 two phenotypes in parallel .
 }
 \usage{
@@ -15,14 +15,14 @@ filename, ...)
   \item{gl1}{
 a named numeric or integer vector where names are gene identifiers of
 the same type as the ones in the gene set collection, and values are the
-measurement on phenotype one corresponding to those genes. This vector
+measurements on phenotype one corresponding to those genes. This vector
 MUST be ordered
 }
   \item{gl2}{
 a named numeric or integer vector where names are gene identifiers of
 the same type as the ones in the gene set collection, and values are the
-measurement on phenotype two corresponding to those genes this vector MUST
-be ordered
+measurements on phenotype two corresponding to those genes. This vector 
+MUST be ordered
 }
   \item{geneSet}{
 a character vector specifying a gene set (no names, just a vector of
@@ -33,7 +33,7 @@ a single numeric or integer value (set as 1 by default) specifying the
 exponent of the GSEA method. 
 }
   \item{output}{
-a single character value specifying the format of output image: "pdf" or
+a single character value specifying the format of output figure: "pdf" or
 "png"
 }
   \item{filepath}{
@@ -42,20 +42,17 @@ be stored
 }
   \item{filename}{
 a single character value specifying the name of the gene set for which
-these plots are produced
+the plot is produced
 }
   \item{...}{
-other arguments of 'pdf' or 'png'
+other arguments of the function \code{pdf} or \code{png}
 }
 }
 \details{
 The plots are going to be produced and stored in the directory 'filepath'
 with the name 'filename'.
 }
-\value{
-This function does not return anything, it just produces an image file
-containing the plots.
-}
+
 \references{
 Subramanian, A., Tamayo, P., Mootha, V. K., Mukherjee, S., Ebert, B. L.,
 Gillette, M. A., Paulovich, A., Pomeroy, S. L., Golub, T. R., Lander,
@@ -67,7 +64,7 @@ Proc. Natl. Acad. Sci. USA 102, 15545-15550.
 Camille Terfve, Xin Wang
 }
 \seealso{
-\code{\link[HTSanalyzeR:pairwiseGsea]{pairwiseGsea}}, \code{\link[HTSanalyzeR:pairwisePhenoMannWith]{pairwisePhenoMannWith}}
+\code{\link[HTSanalyzeR:pairwiseGsea]{pairwiseGsea}}, \code{\link[HTSanalyzeR:pairwisePhenoMannWhit]{pairwisePhenoMannWhit}}
 }
 \examples{
 \dontrun{

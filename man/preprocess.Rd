@@ -9,8 +9,8 @@ A preprocessing method for objects of class GSCA or NWA
 This is a generic function.
 
 When implemented as the S4 method for objects of class \code{\link[HTSanalyzeR:GSCA]{GSCA}} or \code{\link[HTSanalyzeR:NWA]{NWA}}, 
-this function filters out invalid data, remove duplicated genes, 
-convert annotations to Entrez identifiers, etc.
+this function filters out invalid data, removes duplicated genes, 
+converts annotations to Entrez identifiers, etc.
 
 To use this function for objects of class \code{\link[HTSanalyzeR:GSCA]{GSCA}}:
 
@@ -49,12 +49,12 @@ a single character value specifying the type of initial identifiers for
 input 'geneList'. Current version can take one of the following types: 
 "Ensembl.transcript", "Ensembl.prot", "Ensembl.gene", "Entrez.gene",
 "RefSeq", "Symbol" and "GenBank" for all supported species; "Flybase",
-"FlybaseCG" and "FlybaseProt" for Drosophila Melanogaster; "wormbase"
-for Caenorhabditis Elegans. 
+"FlybaseCG" and "FlybaseProt" in addition for Drosophila Melanogaster; 
+"wormbase" in addition for Caenorhabditis Elegans. 
 }
   \item{keepMultipleMappings:}{
-a single logical value. If TRUE, the function keeps the entries with
-multiple mappings (first mapping is kept). If FALSE, the entries with
+a single logical value. If 'TRUE', the function keeps the entries with
+multiple mappings (first mapping is kept). If 'FALSE', the entries with
 multiple mappings will be discarded.
 }
 	\item{duplicateRemoverMethod:}{
@@ -68,19 +68,19 @@ changes to ratios, averages them and converts the average back to a fold
 change.
 }
 	\item{orderAbsValue:}{
-a single logical value determining whether the values should be converted 
-to absolute value and then ordered (if TRUE), or ordered as they are (if
+a single logical value indicating whether the values should be converted 
+to absolute values and then ordered (if TRUE), or ordered as they are (if
 FALSE).	This argument is only for class \code{GSCA}.
 }
 	\item{verbose:}{
-a single logical value deciding to display detailed messages (when 
+a single logical value suggesting to display detailed messages (when 
 verbose=TRUE) or not (when verbose=FALSE)
 }
 }
 }
 \details{
 
-This function will potentially do the following preprocessing steps:
+This function will do the following preprocessing steps:
 \describe{	
 	\item{1:}{ filter out p-values (the slot \code{pvalues} of class \code{NWA}), 
 	phenotypes (the slot \code{phenotypes} of class \code{NWA}) and data for 
@@ -94,9 +94,9 @@ This function will potentially do the following preprocessing steps:
 }
 	\item{3:}{ invoke function \code{annotationConvertor} to convert annotations from
 	\code{initialIDs} to Entrez identifiers. Please note that the slot \code{hits} and 
-	the names of the slot \code{geneList} in class \code{GSCA}, the slot \code{pvalues} and 
-	\code{phenotypes} in class \code{NWA} must have the same type of annotation 
-	specified by \code{initialIDs};
+	the names of the slot \code{geneList} of class \code{GSCA}, the names of the slot 
+	\code{pvalues} and the names of the slot \code{phenotypes} of class \code{NWA} must 
+	have the same type of gene annotation specified by \code{initialIDs};
 }	
 	\item{4:}{ order the data for enrichment decreasingly for objects of 
 	class \code{GSCA}. 
@@ -105,7 +105,7 @@ This function will potentially do the following preprocessing steps:
 See the function \code{\link[HTSanalyzeR:duplicateRemover]{duplicateRemover}} for more details about how to remove duplicated 
 genes.
 
-See function \code{\link[HTSanalyzeR:annotationConvertor]{annotationConvertor}} for more details about how to convert 
+See the function \code{\link[HTSanalyzeR:annotationConvertor]{annotationConvertor}} for more details about how to convert 
 annotations.
 }
 \value{
@@ -134,7 +134,7 @@ gsca <- new("GSCA", listOfGeneSetCollections=gscList, geneList =
 KcViab_Data4Enrich, hits = hits)
 ##print gsca
 summarize(gsca, what = c("GeneList", "Hits"))
-##do preprocessing (data4enrich has already been preprocessed)
+##do preprocessing (KcViab_Data4Enrich has already been preprocessed)
 gsca <- preprocess(gsca, species="Dm", initialIDs = "Entrez.gene", 
 keepMultipleMappings = TRUE, duplicateRemoverMethod = "max", 
 orderAbsValue = FALSE)

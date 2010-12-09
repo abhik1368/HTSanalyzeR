@@ -3,16 +3,17 @@
 %\VignettePackage{HTSanalyzeR}
 \documentclass[11pt]{article}
 \usepackage{amsmath}
+\usepackage{subfig}
 \usepackage{color}
 \definecolor{darkblue}{rgb}{0.0,0.0,0.75}
 \usepackage[%
 baseurl={http://www.bioconductor.org},%
-pdftitle={End-to-end analysis of cell-based screens},%
-pdfauthor={Wolfgang Huber},%
+pdftitle={HTSanalyzeR},%
+pdfauthor={Xin Wang},%
 pdfsubject={cellHTS2},%
 pdfkeywords={Bioconductor},%
 pagebackref,bookmarks,colorlinks,linkcolor=darkblue,citecolor=darkblue,%
-pagecolor=darkblue,raiselinks,plainpages,pdftex]{hyperref}
+pagecolor=darkblue,raiselinks,pdftex]{hyperref}
 
 \SweaveOpts{keep.source=TRUE,eps=FALSE,include=FALSE,width=4,height=4.5} 
 \newcommand{\Robject}[1]{\texttt{#1}}
@@ -20,7 +21,7 @@ pagecolor=darkblue,raiselinks,plainpages,pdftex]{hyperref}
 \newcommand{\Rfunction}[1]{\textit{#1}}
 \newcommand{\Rclass}[1]{\textit{#1}}
 \newcommand{\htsa}{\emph{\sffamily HTSanalyzeR} }
-
+\bibliographystyle{unsrt}
 
 \title{Gene set enrichment and network analyses of high-throughput screens using \emph{HTSanalyzeR}}
 \author{Xin Wang\,$^{\dagger}$, Camille Terfve\,$^{\dagger}$, John Rose and Florian Markowetz}
@@ -35,11 +36,19 @@ options(width=70)
 @ 
 \section{Introduction}
 
-In recent years several technological advances have pushed gene perturbation screens to the forefront of functional genomics. Combining high-throughput screening (HTS) techniques with rich phenotypes enables researchers to observe detailed reactions to experimental perturbations on a genome-wide scale. This makes HTS one of the most promising tools in functional genomics.
+In recent years several technological advances have pushed gene perturbation screens to the forefront of functional genomics. 
+Combining high-throughput screening (HTS) techniques with rich phenotypes enables researchers to observe detailed reactions to experimental perturbations on a genome-wide scale. 
+This makes HTS one of the most promising tools in functional genomics.
 
-Although the phenotypes in HTS data correspond to single genes, it becomes more and more important to analyze them in the context of cellular pathways and networks to understand how genes work together. Network analysis of HTS data depends on the dimensionality of the phenotypic readout  \cite{Markowetz2010}. While specialised analysis approaches exist for high-dimensional phenotyping  \cite{Froehlich2008}, analysis approaches for low-dimensional screens have so far been spread out over diverse softwares and online tools like DAVID \cite{Huang2009} or gene set enrichment analysis (GSEA \cite{Subramanian2005}).
+Although the phenotypes in HTS data mostly correspond to single genes, it becomes more and more important to analyze them in the context of cellular pathways and networks to understand how genes work together.
+Network analysis of HTS data depends on the dimensionality of the phenotypic readout  \cite{Markowetz2010}.
+While specialised analysis approaches exist for high-dimensional phenotyping  \cite{Froehlich2008},  analysis approaches for low-dimensional screens have so far been spread out over diverse softwares and online tools like DAVID \cite{Huang2009} or gene set enrichment analysis \cite{Subramanian2005}).
 
-Here we provide an integrated analysis package for HTS data that contains gene set and network analysis approaches commonly used in many papers as reviewed by \cite{Markowetz2010}. \htsa is written in R \cite{R} and freely available via the Bioconductor project \cite{Gentleman2004}. The software interfaces directly with existing HTS pre-processing packages like cellHTS2 \cite{Boutros2006} or RNAither \cite{Rieber2009}. Additionally, our software is in the process of being fully integrated in a web-interface for the analysis of HTS data \cite{Pelz2010} and will thus be easily accessible to non-programmers.
+Here we provide a software to build integrated analysis pipelines for HTS data that contain gene set and network analysis approaches commonly used in many papers (as reviewed by \cite{Markowetz2010}).
+\htsa is implemented by S4 classes in R \cite{R} and freely available via the Bioconductor project \cite{Gentleman2004}.
+The example pipeline provided by \htsa interfaces directly with existing HTS pre-processing packages like cellHTS2 \cite{Boutros2006} or RNAither \cite{Rieber2009}.
+Additionally, our software will be fully integrated in a web-interface for the analysis of HTS data \cite{Pelz2010} and thus be easily accessible to non-programmers.
+
 
 \begin{figure*}
 \centerline{\includegraphics[width=\textwidth]{Figure}}
@@ -49,19 +58,27 @@ Here we provide an integrated analysis package for HTS data that contains gene s
 
 \section{An overview of HTSanalyzeR}
 
-\htsa takes as input HTS data that has already undergone preprocessing and quality control (e.g. by using cellHTS2). It then functionally annotates the hits by gene set enrichment and network analysis approaches (see Figure~\ref{Fig1} for an overview).
+\htsa takes as input HTS data that has already undergone preprocessing and quality control (e.g. by using cellHTS2).
+It then functionally annotates the hits by gene set enrichment and network analysis approaches (see Figure~\ref{Fig1} for an overview).
 
 \paragraph{Gene set analysis.} 
-\htsa implements two approaches: (i) hypergeometric tests for surprising overlap between hits and gene sets, and (ii) cut-off free gene set enrichment analysis which measures if a gene set shows a concordant trend to stronger phenotypes. \htsa uses gene sets from MSigDB \cite{Subramanian2005}, the Gene Ontolology \cite{Ashburner2000} and KEGG \cite{Kanehisa2006}. The accompanying vignette explains how user-defined gene sets can easily be included.
+\htsa implements two approaches: (i) hypergeometric tests for surprising overlap between hits and gene sets, and (ii) gene set enrichment analysis to measure if a gene set shows a concordant trend to stronger  phenotypes.
+\htsa uses gene sets from MSigDB \cite{Subramanian2005}, Gene Ontolology \cite{Ashburner2000}, KEGG \cite{Kanehisa2006} and others.
+The accompanying vignette  explains how user-defined gene sets can easily  be included.
+Results are visualized as an \textit{enrichment map} \cite{Merico2010}.
+
 
 \paragraph{Network analysis.} 
-In a complementary approach strong hits are mapped to a network and enriched subnetworks are identified. Networks can come from different sources, with protein interaction networks being commonlyc used. In \htsa we use networks defined in the BioGRID database \cite{Stark2006}, but other user-defined networks can easily be included in the analysis. To identify rich subnetworks, we use the BioNet package \cite{Beisser2010}, which in its heuristic version is fast and produces close-to-optimal results.
+In a complementary approach strong hits are mapped to a network and enriched subnetworks are identified.
+Networks can come from different sources, especially protein interaction networks are often used.
+In \htsa we use networks defined in the BioGRID database \cite{Stark2006}, but other user-defined networks can easily be included in the analysis.
+To identify rich subnetworks, we use the BioNet package \cite{Beisser2010}, which in its heuristic version is fast and produces close-to-optimal results.
 
 \paragraph{Comparing phenotypes.}
-A goal we expect to become increasingly important in the future is to compare phenotypes for the same genes in different cellular conditions. \htsa supports comparative analyses for gene sets and networks. Differentially enriched gene sets are computed by comparing GSEA enrichment scores or alternatively by a Wilcoxon test statistic. Subnetworks rich for more than one phenotype can easily be found with BioNet \cite{Beisser2010}.
-
-\paragraph{Parameters and report.}
-Each of these analysis methods depends on several input parameters. While every one of them can be changed in the package, \htsa also implements a standard analysis option using default parameters that we have found to work well in many applications. Results are presented in an HTML format similar to cellHTS2. Overrepresentation and enrichment results are presented as tables, where gene sets are linked to their descriptions at EBI and KEGG pages. GSEA results are accompanied by enrichment plots similar to the ones in \cite{Subramanian2005}.
+A goal we expect to become more and more important in the future is to compare phenotypes for the same genes in different cellular conditions.
+\htsa supports comparative analyses for gene sets and networks. 
+Differentially enriched gene sets are computed by comparing GSEA enrichment scores or alternatively by  a Wilcoxon test statistic.
+Subnetworks rich for more than one phenotype can be found with BioNet \cite{Beisser2010}.
 
 As a demonstration, in this vignette, we introduce how to perform these analyses on an RNAi screen data set in \Rpackage{cellHTS2} format. For other biological data sets, the users can design their own classes, methods and pipelines very easily based on this package.
 
@@ -249,42 +266,67 @@ ntop=1, filepath=".")
 @
 
 \subsection{Enrichment map}
-An enrichment map is a network facillitating the visualization and interpretation of GSEA results. In an enrichment map, the nodes represent gene sets and the edges denote the Jaccard similarity coefficient between two gene sets. Nodes are colored by the sign of the enrichment scores (red:+, blue: -) and scaled according to the adjusted GSEA p-values (the darker, the more significant). The sizes of nodes are in proportion to the sizes of gene sets, while the width of edges are proportionate to Jaccard coefficients.
+An enrichment map is a network facillitating the visualization and interpretation of Hypergeometric test and GSEA results. In an enrichment map, the nodes represent gene sets and the edges denote the Jaccard similarity coefficient between two gene sets. Node colors are scaled according to the adjusted p-values (the darker, the more significant). In the enrichment map for GSEA, nodes are colored by the sign of the enrichment scores (red:+, blue: -). The sizes of nodes are in proportion to the sizes of gene sets, while the width of edges are proportionate to Jaccard coefficients.
 
-The method \Rfunction{viewEnrichMap} of class \Rclass{GSCA} is developed to view an enrichment map for GSEA results of one or multiple gene set collections. As an example, here we use the sample data in the package to plot the enrichment map for the GSEA results of a KEGG gene set collection.
+The method \Rfunction{viewEnrichMap} of class \Rclass{GSCA} is developed to view an enrichment map for Hypergeometric or GSEA results over one or multiple gene set collections. As an example, here we use the sample data in the package to plot enrichment maps for a KEGG gene set collection.
 
-<<viewEnrichMap1, fig=TRUE, width=6, height=6, results=hide>>=
+<<viewEnrichMap1_a, fig=TRUE, width=6, height=6, results=hide>>=
 data("KcViab_GSCA")
-viewEnrichMap(KcViab_GSCA, gscs=c("PW_KEGG"), allSig=TRUE, 
-ntop=NULL, gsNameType="id", displayEdgeLabel=FALSE, 
-layout="layout.fruchterman.reingold")
+viewEnrichMap(KcViab_GSCA, resultName="HyperGeo.results", 
+gscs=c("PW_KEGG"), allSig=FALSE, ntop=30, gsNameType="id", 
+displayEdgeLabel=FALSE, layout="layout.fruchterman.reingold")
 @
-
+<<viewEnrichMap1_b, fig=TRUE, width=6, height=6, results=hide>>=
+data("KcViab_GSCA")
+viewEnrichMap(KcViab_GSCA, resultName="GSEA.results", 
+gscs=c("PW_KEGG"), allSig=FALSE, ntop=30, gsNameType="id", 
+displayEdgeLabel=FALSE, layout="layout.fruchterman.reingold")
+@
 \begin{figure}[tp]
-\begin{center}
-\includegraphics{HTSanalyzeR-Vignette-viewEnrichMap1}
-\caption{\label{fig:viewEnrichMap1Fig}%
-  Enrichment map for the GSEA results of a KEGG gene set collection (using gene set id as node labels)}
-\end{center}
+  \centering
+  \subfloat[Hypergeometric tests]{\label{fig:viewEnrichMap1_AFig}\includegraphics[width=0.6\textwidth]{HTSanalyzeR-Vignette-viewEnrichMap1_a}}                
+  \subfloat[GSEA]{\label{fig:viewEnrichMap1_BFig}\includegraphics[width=0.6\textwidth]{HTSanalyzeR-Vignette-viewEnrichMap1_b}}
+  \caption{Enrichment map for the GSEA results of a KEGG gene set collection (using gene set id as node labels)}
+  \label{fig:viewEnrichMap1Fig}
 \end{figure}
 
+%\begin{figure}[tp]
+%\begin{center}
+%\includegraphics{HTSanalyzeR-Vignette-viewEnrichMap1}
+%\caption{\label{fig:viewEnrichMap1Fig}%
+%  Enrichment map for the GSEA results of a KEGG gene set collection (using gene set id as node labels)}
+%\end{center}
+%\end{figure}
 To make the map more readable, we can first append gene set terms to the GSEA results using the method \Rfunction{appendGSTerms} of class \Rclass{GSCA}, and then call the function \Rfunction{viewEnrichMap}.
 
-<<viewEnrichMap2, fig=TRUE, width=6, height=6, results=hide>>=
+<<viewEnrichMap2_a, fig=TRUE, width=6, height=6, results=hide>>=
 KcViab_GSCA<-appendGSTerms(KcViab_GSCA, goGSCs=c("GO_BP",
 "GO_MF","GO_CC"), keggGSCs=c("PW_KEGG"))
-viewEnrichMap(KcViab_GSCA, gscs=c("PW_KEGG"), allSig=TRUE, 
-ntop=NULL, gsNameType="term", displayEdgeLabel=FALSE, 
-layout="layout.fruchterman.reingold")
+viewEnrichMap(KcViab_GSCA, resultName="HyperGeo.results",
+gscs=c("PW_KEGG"), allSig=FALSE, ntop=30, gsNameType="term", 
+displayEdgeLabel=FALSE, layout="layout.fruchterman.reingold")
 @
-
+<<viewEnrichMap2_b, fig=TRUE, width=6, height=6, results=hide>>=
+KcViab_GSCA<-appendGSTerms(KcViab_GSCA, goGSCs=c("GO_BP",
+"GO_MF","GO_CC"), keggGSCs=c("PW_KEGG"))
+viewEnrichMap(KcViab_GSCA, resultName="GSEA.results", 
+gscs=c("PW_KEGG"), allSig=FALSE, ntop=30, gsNameType="term", 
+displayEdgeLabel=FALSE, layout="layout.fruchterman.reingold")
+@
 \begin{figure}[tp]
-\begin{center}
-\includegraphics{HTSanalyzeR-Vignette-viewEnrichMap2}
-\caption{\label{fig:viewEnrichMap2Fig}%
-  Enrichment map for the GSEA results of a KEGG gene set collection (using gene set terms as node labels)}
-\end{center}
-\end{figure} 
+  \centering
+  \subfloat[Hypergeometric tests]{\label{fig:viewEnrichMap2_AFig}\includegraphics[width=0.6\textwidth]{HTSanalyzeR-Vignette-viewEnrichMap2_a}}                
+  \subfloat[GSEA]{\label{fig:viewEnrichMap2_BFig}\includegraphics[width=0.6\textwidth]{HTSanalyzeR-Vignette-viewEnrichMap2_b}}
+  \caption{Enrichment map for the GSEA results of a KEGG gene set collection (using gene set terms as node labels)}
+  \label{fig:viewEnrichMap2Fig}
+\end{figure}
+%\begin{figure}[tp]
+%\begin{center}
+%\includegraphics{HTSanalyzeR-Vignette-viewEnrichMap2}
+%\caption{\label{fig:viewEnrichMap2Fig}%
+%  Enrichment map for the GSEA results of a KEGG gene set collection (using gene set terms as node labels)}
+%\end{center}
+%\end{figure} 
 
 In figure \ref{fig:viewEnrichMap2Fig}, there are considerable coefficients between metabolism-related gene sets, suggesting that the significance of these gene sets is probably due to a group of genes shared by them. 
 
@@ -353,7 +395,7 @@ nwa <- new("NWA", pvalues=pvalues, interactome=
 Biogrid_DM_Interactome, phenotypes=data4enrich)
 @
 
-In the above example, the interactome was built from the Biogrid interaction data set for \textit{Drosophila Melanogaster} (version 3.1.71, accessed on Dec. 5, 2010).
+In the above example, the interactome was built from the BioGRID interaction data set for \textit{Drosophila Melanogaster} (version 3.1.71, accessed on Dec. 5, 2010).
 
 The next step is preprocessing of input p-values and phenotypes. Similar to class \Rclass{GSCA}, at the preprocessing stage, the function will also check the validity of input data, remove duplicated genes and convert annotations to Entrez ids. The type of initial identifiers can be specified in the \Robject{initialIDs} argument, and will be converted to Entrez gene identifiers which can be mapped to the BioGRID interaction data.  
 
@@ -363,7 +405,7 @@ nwa <- preprocess(nwa, species="Dm", initialIDs="FlybaseCG",
 keepMultipleMappings=TRUE, duplicateRemoverMethod="max")
 @
 
-To create an interactome for the network analysis, the user can either specify a species to download corresponding network database from \emph{Biogrid}, or input an interaction matrix if the network is already available and in the right format: a matrix with a row for each interaction, and at least the three columns ``InteractorA", ``InteractorB" and ``InteractionType", where the interactors are specified by Entrez identifiers.. 
+To create an interactome for the network analysis, the user can either specify a species to download corresponding network database from \emph{BioGRID}, or input an interaction matrix if the network is already available and in the right format: a matrix with a row for each interaction, and at least the three columns ``InteractorA", ``InteractorB" and ``InteractionType", where the interactors are specified by Entrez identifiers.. 
 
 <<getInteractome2, eval=FALSE>>=
 nwa<-interactome(nwa, species="Dm", reportDir="HTSanalyzerReport",
@@ -512,7 +554,7 @@ When performing high-throughput screens in cell culture-based assays, it is incr
 
 However, it is possible that the phenotypes that are measured are expected to show opposite behaviors (e.g. when measuring the number of cells and a reporter for apoptosis).  In these cases, we provide two methods to detect gene sets that are associated with opposite patterns of a pair of phenotypic responses.  The first method (implemented in the functions \Rfunction{pairwiseGsea} and \Rfunction{pairwiseGseaPlot}) is a modification of the GSEA method by \cite{Subramanian2005}.  Briefly, the enrichment scores are computed separately on both phenotype lists, and the absolute value of the difference between the two enrichment scores is compared to permutation-based scores obtained by computing the difference in enrichment score between the two lists when the gene labels are randomly shuffled.  This method can only be applied if both phenotypes are measured on the same set of conditions (i.e. the gene labels are the same in both lists, although their associated phenotypes might be very different).  
 
-The second method, implemented in the function \Rfunction{pairwisePhenoMannWith}, performs a Mann-Whitney test for shift in location of genes from gene sets, on a pair of phenotypes. The Mann-Whitney test is a non-parametrical equivalent to a two samples t-test (equivalent to a Wilcoxon rank sum test). It looks for gene sets with a phenotye distribution located around two different values in the two phenotypes list, rather than spread on the whole list in both lists.  Please be aware that this test should be applied on phenotypes that are on the same scale.  If you compare a number of cells (e.g. thousands of cells) to a percentage of cells expressing a marker for example, you will always find a difference in the means of the two populations of phenotypes, whatever the genes in those populations. However, it is very common in high throughput experiments that some sort of internal control is available (e.g. phenotype of the wild type cell line, with no RNAi). A simple way to obtain the different phenotypes on similar scales is therefore to use as phenotypes the raw measurements divided by their internal control counterpart.  
+The second method, implemented in the function \Rfunction{pairwisePhenoMannWhit}, performs a Mann-Whitney test for shift in location of genes from gene sets, on a pair of phenotypes. The Mann-Whitney test is a non-parametrical equivalent to a two samples t-test (equivalent to a Wilcoxon rank sum test). It looks for gene sets with a phenotye distribution located around two different values in the two phenotypes list, rather than spread on the whole list in both lists.  Please be aware that this test should be applied on phenotypes that are on the same scale.  If you compare a number of cells (e.g. thousands of cells) to a percentage of cells expressing a marker for example, you will always find a difference in the means of the two populations of phenotypes, whatever the genes in those populations. However, it is very common in high throughput experiments that some sort of internal control is available (e.g. phenotype of the wild type cell line, with no RNAi). A simple way to obtain the different phenotypes on similar scales is therefore to use as phenotypes the raw measurements divided by their internal control counterpart.  
 
 \section*{Session info}
 
@@ -594,6 +636,10 @@ Subramanian, A., Tamayo, P., Mootha, V.~K., Mukherjee, S., Ebert, B.~L., et al. 
 \newblock Gene set enrichment analysis: a knowledge-based approach for interpreting genome-wide expression profiles.
 \newblock {\em Proc Natl Acad Sci U S A\/}, {\bf 102}(43), 15545--15550.
 
+\bibitem[Merico {\em et al.}(2010)]{Merico2010}
+Merico D, Isserlin R, Stueker O, Emili A, Bader GD (2010)
+\newblock Enrichment Map: A Network-Based Method for Gene-Set Enrichment Visualization and Interpretation
+\newblock {\em PLoS One} 5(11):e13984
 
 \end{thebibliography}
 

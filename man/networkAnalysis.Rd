@@ -20,10 +20,10 @@ analysis
 }
   \item{fdr}{
 a single numeric value specifying the false discovery for the scoring of
-nodes (see BioNet::scoreNodes and Dittrich et al., 2008 for details)
+nodes (see \code{BioNet::scoreNodes} and Dittrich et al., 2008 for details)
 }
   \item{verbose}{
-a single logical value deciding to display detailed messages (when
+a single logical value indicating to display detailed messages (when
 verbose=TRUE) or not (when verbose=FALSE)
 }
 }

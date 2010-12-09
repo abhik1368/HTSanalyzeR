@@ -152,6 +152,20 @@ writeReportHTSA <- function(gsca = NULL, nwa = NULL, experimentName = "Unknown",
 			hyper.filenames <- getTopGeneSets(object = gsca, 
 				resultName = "HyperGeo.results", gscs = rslt.gscs[i], 
 				ntop = ntop, allSig = allSig)
+		##enrichment map for hypergeo tests
+		if(length(hyper.filenames[[1]])>0) {
+			if(rslt.gscs[i] %in% gscs) 
+				map.gscs<-rslt.gscs[i]		
+			else if(rslt.gscs[i]=="All.collections") 
+				map.gscs<-gscs
+			if("Gene.Set.Term" %in% colnames(gsca@result$HyperGeo.results[[rslt.gscs[i]]]))
+				gsNameType<-"term"
+			else 
+				gsNameType<-"id"
+			plotEnrichMap(gsca, resultName="HyperGeo.results",gscs=map.gscs, ntop=ntop, allSig=allSig, gsNameType=gsNameType, displayEdgeLabel=FALSE, 
+					layout="layout.fruchterman.reingold", filepath=dirs['image'], filename=paste("hypergeo_map",i,".png",sep=""), 
+					output="png", width=800, height=800, pointsize=18)				
+		}
 			htmlfile <- file.path(dirs['html'], paste("hyperg", i, ".html", sep=""))
 			##create htmls
 			writeHTSAHtmlHead(experimentName = experimentName, 
@@ -248,19 +262,13 @@ writeReportHTSA <- function(gsca = NULL, nwa = NULL, experimentName = "Unknown",
 						output="png", width=800, height=800, pointsize=18)				
 			}
 			htmlfile <- file.path(dirs['html'], paste("gsea", i, ".html", sep = ""))
-			maphtmlfile <- file.path(dirs['html'], paste("gsea", i, "_map.html", sep = ""))
 			##create htmls
 			writeHTSAHtmlHead(experimentName = experimentName, 
 				htmlfile = htmlfile, rootdir = "..")
-			writeHTSAHtmlHead(experimentName = experimentName, 
-				htmlfile = maphtmlfile, rootdir = "..")
 			##Produce the tabs
 			writeHTSAHtmlTab(enrichmentAnalysis = gsca@result, 
 				tab = c("GSCA","NWA")[c(Rep.gsca,Rep.nwa)], 
 				htmlfile = htmlfile, rootdir = "..", index = TRUE)
-			writeHTSAHtmlTab(enrichmentAnalysis = gsca@result, 
-				tab = c("GSCA","NWA")[c(Rep.gsca,Rep.nwa)], 
-				htmlfile = maphtmlfile, rootdir = "..", index = TRUE)
 			##Produce table
 			gs.names <- rownames(gsca@result$GSEA.results[[rslt.gscs[i]]])
 			top.gs.id <- match(names(gsea.filenames[[1]]), gs.names)
@@ -325,13 +333,27 @@ writeReportHTSA <- function(gsca = NULL, nwa = NULL, experimentName = "Unknown",
 						tab.name = paste(rslt.gscs[i], ' GSEA', sep=""),
 						htmlfile = htmlfile
 				)
-				##place enrichment map to maphtml
-				if(length(gsea.filenames[[1]])>0)
-					cat('<table class="enrichment map"><tr><td> <img src="../image/gsea_map', 
-						i, '.png" align="top" width="800" height="800"> </td></tr></table>', 
-						sep = "", append = TRUE, file = maphtmlfile)
 			}
 			writeHTSAHtmlTail(htmlfile = htmlfile)	
+
+			##########################################
+			##	     enrichment map pages		 	 #
+			##########################################
+			maphtmlfile <- file.path(dirs['html'], paste("enrichment_map", i, ".html", sep = ""))
+			writeHTSAHtmlHead(experimentName = experimentName, 
+					htmlfile = maphtmlfile, rootdir = "..")
+			writeHTSAHtmlTab(enrichmentAnalysis = gsca@result, 
+					tab = c("GSCA","NWA")[c(Rep.gsca,Rep.nwa)], 
+					htmlfile = maphtmlfile, rootdir = "..", index = TRUE)
+			##place enrichment map to maphtml
+			if(length(gsea.filenames[[1]])>0)
+				cat('<table class="enrichment map"><tr><td> <img src="../image/gsea_map', 
+						i, '.png" align="top" width="800" height="800"> </td>', 
+						sep = "", append = TRUE, file = maphtmlfile)
+			if(length(hyper.filenames[[1]])>0)
+				cat('<td> <img src="../image/hypergeo_map', 
+						i, '.png" align="top" width="800" height="800"> </td></tr></table>', 
+						sep = "", append = TRUE, file = maphtmlfile)
 			writeHTSAHtmlTail(htmlfile = maphtmlfile)	
 			##########################################
 			##	     enrichment summary pages	 	 #

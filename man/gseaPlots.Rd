@@ -4,24 +4,24 @@
 Plot GSEA results for one gene set
 }
 \description{
-This function takes in the output of gseaScores and the gene list, and
-plot a figure of the ranked phenotypes, positions of the gene set and
-the location of the enrichment score.  
+This function takes in the output of gseaScores and the named vector 
+of phenotypes, and plots the positions of genes of the gene set in 
+the ranked phenotype vector and the location of the enrichment score.  
 }
 \usage{
 gseaPlots(runningScore, enrichmentScore, positions, geneList)
 }
 \arguments{
   \item{runningScore}{
-a single numeric value specifying the enrichment score output from the
+a single numeric value specifying the enrichment score returned from the
 function "gseaScores"
 }
   \item{enrichmentScore}{
-a numeric vector of running enrichment scores (only in mode "graph")
+a numeric vector of running sum scores (only in mode "graph")
 }
   \item{positions}{
-a numeric vector specifying positions in the gene list of the genes in
-the gene set (only in mode "graph")
+a numeric vector specifying positions in the ranked phenotype vector 
+of the genes in the gene set (only in mode "graph")
 }
   \item{geneList}{
 a numeric or integer vector of phenotypes in descending or ascending

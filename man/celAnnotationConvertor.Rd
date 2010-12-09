@@ -1,13 +1,13 @@
 \name{celAnnotationConvertor}
 \alias{celAnnotationConvertor}
 \title{
-Convert between different types of annotations for Caenorhabditis Elegans
+Convert between different types of gene identifiers for Caenorhabditis Elegans
 }
 \description{
-This function converts an initial named data vector to the same vector 
-but with a different identifier category. This function can also take a 
-matrix, with rows=gene id's. This function removes the genes for which 
-no mapping were found.
+This function converts an initial named data vector to the same vector but 
+with a different identifier category, and removes the genes for which no 
+mapping were found. This function can also take a matrix, with gene 
+identifiers as row names.
 }
 \usage{
 celAnnotationConvertor(geneList, initialIDs = "Entrez.gene", finalIDs = 
@@ -21,13 +21,13 @@ identifiers
 }
   \item{initialIDs}{
 a single character value specifying the type of initial identifiers for 
-input 'geneList'. Current version can take one of the following types: 
+input 'geneList'. The current version can take one of the following types: 
 "Ensembl.transcript", "Ensembl.prot", "Ensembl.gene", "Entrez.gene", 
 "RefSeq", "Symbol", "GenBank" and "wormbase"
 }
   \item{finalIDs}{
 a single character value specifying the type of final identifiers to 
-which users want to convert. Current version can take one of the following 
+which users want to convert. The current version can take one of the following 
 types: "Ensembl.transcript", "Ensembl.prot", "Ensembl.gene", "Entrez.gene", 
 "RefSeq", "Symbol", "GenBank" and "wormbase"
 }
@@ -37,14 +37,14 @@ multiple mappings (first mapping is kept). If FALSE, the entries with
 multiple mappings will be discarded.
 }
   \item{verbose}{
-a single logical value deciding to display detailed messages (when 
+a single logical value specifying to display detailed messages (when 
 verbose=TRUE) or not (when verbose=FALSE)
 }
 }
 \details{
 This function relies on the org.Ce.eg.db package and therefore only maps 
 \itemize{
-\item from any identifier to an Entrez gene id
+\item from any identifier to an Entrez gene id, or
 \item from an Entrez gene ID to any identifier
 }	
 The entries that could not be mapped to any identifiers are removed from 
@@ -52,7 +52,7 @@ the resulting data vector/matrix.
 }
 \value{
 the same vector/matrix but with names/rownames corresponding to a 
-different type of identifiers.
+different type of identifiers
 }
 \author{
 Camille Terfve, Xin Wang

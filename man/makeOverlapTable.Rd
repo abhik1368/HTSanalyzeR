@@ -1,7 +1,7 @@
 \name{makeOverlapTable}
 \alias{makeOverlapTable}
 \title{
-Find and save the overlapped genes between a gene set and hit list
+Find and save the overlapped genes between a gene set and a vector of hits
 }
 \description{
 This is an internal function.
@@ -11,10 +11,10 @@ makeOverlapTable(geneSet, hits, mapID, filepath, filename)
 }
 \arguments{
 \item{geneSet}{
-a character vector of gene identifiers of a gene set
+a character vector of gene identifiers specifying a gene set
 }
 \item{hits}{
-a character vector of gene identifiers of the vector of hits
+a character vector of gene identifiers specifying all hits in the screen
 }
 \item{mapID}{
 a list of targeting identifiers with a name for each entry of the list 

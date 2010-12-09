@@ -2,14 +2,14 @@
 \alias{plotGSEA}
 \alias{plotGSEA,GSCA-method}
 \title{
-Plot and save figures of GSEA results of top significant gene sets
+Plot and save figures of GSEA results for top significant gene sets
 }
 \description{
 This is a generic function.
 
 When implemented as the S4 method for objects of class \code{\link[HTSanalyzeR:GSCA]{GSCA}}, this function 
-plots figures of the ranked phenotypes, positions of the gene set and the 
-location of the enrichment score for top significant gene sets.  
+plots figures of the positions of genes of the gene set in the ranked gene 
+list and the location of the enrichment score for top significant gene sets.  
 
 To use this function for objects of class \code{\link[HTSanalyzeR:GSCA]{GSCA}}:
 
@@ -30,17 +30,17 @@ class \code{\link[HTSanalyzeR:GSCA]{GSCA}})
 }
 \describe{
 	\item{gscs:}{
-a character vector specifying the names of gene set collections of which
-the top significant gene sets will be plot
+a character vector specifying the names of gene set collections whose
+top significant gene sets will be plotted
 }
 	\item{ntop:}{
-a single integer or numeric value specifying to plot how many gene sets
-of top significance.  
+a single integer or numeric value specifying how many gene sets of top 
+significance will be plotted.  
 }
 	\item{allSig:}{
 a single logical value. If 'TRUE', all significant gene sets (GSEA
-adjusted p-value < 'pValueCutoff' of slot 'para') will be plot; otherwise,
-only top 'ntop' gene sets will be plot.
+adjusted p-value < 'pValueCutoff' of slot 'para') will be plotted; otherwise,
+only top 'ntop' gene sets will be plotted.
 }
 	\item{filepath:}{
 a single character value specifying where to store GSEA figures.
@@ -57,15 +57,15 @@ other arguments used by the function \code{png} or \code{pdf} such as
 
 }
 \details{
-To use this function to make GSEA plots of top significance, users can
-only choose one method, either assign a integer to the argument 'ntop'
+To make GSEA plots of top significance using this function, the user can
+only choose one method: either assign an integer to the argument 'ntop'
 or set the argument 'allSig' to 'TRUE'. Exceptions will occur if both
 methods are used, or no method is used. Please also note that the argument
 'ntop' is a cutoff for all gene set collections in the argument 'gscs'.
 
-We suggest to summarize(gsca, what="Result") first to have an idea of how
-many significant gene sets there are, and then choose to plot them all
-or just top few ones.
+We suggest to perform \code{summarize(gsca, what="Result")} first to have 
+an idea of how many significant gene sets there are, and then choose to 
+plot them all or just the top ones.
 }
 
 \seealso{
@@ -92,7 +92,7 @@ gsca <- new("GSCA", listOfGeneSetCollections=gscList, geneList =
 KcViab_Data4Enrich, hits = hits)
 ##print summary of gsca
 summarize(gsca)
-##do preprocessing (data4enrich has already been preprocessed)
+##do preprocessing (KcViab_Data4Enrich has already been preprocessed)
 gsca <- preprocess(gsca, species="Dm", initialIDs = "Entrez.gene", 
 keepMultipleMappings = TRUE, duplicateRemoverMethod = "max", 
 orderAbsValue = FALSE)

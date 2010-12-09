@@ -415,7 +415,7 @@ setMethod(
 setMethod(
 		"plotEnrichMap",
 		"GSCA",
-		function(object, gscs, ntop=NULL, allSig=TRUE, gsNameType="id", displayEdgeLabel=TRUE, 
+		function(object, resultName="GSEA.results", gscs, ntop=NULL, allSig=TRUE, gsNameType="id", displayEdgeLabel=TRUE, 
 				layout="layout.fruchterman.reingold", filepath=".", filename="test.png",output="png", ...) {
 			##check arguments
 			paraCheck(name="filepath", para=filepath)
@@ -425,19 +425,20 @@ setMethod(
 				pdf(file.path(filepath, filename), ...=...)
 			if(output == "png" ) 
 				png(file.path(filepath, filename), ...=...)
-			viewEnrichMap(object, gscs, ntop, allSig, gsNameType, displayEdgeLabel, layout)
+			viewEnrichMap(object, resultName, gscs, ntop, allSig, gsNameType, displayEdgeLabel, layout)
 			dev.off()
 		}
 )
 setMethod(
 		"viewEnrichMap",
 		"GSCA",
-		function(object, gscs, ntop=NULL, allSig=TRUE, gsNameType="id", displayEdgeLabel=TRUE, layout="layout.fruchterman.reingold") {
+		function(object, resultName="GSEA.results", gscs, ntop=NULL, allSig=TRUE, gsNameType="id", displayEdgeLabel=TRUE, layout="layout.fruchterman.reingold") {
 			##check arguments			
 			if(missing(gscs))
 				stop("Please specify the name(s) of Gene Set Collections in 'gscs'! \n")
 			paraCheck(name="gscs.names",para=gscs)
-			resultName<-"GSEA.results"
+			##resultName<-"GSEA.results"
+			paraCheck(name="resultName",para=resultName)
 			if(!(resultName %in% names(object@result)))
 				stop("No GSEA results found in object!\n")
 			gsc.names<-names(object@result[[resultName]])
@@ -521,19 +522,25 @@ setMethod(
 			p.vec<-tempdf[,"Adjusted.Pvalue"]
 			p.cutoff.vec<-c(0, 10^c(-3, -2.5), 0.01, 10^(-1.5), 0.05, 10^(-c(1.0, 0.5, 0)))
 			
-			posids<-which(tempdf[,"Observed.score"]>=0)
-			negids<-which(tempdf[,"Observed.score"]<=0)
-			
-			redCols<-colorRampPalette(colors = c("red", "white"))
-			redVec<-redCols(length(p.cutoff.vec))
-
-			blueCols<-colorRampPalette(colors = c("blue", "white"))
-			blueVec<-blueCols(length(p.cutoff.vec))
-			V(g)$color<-""
-			if(length(posids)>0)
-				V(g)$color[posids]<-redVec[as.integer(cut(x=p.vec[posids],breaks=c(-1,p.cutoff.vec), labels=1:(length(p.cutoff.vec))))]
-			if(length(negids)>0)
-				V(g)$color[negids]<-blueVec[as.integer(cut(x=p.vec[negids],breaks=c(-1,p.cutoff.vec), labels=1:(length(p.cutoff.vec))))]
+			if(resultName=="GSEA.results") {
+				posids<-which(tempdf[,"Observed.score"]>=0)
+				negids<-which(tempdf[,"Observed.score"]<=0)
+				
+				redCols<-colorRampPalette(colors = c("red", "white"))
+				redVec<-redCols(length(p.cutoff.vec))
+				
+				blueCols<-colorRampPalette(colors = c("blue", "white"))
+				blueVec<-blueCols(length(p.cutoff.vec))
+				V(g)$color<-""
+				if(length(posids)>0)
+					V(g)$color[posids]<-redVec[as.integer(cut(x=p.vec[posids],breaks=c(-1,p.cutoff.vec), labels=1:(length(p.cutoff.vec))))]
+				if(length(negids)>0)
+					V(g)$color[negids]<-blueVec[as.integer(cut(x=p.vec[negids],breaks=c(-1,p.cutoff.vec), labels=1:(length(p.cutoff.vec))))]
+			} else if(resultName=="HyperGeo.results") {
+				redCols<-colorRampPalette(colors = c("red", "white"))
+				redVec<-redCols(length(p.cutoff.vec))
+				V(g)$color<-redVec[as.integer(cut(x=p.vec,breaks=c(-1,p.cutoff.vec), labels=1:(length(p.cutoff.vec))))]
+			}
 			##labels attributes
 			graphLabelWrapper<-function(x, width=32) {paste(strwrap(x,width=width),collapse="\n")}
 			if(gsNameType=="id") {
@@ -565,17 +572,27 @@ setMethod(
 			##plot graph
 			plot(g,layout=eval(parse(text=layout)))
 			##title
-			title(main=paste("Enrichment Map of gene set collection(s)", lapply(list(gscs), paste, collapse=",")[[1]], sep="--"))
+			
 			##p-value color legend
-			colVec<-c(redVec[1:(length(redVec)-1)],rev(blueVec))
+			if(resultName=="GSEA.results") {
+				title(main=paste("Enrichment Map of GSEA on \n\"", lapply(list(gscs), paste, collapse=",")[[1]], "\"",sep=""))
+				colVec<-c(redVec[1:(length(redVec)-1)],rev(blueVec))
+				p.cutoff.labels<-rep("",length(colVec))
+				p.cutoff.labels[c(1,4,6,9,12,14,17)]<-c(0,0.01,0.05,1,0.05,0.01,0)
+			} else if(resultName=="HyperGeo.results") {
+				title(main=paste("Enrichment Map of Hypergeometric tests on \n\"", lapply(list(gscs), paste, collapse=",")[[1]],"\"", sep=""))
+				colVec<-redVec
+				p.cutoff.labels<-rep("",length(colVec))
+				p.cutoff.labels[c(1,4,6,9)]<-c(0,0.01,0.05,1)				
+			}
+				
 			points(
 					x = rep(-1.2, length(colVec)), 
 					y = seq(0.5, (0.5-(0.05*length(colVec))), 
 							length.out = length(colVec)), 
 					pch = 15, col = colVec
 			)
-			p.cutoff.labels<-rep("",length(colVec))
-			p.cutoff.labels[c(1,4,6,9,11,14,17)]<-c(0,0.01,0.05,1,0.05,0.01,0)
+
 			text(
 					x = rep(-1.3, length(colVec)), 
 					y = seq(0.5, (0.5-(0.05*length(colVec))), 

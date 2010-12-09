@@ -24,30 +24,40 @@ writeHTSAHtmlTab<-function(enrichmentAnalysis,tab=c("GSCA","NWA"),htmlfile,rootd
 		l.HyperGeo.results<-length(enrichmentAnalysis$HyperGeo.results)
 		l.GSEA.results<-length(enrichmentAnalysis$GSEA.results)
 		l.Sig.adj.pvals.in.both<-length(enrichmentAnalysis$Sig.adj.pvals.in.both)
+		##Headers
 		for(i in 1:l.HyperGeo.results){
 			cat(paste('\n <td class="tabs"> <h3>',names(enrichmentAnalysis$HyperGeo.results)[i],'</h3> </td>',sep=""), append = TRUE, file = htmlfile)
 		}
-		cat("\n </tr> <tr>", append = TRUE, file = htmlfile)	
-		cat('<td class="tabs"> <h3> Hypergeometric tests </h3> </td>', append = TRUE, file = htmlfile)
+		cat("\n </tr>", append = TRUE, file = htmlfile)	
+		##Enrichment maps
+		cat('<tr><td class="tabs"> <h3> Enrichment maps </h3> </td>', append = TRUE, file = htmlfile)
+		for(i in 1:l.HyperGeo.results){
+			cat(paste('\n <td class="tabs"> <h3><a href="',file.path(rootdir,"html",paste("enrichment_map",i,".html",sep="")),'" title="',sep=""), append = TRUE, file = htmlfile)
+			cat(paste(names(enrichmentAnalysis$GSEA.results)[i],' Enrichment Map">here</a></h3>',sep=""), append=TRUE, file=htmlfile)	
+		}
+		cat("\n </tr>", append = TRUE, file = htmlfile)		
+		##HyperGeo tabs
+		cat('<tr><td class="tabs"> <h3> Hypergeometric tests </h3> </td>', append = TRUE, file = htmlfile)
 		for(i in 1:l.HyperGeo.results){
 			cat(paste('\n <td class="tabs"> <h3><a href="',file.path(rootdir,"html",paste("hyperg",i,".html",sep="")),'" title="',sep=""), append = TRUE, file = htmlfile)
-			cat(paste(names(enrichmentAnalysis$HyperGeo.results)[i],' Hyperg. Tests">','result</a></h3> </td>',sep=""), append = TRUE, file = htmlfile)
+			cat(paste(names(enrichmentAnalysis$HyperGeo.results)[i],' Hyperg. Tests">','here</a></h3> </td>',sep=""), append = TRUE, file = htmlfile)
 		}
-		cat("\n </tr> <tr>", append = TRUE, file = htmlfile)
-		cat('<td class="tabs"> <h3> GSEA </h3> </td>', append = TRUE, file = htmlfile)	
+		cat("\n </tr>", append = TRUE, file = htmlfile)
+		##GSEA tabs
+		cat('<tr><td class="tabs"> <h3> GSEA </h3> </td>', append = TRUE, file = htmlfile)	
 		for(i in 1:l.GSEA.results){
 			cat(paste('\n <td class="tabs"> <h3><a href="',file.path(rootdir,"html",paste("gsea",i,".html",sep="")),'" title="',sep=""), append = TRUE, file = htmlfile)
-			cat(paste(names(enrichmentAnalysis$GSEA.results)[i],' GSEA">','result</a></h3> ',sep=""), append = TRUE, file = htmlfile)
-			cat(paste('<h3><a href="', file.path(rootdir,"html",paste("gsea",i,"_map.html",sep="")),
-				'"title=',names(enrichmentAnalysis$GSEA.results)[i],'enrichment map">map</a></h3>',sep=""), append=TRUE, file=htmlfile)	
-			
-			cat("</td>",append=TRUE, file=htmlfile)
+			cat(paste(names(enrichmentAnalysis$GSEA.results)[i],' GSEA">','here</a></h3> </td>',sep=""), append = TRUE, file = htmlfile)
+			##cat(paste('<h3><a href="', file.path(rootdir,"html",paste("gsea",i,"_map.html",sep="")),
+			##	'"title=',names(enrichmentAnalysis$GSEA.results)[i],'enrichment map">map</a></h3>',sep=""), append=TRUE, file=htmlfile)	
+			##cat("</td>",append=TRUE, file=htmlfile)
 		}
 		cat("\n </tr> <tr>", append = TRUE, file = htmlfile)	
 		cat('<td class="tabs"> <h3> Enrichment Summary </h3> </td>', append = TRUE, file = htmlfile)
+		##Tabs for both significant gene sets
 		for(i in 1:l.Sig.adj.pvals.in.both){
 			cat(paste('\n <td class="tabs"> <h3><a href="',file.path(rootdir,"html",paste("enrichment",i,".html",sep="")),'" title="',sep=""), append = TRUE, file = htmlfile)
-			cat(paste(names(enrichmentAnalysis$Sig.adj.pvals.in.both)[i],' Enrichment.summary">','result</a></h3> </td>',sep=""), append = TRUE, file = htmlfile)
+			cat(paste(names(enrichmentAnalysis$Sig.adj.pvals.in.both)[i],' Enrichment.summary">','here</a></h3> </td>',sep=""), append = TRUE, file = htmlfile)
 		}
 		cat("\n </tr>", append = TRUE, file = htmlfile)
 	}

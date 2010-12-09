@@ -32,12 +32,10 @@ details).
 
 'Biogrid_DM_Interactome' is an object of class \emph{graphNEL} built from 
 the interaction data set for \emph{Drosophila Melanogaster} downloaded
-from \emph{Biogrid} database (version 3.1.71, accessed on Dec. 5, 2010).
+from the \emph{BioGRID} database (version 3.1.71, accessed on Dec. 5, 2010).
 }
 
-\usage{##cellHTS object, see examples for details}
-
-\format{\code{\linkS4class{cellHTS}} object}
+\usage{##see examples for details}
 
 \references{
 Boutros, M., Kiger, A.A., Armknecht,S., Kerr,K., Hild,M., Koch,B., Haas, 

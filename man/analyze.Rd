@@ -9,10 +9,10 @@ Gene Set Collection Analysis or NetWork Analysis
 This is a generic function.
 
 When implemented as the S4 method for objects of class \code{\link[HTSanalyzeR:GSCA-class]{GSCA}},
-this function will invoke function  \code{\link[HTSanalyzeR:analyzeGeneSetCollections]{analyzeGeneSetCollections}} to do 
+this function invokes function  \code{\link[HTSanalyzeR:analyzeGeneSetCollections]{analyzeGeneSetCollections}} to do 
 hypergeometic tests and GSEA. 
 
-When implemented on an object of class \code{\link[HTSanalyzeR:NWA-class]{NWA}}, it will call 
+When implemented on an object of class \code{\link[HTSanalyzeR:NWA-class]{NWA}}, it calls 
 function \code{\link[HTSanalyzeR:networkAnalysis]{networkAnalysis}} to do subnetwork identification. 
 
 To use this function for objects of class \code{\link[HTSanalyzeR:GSCA-class]{GSCA}}:
@@ -39,8 +39,6 @@ the method of class 'GSCA' or 'NWA')
 \describe{
 	\item{para:}{
 a list of parameters for GSEA and hypergeometric tests including:
-para$pValueCutoff: a single numeric value specifying the cutoff for p-values 
-considered significant	
 }
 	\item{para$pValueCutoff}{
 a single numeric value specifying the cutoff for p-values considered significant
@@ -65,11 +63,11 @@ a single integer or numeric value used in weighting phenotypes in GSEA
 }
 	\item{fdr:}{
 a single numeric value specifying the false discovery for the scoring 
-of nodes (see BioNet::scoreNodes and Dittrich et al., 2008 for details)	
+of nodes (see \code{BioNet::scoreNodes} and Dittrich et al., 2008 for details)	
 }
 	\item{species:}{
 a single character value specifying the species for which the data 
-should be read. The current version support one of the following 
+should be read. The current version supports one of the following 
 species: "Dm" ("Drosophila_melanogaster"), "Hs" ("Homo_sapiens"), 
 "Rn" ("Rattus_norvegicus"), "Mm" ("Mus_musculus"), "Ce" 
 ("Caenorhabditis_elegans"). This is an optional argument here. If it is 
@@ -78,7 +76,7 @@ mapped from Entrez IDs to gene symbols; otherwise, Entrez IDs will be
 used as labels for those nodes.
 }
 	\item{verbose:}{
-a single logical value deciding to display detailed messages (when 
+a single logical value specifying to display detailed messages (when 
 verbose=TRUE) or not (when verbose=FALSE)
 }
 }
@@ -87,7 +85,7 @@ verbose=TRUE) or not (when verbose=FALSE)
 \details{
 For objects of class \code{\link[HTSanalyzeR:GSCA-class]{GSCA}}:
 
-This function will store the results from function \code{\link[HTSanalyzeR:analyzeGeneSetCollections]{analyzeGeneSetCollections}} 
+The function will store the results from function \code{\link[HTSanalyzeR:analyzeGeneSetCollections]{analyzeGeneSetCollections}} 
 in slot \code{result}, and update information about these results to 
 slot \code{summary} of class \code{\link[HTSanalyzeR:GSCA-class]{GSCA}}. 
 
@@ -96,7 +94,7 @@ about the returned results.
 
 For objects of class \code{\link[HTSanalyzeR:NWA-class]{NWA}}:
 
-This function will store the subnetwork module identified by BioNet (if 
+The function will store the subnetwork module identified by BioNet (if 
 \code{species} is given, labels of nodes will also be mapped from Entrez IDs 
 to gene symbols), and update information about these results to slot 
 \code{summary} of class \code{\link[HTSanalyzeR:NWA-class]{NWA}}.
@@ -140,7 +138,7 @@ gsca <- new("GSCA", listOfGeneSetCollections=gscList,
 geneList = KcViab_Data4Enrich, hits = hits)
 ##print gsca
 gsca
-##do preprocessing (data4enrich has already been preprocessed)
+##do preprocessing (KcViab_Data4Enrich has already been preprocessed)
 gsca <- preprocess(gsca, species="Dm", initialIDs = "Entrez.gene", 
 keepMultipleMappings = TRUE, duplicateRemoverMethod = "max", 
 orderAbsValue = FALSE)

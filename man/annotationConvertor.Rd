@@ -1,13 +1,13 @@
 \name{annotationConvertor}
 \alias{annotationConvertor}
 \title{
-Convert between different types of identifiers
+Convert between different types of gene identifiers
 }
 \description{
 This function converts an initial named data vector to the same vector but 
-with a different identifier category. This function can also take a matrix, 
-with rows=gene id's. This function removes the genes for which no mapping were 
-found.
+with a different identifier category, and removes the genes for which no 
+mapping were found. This function can also take a matrix, with gene 
+identifiers as row names.
 }
 \usage{
 annotationConvertor(geneList, species="Dm", initialIDs="Entrez.gene", 
@@ -29,16 +29,16 @@ a single character value specifying the type of initial identifiers for
 input 'geneList'. Current version can take one of the following types: 
 "Ensembl.transcript", "Ensembl.prot", "Ensembl.gene", "Entrez.gene", 
 "RefSeq", "Symbol" and "GenBank" for all supported species; "Flybase", 
-"FlybaseCG" and "FlybaseProt" for Drosophila Melanogaster; "wormbase" 
-for Caenorhabditis Elegans. 
+"FlybaseCG" and "FlybaseProt" in addition for Drosophila Melanogaster; 
+"wormbase" in addition for Caenorhabditis Elegans. 
 }
   \item{finalIDs}{
 a single character value specifying the type of initial identifiers for 
 input 'geneList'. Current version can take one of the following types: 
 "Ensembl.transcript", "Ensembl.prot", "Ensembl.gene", "Entrez.gene", 
 "RefSeq", "Symbol" and "GenBank" for all supported species; "Flybase", 
-"FlybaseCG" and "FlybaseProt" for Drosophila Melanogaster; "wormbase" 
-for Caenorhabditis Elegans. 
+"FlybaseCG" and "FlybaseProt" in addition for Drosophila Melanogaster; 
+"wormbase" in addition for Caenorhabditis Elegans. 
 }
   \item{keepMultipleMappings}{
 a single logical value. If TRUE, the function keeps the entries with 
@@ -46,7 +46,7 @@ multiple mappings (first mapping is kept). If FALSE, the entries with
 multiple mappings will be discarded.
 }
   \item{verbose}{
-a single logical value deciding to display detailed messages (when 
+a single logical value specifying to display detailed messages (when 
 verbose=TRUE) or not (when verbose=FALSE)
 }
 }
@@ -55,7 +55,7 @@ The entries that could not be mapped to any identifiers are removed from
 the resulting data vector/matrix.
 This function relies on the org.Dm.eg.dbpackage and therefore only maps 
 \itemize{
-	\item from any identifier to an Entrez gene id
+	\item from any identifier to an Entrez gene id, or
 	\item from an Entrez gene ID to any identifier	
 	}
 }

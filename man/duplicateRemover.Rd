@@ -1,23 +1,24 @@
 \name{duplicateRemover}
 \alias{duplicateRemover}
 \title{
-Remove duplicates in a gene list
+Remove duplicates in a named vector of phenotypes
 }
 \description{
-This function gets rid of the duplicates in a gene list. It is used to 
-prepare a gene list for enrichment analysis.
+This function gets rid of the duplicates in a vector of phenotypes with 
+gene identifiers as names. It is used to prepare the named vector of 
+phenotypes for the over-representation and enrichment analysis.
 }
 \usage{
 duplicateRemover(geneList, method = "max")
 }
 \arguments{
   \item{geneList}{
-a single named numeric or integer vector
+a single named numeric or integer vector with gene identifiers as names
 }
   \item{method}{
 a single character value specifying the method to remove the duplicates 
 (should the minimum, maximum or average observation for a same construct 
-be kept). Current version provides "min" (minimum), "max" (maximum), 
+be kept). The current version provides "min" (minimum), "max" (maximum), 
 "average" and "fc.avg" (fold change average). The minimum and maximum 
 should be understood in terms of absolute values (i.e. min/max effect, 
 no matter the sign). The fold change average method converts the fold 
@@ -26,7 +27,7 @@ fold change.
 }
 }
 \value{
-a gene list (increasing) with duplicates removed, as a single named vector
+a named vector of phenotypes with duplicates removed
 }
 \author{
 Camille Terfve, John C. Rose and Xin Wang

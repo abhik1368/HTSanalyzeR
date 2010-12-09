@@ -1,12 +1,12 @@
 \name{cellHTS2OutputStatTests}
 \alias{cellHTS2OutputStatTests}
 \title{
-Compute statistical tests on a cellHTS object
+Perform statistical tests on a cellHTS object
 }
 \description{
 This function takes a normalized, configured and annotated cellHTS
-cellHTSobject and computes statistical tests on it for the significance
-of a set of observations for each condition tested in a high-throughput
+object and performs statistical tests on it for the significance of 
+a set of observations for each condition tested in a high-throughput
 screen.
 }
 \usage{
@@ -20,15 +20,15 @@ an object of class \code{cellHTS}
 }
   \item{annotationColumn}{
 a single character value specifying the name of the column in the
-fData(cellHTSobject) data frame from which the feature identifiers will
+fData(cellHTSobject) dataframe from which the feature identifiers will
 be extracted
 }
   \item{controls}{
 a single character value specifying the name of the controls to be used 
-as a control population in the 2 samples tests (this HAS to be 
-corresponding to how these control wellshave been annotated in the 
-column "controlStatus" of the fData(cellHTSobject) dataframe). If nothing 
-is specified, the function will look for negative controls labelled "neg".
+as a control population in the two-sample tests (this HAS to be corresponding 
+to how these control wells have been annotated in the column "controlStatus" 
+of the fData(cellHTSobject) dataframe). If nothing is specified, the function 
+will look for negative controls labelled "neg".
 }
   \item{alternative}{
 a single character value specifying the alternative hypothesis: "two.sided",
@@ -41,21 +41,21 @@ during the normalization process
   \item{tests}{
 a single character value specifying the tests to be performed: "T-test",
 "MannWhitney" or "RankProduct". If nothing is specified, all three tests
-will be performed. Be aware that the rank product test is slower than the
+will be performed. Be aware that the Rank Product test is slower than the
 other two, and returns a percent false discovery (equivalent to a FDR,
-not a p-value) this one requires the package "RankProduct".
+not a p-value).
 }
 }
 \details{
 The tests are computed taking into account only the wells labelled "sample"
 in the column "controlStatus" of the fData(cellHTSobject).
 
-The two sample tests compare the set of observation for one construct to
-the values obtained for a population considered as "control".  The one
-sample tests compare the set of observation for one construct to the median
+The two sample tests compare the set of observations for one construct to
+the values obtained for a population considered as "control". The one-sample 
+tests compare the set of observations for one construct to the median
 of all values obtained across all constructs labelled as "sample". This
 type of test assumes that most constructs are expected to show a negligible
-effect, it is therefore not advised to used this type of tests when the
+effect. It is therefore not advised to use this type of tests when the
 constructs tested have been pre-screened for being associated with a
 phenotype.
 
@@ -63,7 +63,7 @@ Please be aware that both types of tests are less reliable when the number
 of replicates for each construct is low.
 }
 \value{
-a matrix with two columns for each type of test (two sample and one sample
+a matrix with two columns, one for each type of test (two-sample and one-sample
 test) except the Rank Product (no alternative), and a row for each construct
 (row names corresponding to the identifiers given by the "annotationcolumn"
 entry).

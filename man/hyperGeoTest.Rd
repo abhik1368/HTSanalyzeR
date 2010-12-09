@@ -10,7 +10,7 @@ and a p-value adjustment method. It outputs a vector containing the size
 of the gene universe, the size of the gene set within this universe (i.e.
 how many genes from the universe map to this gene set), the total number
 of hits, the number of hits expected to occur in the gene set, the actual
-hits observed in the gene set, and the pvalue from a hypergeometric test.
+hits observed in the gene set, and the p-value from a hypergeometric test.
 }
 \usage{
 hyperGeoTest(geneSet, universe, hits)
@@ -31,7 +31,7 @@ a character vector of gene identifiers for those genes considered as hits
 a numeric vector containing the size of the gene universe (named by
 "Universe Size"), 
 the size of the gene set within this universe (i.e. how many genes from
-the universe map to this gene set) (named by "Gene Set Size"), 
+the universe map to this gene set (named by "Gene Set Size"), 
 the total number of hits (named by "Total Hits"), 
 the number of hits expected to occur in the gene set (named by "Expected
 Hits"), 
@@ -42,7 +42,7 @@ and the pvalue from a hypergeometric test (named by "Pvalue").
 John C. Rose, Xin Wang
 }
 \seealso{
-multiHyperGeoTest
+\code{\link[HTSanalyzeR:multiHyperGeoTest]{multiHyperGeoTest}}
 }
 \examples{
 ##example 1

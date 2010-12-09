@@ -1,11 +1,10 @@
 \name{biogridDataDownload}
 \alias{biogridDataDownload}
 \title{
-Extract a network interaction matrix from a data set downloaded from
-Biogrid
+Download and extract a network interaction matrix from a BioGRID data set 
 }
 \description{
-This function downloads an interaction data set from the Biogrid into
+This function downloads an interaction data set from the BioGRID into
 an user-specified folder and extracts an interaction matrix for a given
 species. 
 }
@@ -20,16 +19,16 @@ valid on Dec. 5 2010) will be used.
 }
   \item{species}{
 a single character value specifying the species for which the data should 
-be read. The current version support one of the following species: "Dm" 
+be read. The current version supports one of the following species: "Dm" 
 ("Drosophila_melanogaster"), "Hs" ("Homo_sapiens"), "Rn" ("Rattus_norvegicus"), 
 "Mm" ("Mus_musculus"), "Ce" ("Caenorhabditis_elegans").
 }	
   \item{dataDirectory}{
-the directory to store downloaded file.
+the directory to store downloaded file
 }
   \item{verbose}{
-a single logical value to decide to display detailed messages (when 
-verbose=TRUE) or not (when verbose=FALSE).
+a single logical value specifying to display detailed messages (when 
+verbose=TRUE) or not (when verbose=FALSE)
 }
 }
 \details{

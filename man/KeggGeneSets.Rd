@@ -1,12 +1,12 @@
 \name{KeggGeneSets}
 \alias{KeggGeneSets}
 \title{
-Create gene set collections (lists) based on Kegg pathways terms
+Create a list of gene sets based on KEGG pathways terms
 }
 \description{
-This function creates gene set collections (lists) based on Kegg pathways
-terms. It is species-specific, and returns a list of gene set collections
-(lists) with the elements of the gene sets represented by Entrez Gene IDs.
+This function creates a list of gene sets based on KEGG pathways terms. 
+It is species-specific, and returns a list of gene sets, each of which 
+is a character vector of Entrez gene identifiers.
 }
 \usage{
 KeggGeneSets(species="Dm")
@@ -22,8 +22,8 @@ melanogaster"), "Hs" ("Homo_sapiens"), "Rn" ("Rattus_norvegicus"), "Mm"
 This function relies on the following packages: GSEABase, KEGG.db.
 }
 \value{
-a collection (list) of gene sets, with names as kegg pathway IDs and
-genes as entrez gene IDs
+a list of gene sets, with names as KEGG pathway IDs. Each gene set 
+is a character vector of Entrez gene identifiers.
 }
 \author{
 Camille Terfve, Xin Wang

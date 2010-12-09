@@ -6,7 +6,7 @@ Convert between different types of identifiers for mammalian species
 \description{
 This function converts an initial named data vector to the same vector
 but with a different identifier category (this function also works on
-matrices with rows=genes (named)).
+matrices with gene identifiers as row names).
 }
 \usage{
 mammalAnnotationConvertor(geneList, initialIDs = "Entrez.gene", finalIDs = 
@@ -19,15 +19,15 @@ identifiers
 }
   \item{initialIDs}{
 a single character value specifying the type of initial identifiers for
-input 'geneList'. Current version can take one of the following types: 
+input 'geneList'. The current version can take one of the following types: 
 "Ensembl.transcript", "Ensembl.prot", "Ensembl.gene", "Entrez.gene",
 "RefSeq", "Symbol" and "GenBank".
 }
   \item{finalIDs}{
 a single character value specifying the type of final identifiers to
-which users want to convert. Current version can take one of the following
-types: "Ensembl.transcript", "Ensembl.prot", "Ensembl.gene", "Entrez.gene",
-"RefSeq", "Symbol" and "GenBank"
+which users want to convert. The current version can take one of the 
+following types: "Ensembl.transcript", "Ensembl.prot", "Ensembl.gene", 
+"Entrez.gene", "RefSeq", "Symbol" and "GenBank"
 }
   \item{species}{
 a single character value specifying the species: "Hs" ("Homo_sapiens"),
@@ -39,14 +39,14 @@ multiple mappings (first mapping is kept). If FALSE, the entries with
 multiple mappings will be discarded.
 }
  \item{verbose}{
-a single logical value deciding to display detailed messages (when
+a single logical value indicating to display detailed messages (when
 verbose=TRUE) or not (when verbose=FALSE)
 }
 }
 \details{
 This function removes the genes for which no mapping was found. This
 function relies on the org.Hs.eg.db/org.Mm.eg.db/org.Rn.eg.db packages
-and therefore only maps from any identifier to an Entrez gene id or from
+and therefore only maps from any identifier to an Entrez gene ID or from
 an Entrez gene ID to any identifier.
 }
 \value{

@@ -2,12 +2,12 @@
 \alias{interactome}
 \alias{interactome,NWA-method}
 \title{
-Create an interactome from BioGrid data sets
+Create an interactome from BioGRID data sets
 }
 \description{
-This is an generic function. 
+This is a generic function. 
 
-When implemented as the S4 method for class \code{\link[HTSanalyzeR:NWA]{NWA}}, this function creates 
+When implemented as the S4 method of class \code{\link[HTSanalyzeR:NWA]{NWA}}, this function creates 
 an interactome before conducting network analysis.
 
 To use this function for objects of class \code{\link[HTSanalyzeR:NWA]{NWA}}:
@@ -29,40 +29,40 @@ class \code{\link[HTSanalyzeR:NWA]{NWA}})
 }
   \describe{
   \item{interactionMatrix:}{
-an interaction matrix including columns 'InteractionType','InteractorA'
+an interaction matrix including columns 'InteractionType', 'InteractorA'
 and 'InteractorB'. If this matrix is available, the interactome can be
 directly built based on it.
 }
   \item{species:}{
 a single character value specifying the species for which the data should 
-be read. The current version support one of the following species: "Dm" 
+be read. The current version supports one of the following species: "Dm" 
 ("Drosophila_melanogaster"), "Hs" ("Homo_sapiens"), "Rn" ("Rattus_norvegicus"), 
 "Mm" ("Mus_musculus"), "Ce" ("Caenorhabditis_elegans").
 }	
   \item{link:}{
-the link (url) from where the data should be downloaded (in tab2 format).
-The default link is the one valid on Nov. 25 2010.
+the link (url) where the data should be downloaded (in tab2 format).
+The default link is version 3.1.71 (valid on Dec. 5 2010).
 }
   \item{reportDir:}{
-a single character value specifying the directory to store reports. Biogrid
-data set will be downloaded and stored in a subdirectory called 'Data' in
-'reportDir'.
+a single character value specifying the directory to store reports. The 
+BioGRID data set will be downloaded and stored in a subdirectory called 
+'Data' in 'reportDir'.
 }
   \item{genetic:}{
 a single logical value. If TRUE, genetic interactions will be kept;
 otherwise, they will be removed from the data set.
 }
   \item{verbose:}{
-a single logical value deciding to display detailed messages (when 
+a single logical value indicating to display detailed messages (when 
 verbose=TRUE) or not (when verbose=FALSE)
 }
 }
 }
 \details{
 This function provides two options to create an interactome for network
-analysis. Users can either input an interaction matrix including columns
+analysis. The user can either input an interaction matrix including columns
 'InteractionType', 'InteractionA' and 'InteractionB', or set 'species',
-'link' and 'genetic' to download data set from Biogrid and extract
+'link' and 'genetic' to download data set from BioGRID and extract
 corresponding interactions to build the interactome. 
 
 Another way to set up the interactome is to input a \code{graphNEL} object
@@ -85,7 +85,7 @@ Xin Wang \email{xw264@cam.ac.uk}
 ##example 1, input interactome when initializing an 'NWA' object
 ##load p-values and phenotypes
 data("KcViab_PVals","KcViab_Data4Enrich")
-##load Biogrid interactome for Drosophila Melanogaster
+##load BioGRID interactome for Drosophila Melanogaster
 data("Biogrid_DM_Interactome")
 ##create a NWA (NetWork Analysis) object
 nwa <- new("NWA",pvalues=KcViab_PVals, phenotypes=KcViab_Data4Enrich, 
@@ -99,7 +99,7 @@ library(BioNet)
 nwa <- new("NWA", pvalues=KcViab_PVals, phenotypes=KcViab_Data4Enrich)
 ##print nwa
 nwa
-##download data from Biogrid and build the interactome
+##download data from BioGRID and build the interactome
 nwa <- interactome(nwa, species="Dm", reportDir="NWATest")
 ##print nwa again
 nwa

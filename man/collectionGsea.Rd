@@ -34,14 +34,14 @@ a single numeric or integer value specifying the minimum size required
 for a gene set to be considered.
 }
   \item{verbose}{
-a single logical value to decide to display detailed messages (when
+a single logical value specifying to display detailed messages (when
 verbose=TRUE) or not (when verbose=FALSE)
 }
 }
 \value{
-\item{Observed.scores}{The observed score for the given gene set (a named
-vector)}
-\item{Permutation.scores}{The scores for the permutationsMatrix (one
+\item{Observed.scores}{The observed scores for the given gene sets (a 
+named vector)}
+\item{Permutation.scores}{The scores for the permutation tests (one
 column for each permutation and a row for each gene set)}
 }
 \references{

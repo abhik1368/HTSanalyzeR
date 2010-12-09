@@ -6,7 +6,7 @@ Plot the enriched subnetwork
 \description{
 This function takes in a subnetwork module resulted from the function
 \code{\link[HTSanalyzeR:networkAnalysis]{networkAnalysis}}, a vector of labels for nodes in the module and a
-phenotype vector (optional), and generates a figure. 
+phenotype vector (optional) to generate a figure. 
 }
 \usage{
 networkPlot(nwAnalysisOutput, phenotypeVector=NULL)

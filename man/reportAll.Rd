@@ -2,7 +2,7 @@
 \alias{reportAll}
 \alias{reportAll,GSCA_Or_NULL,NWA_Or_NULL-method}
 \title{
-Write html reports for both the enrichment and network analyses
+Write HTML reports for both the enrichment and network analyses
 }
 \description{
 This is a generic function.
@@ -37,13 +37,13 @@ for you own record)
 } 
   \item{species:}{
 a single character value specifying the species for which the data should
-be read. Current version support one of the following species: "Dm"
+be read. The current version supports one of the following species: "Dm"
 ("Drosophila_melanogaster"), "Hs" ("Homo_sapiens"), "Rn" ("Rattus_
 norvegicus"), "Mm" ("Mus_musculus"), "Ce" ("Caenorhabditis_elegans").
 }
   \item{ntop:}{
 a single integer value specifying the number of plots to be produced for
-the GSEA analysis.  For each gene set collection, plots are produced for
+the GSEA analysis. For each gene set collection, plots are produced for
 the top 'ntop' most significant p-values.  
 }
   \item{allSig:}{
@@ -69,9 +69,9 @@ a single character value specifying the directory to store reports
 \details{
 This function takes in the objects of the two wrapper classes (\code{GSCA}
 and \code{NWA}) and writes a report into the user-specified directory.
-An index html file containing a summary of all results and hyperlinked tabs
+An index HTML file containing a summary of all results and hyperlinked tabs
 to more detailed results will be generated in the root directory. The other
-html files will be stored in a subdirectory called 'html'. All images
+HTML files will be stored in a subdirectory called 'html'. All images
 including GSEA plots and subnetwork figure will be produced in a sub-
 directory called 'image'. All documents or text files such as the files
 containing significant gene sets of the hypergeometric test results will

@@ -1,15 +1,15 @@
 \name{analyzeGeneSetCollections}
 \alias{analyzeGeneSetCollections}
 \title{
-Hypergeometric tests and Gene Set Enrichment Analyses on a list of gene
+Hypergeometric tests and Gene Set Enrichment Analyses over a list of gene
 set collections
 }
 \description{
 This function takes a list of gene set collections, a named phenotype 
-vector (with names(phenotype vector)=GeneUniverse), a vector of hits 
-(names only) and returns the results of hypergeometric and gene set 
-enrichment analysis for all of the gene set collections (with multiple 
-hypothesis testing correction).
+vector (with names of the phenotype vector as the universe), a vector 
+of hits (gene names only) and returns the results of hypergeometric 
+and gene set enrichment analyses for all of the gene set collections 
+(with multiple hypothesis testing corrections).
 }
 \usage{
 analyzeGeneSetCollections(listOfGeneSetCollections, geneList, hits, 
@@ -56,7 +56,7 @@ a single integer or numeric value used in weighting phenotypes in GSEA
 (see the function \code{\link[HTSanalyzeR:gseaScores]{gseaScores}})
 }
   \item{verbose}{
-a single logical value deciding to display detailed messages (when 
+a single logical value specifying to display detailed messages (when 
 verbose=TRUE) or not (when verbose=FALSE)
 }
 }
@@ -73,11 +73,11 @@ collection named "MyGeneSetCollection", one would enter:
 output$GSEA.results$MyGeneSetCollection}
 \item{Sig.pvals.in.both}{a list of dataframes containing the gene sets 
 with p-values considered significant in both hypergeometric test and 
-GSEA, before pvalue correction. Each element of the list contains the 
+GSEA, before p-value correction. Each element of the list contains the 
 results for one gene set collection.}
 \item{Sig.adj.pvals.in.both}{a list of dataframes containing the gene 
 sets with p-values considered significant in both hypergeometric test 
-and GSEA, after pvalue correction. Each element of the list contains 
+and GSEA, after p-value correction. Each element of the list contains 
 the results for one gene set collection.}
 }
 \author{

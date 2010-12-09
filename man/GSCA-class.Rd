@@ -5,11 +5,11 @@
 \alias{writeHits,GSCA-method}
 \docType{class}
 \title{
-A class for Gene Set Collection Analyses
+An S4 class for Gene Set Collection Analyses on high-throughput screens
 }
 \description{
-This S4 class includes methods to do gene set enrichment analysis 
-and hypergeometric tests for high-throughput screens. 
+This S4 class includes a series of methods to do gene set enrichment 
+analysis and hypergeometric tests for high-throughput screens. 
 }
 \section{Objects from the Class}{ 
 Objects of class \code{GSCA} can be created from \code{
@@ -24,11 +24,11 @@ the examples below)
 		}
 		
 		\item{\code{geneList}:}{
-		a numeric or integer vector of phenotypes.
+		a numeric or integer vector of phenotypes named by gene identifiers.
 		}
 		
 		\item{\code{hits}:}{
-		a character vector of the gene identifiers.
+		a character vector of the gene identifiers (used as hits in the hypergeometric tests).
 		}
 		
 		\item{\code{para}:}{
@@ -40,7 +40,7 @@ the examples below)
 		}
 		
 		\item{\code{result}:}{
-		a list of results (see the returned values in function 
+		a list of results (see the returned values in the function 
 		\code{\link[HTSanalyzeR:analyzeGeneSetCollections]{analyzeGeneSetCollections}}).
 		}
 		
@@ -50,7 +50,7 @@ the examples below)
 		}
 		
 		\item{\code{preprocessed}:}{
-		a single logical value specifying whether or not input data has been 
+		a single logical value specifying whether or not the input data has been 
 		preprocessed.
 		}
 	}
@@ -60,7 +60,7 @@ the examples below)
 	More detailed introduction can be found in help for each specific function.
 	\describe{	
 		\item{\code{preprocess}}{ 
-		do preprocessing on input gene list and hit list including: 
+		do preprocessing on input vectors of phenotypes and hits including: 
 		a) removing NAs in the \code{geneList} and \code{hits}; 
 		b) invoking function \code{\link[HTSanalyzeR:duplicateRemover]{duplicateRemover}} to process
 		duplicated phenotypes (see \code{\link[HTSanalyzeR:duplicateRemover]{duplicateRemover}} for more details); 
@@ -68,14 +68,14 @@ the examples below)
 		d) ranking phenotypes in a decreasing order.
 		}
 		\item{\code{analyze}}{
-		do hypergeometric tests and Gene Set Enrichment Analysis based on
+		perform hypergeometric tests and Gene Set Enrichment Analysis based on
 		input parameter list \code{para}.
 		}
 		\item{\code{appendGSTerms}}{
 		append gene set terms to GSCA results
 		}
 		\item{\code{summarize}}{
-		print summary information of \code{listOfGeneSetCollections},
+		print summary information about \code{listOfGeneSetCollections},
 		\code{geneList}, \code{hits}, \code{para}, and \code{result}.
 		}
 		\item{\code{getTopGeneSets}}{
@@ -86,16 +86,16 @@ the examples below)
 		write observed hits in gene sets for hypergeometric tests.
 		}
 		\item{\code{viewGSEA}}{
-		plot a figure of GSEA results of a gene set in a gene set collection.
+		view a figure of GSEA results for a gene set in a gene set collection.
 		}
 		\item{\code{plotGSEA}}{
-		plot and save figures for Gene Set Enrichment Analysis.
+		plot and save figures of GSEA results for top significant gene sets in a gene set collection.
 		}
 		\item{\code{viewEnrichMap}}{
-		plot an enrichment map for GSEA results
+		plot an enrichment map for GSEA or hypergeometric test results
 		}
 		\item{\code{plotEnrichMap}}{
-		plot and save an enrichment map for GSEA results
+		plot and save an enrichment map for GSEA or hypergeometric test results
 		}
 		\item{\code{report}}{
 		generate html reports.
@@ -132,7 +132,7 @@ gscs <- list(PW_KEGG = PW_KEGG)
 ##create an object of class 'GSCA'
 gsca <- new("GSCA", listOfGeneSetCollections=gscs, geneList = 
 KcViab_Data4Enrich, hits = hits)
-##do preprocessing (data4enrich has already been preprocessed)
+##do preprocessing (KcViab_Data4Enrich has already been preprocessed)
 gsca <- preprocess(gsca, species="Dm", initialIDs = "Entrez.gene", 
 keepMultipleMappings = TRUE, duplicateRemoverMethod = "max", 
 orderAbsValue = FALSE)
@@ -148,7 +148,7 @@ viewGSEA(gsca, gscName="PW_KEGG", gsName=sigGSs[["PW_KEGG"]][1])
 dev.off()
 ##append gene set terms to results
 gsca<-appendGSTerms(gsca, keggGSCs="PW_KEGG")
-##view an enrichment map
+##view an enrichment map for GSEA results
 eb<-viewEnrichMap(gsca, gscs="PW_KEGG", allSig=TRUE, gsNameType="term", 
 displayEdgeLabel=FALSE, layout="layout.fruchterman.reingold")
 ##write html reports

@@ -1,7 +1,7 @@
 \name{aggregatePvals}
 \alias{aggregatePvals}
 \title{
-Aggregate p-values from gene set overrepresentation tests.
+Aggregate p-values from gene set over-representation tests.
 }
 \description{
 This function takes as input a matrix of p-values for example obtained 
@@ -38,12 +38,12 @@ a matrix with a row for each gene set and two columns:
 }
 \details{
 The Fisher method combines the p-values into an aggregated chi-squared 
-statistic equal to -2.sum(log(Pk)) were we have k=1,..,K  pvalues 
+statistic equal to -2*sum(log(Pk)) were we have k=1,..,K  pvalues 
 independently distributed as uniform on the unit interval under the null 
-hypothesis.  The resulting p-values is calculated by comparing this 
+hypothesis.  The resulting p-values are calculated by comparing this 
 chi-squared statistic to a chi-squared distribution with 2K degrees of 
 freedom.
-The Stouffer method computes a z statistic assuming that the sum of the 
+The Stouffer method computes a z-statistics assuming that the sum of the 
 quantiles (from a standard normal distribution) corresponding to the 
 p-values are distributed as N(0,K).
 }

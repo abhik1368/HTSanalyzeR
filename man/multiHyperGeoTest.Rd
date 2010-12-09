@@ -4,7 +4,7 @@
  Hypergeometric tests on a list of gene sets
 }
 \description{
-This function performs hypergeometric tests for overrepresentation of
+This function performs hypergeometric tests for over-representation of
 hits, on a list of gene sets. This function applies the function
 \code{\link[HTSanalyzeR:hyperGeoTest]{hyperGeoTest}} to an entire list of gene sets and returns a data frame.
 }
@@ -21,7 +21,7 @@ a character vector of all gene identifiers (usually all genes tested in
 a screen)
 }
   \item{hits}{
-a character vector of gene identifiers for those genes considered as hits
+a character vector of gene identifiers for those considered as hits
 }
   \item{minGeneSetSize}{
 a single integer or numeric value specifying the minimum number of elements
@@ -34,7 +34,7 @@ a single character value specifying the p-value adjustment method to be
 used (see 'p.adjust' for details)
 }
   \item{verbose}{
-a single logical value deciding to display detailed messages (when
+a single logical value indicating to display detailed messages (when
 verbose=TRUE) or not (when verbose=FALSE)
 }
 }

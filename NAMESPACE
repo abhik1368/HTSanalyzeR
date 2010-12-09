@@ -29,7 +29,7 @@ export(
        "networkPlot",
 	   "pairwiseGsea",
 	   "pairwiseGseaPlot",
-	   "pairwisePhenoMannWith",
+	   "pairwisePhenoMannWhit",
        "permutationPvalueCollectionGsea",
        "hyperGeoTest",
        "writeReportHTSA")

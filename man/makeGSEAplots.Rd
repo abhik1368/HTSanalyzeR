@@ -13,14 +13,13 @@ output='png', ...)
 \arguments{
 	\item{geneList}{
 a numeric or integer vector of phenotypes in descending or ascending 
-order with elements named by their EntrezIds (no duplicates nor NA values)
+order with elements named by their Entrez IDs (no duplicates nor NA values)
 }
 	\item{geneSet}{
 a character vector of gene identifiers of a gene set
 }
 	\item{exponent}{
 a single integer or numeric value used in weighting phenotypes in GSEA 
-(see the function ``gseaScores")
 }
 	\item{filepath}{
 a single character value specifying the directory where the GSEA plot 
@@ -35,7 +34,7 @@ a single character value specifying the format of output image: "pdf" or
 "png"
 }
 	\item{...}{
-other arguments used by function png() or pdf() such as width and height
+other arguments used by the function 'png' or 'pdf' such as width and height
 }
 }
 \details{

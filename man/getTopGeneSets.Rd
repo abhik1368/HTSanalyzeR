@@ -7,13 +7,13 @@ Select top significant gene sets from GSEA results
 \description{
 This is a generic function.
 
-When implemented as the S4 method for objects of class \code{\link[HTSanalyzeR:GSCA]{GSCA}}, this function 
+When implemented as the S4 method of class \code{\link[HTSanalyzeR:GSCA]{GSCA}}, this function 
 selects top significant gene sets from GSEA results for user-specified 
 gene collections. If 'ntop' is given, then top 'ntop' significant gene sets
 in gene set collections 'gscs' will be selected and their names will be
 returned. If 'allSig=TRUE', then all significant (adjusted p-value <
-'pValueCutoff' see help("analyze")) will be selected and their names will
-be returned.
+'pValueCutoff' see help("analyze")) gene sets will be selected and their 
+names will be returned.
 
 To use this function for objects of class \code{\link[HTSanalyzeR:GSCA]{GSCA}}:
 
@@ -36,11 +36,11 @@ class \code{\link[HTSanalyzeR:GSCA]{GSCA}})
 a single character value: 'HyperGeo.results' or 'GSEA.results'
 } 
 	\item{gscs:}{
-a character vector specifying the names of gene set collections of which
-the top significant gene sets will be plot
+a character vector specifying the names of gene set collections from which
+the top significant gene sets will be selected
 }
 	\item{ntop:}{
-a single integer or numeric value specifying to plot how many gene sets
+a single integer or numeric value specifying to select how many gene sets
 of top significance.  
 }
 	\item{allSig:}{
@@ -51,8 +51,8 @@ otherwise, only top 'ntop' gene sets will be selected.
 }
 }
 \value{
-a list including a character vector of names of top significant gene set 
-for each gene set collection
+a list of character vectors, each of which contains the names of top significant 
+gene sets for each gene set collection
 }
 
 \author{
@@ -75,7 +75,7 @@ gsca <- new("GSCA", listOfGeneSetCollections=gscList, geneList =
 KcViab_Data4Enrich, hits = hits)
 ##print summary of gsca
 summarize(gsca)
-##do preprocessing (data4enrich has already been preprocessed)
+##do preprocessing (KcViab_Data4Enrich has already been preprocessed)
 gsca <- preprocess(gsca, species="Dm", initialIDs = "Entrez.gene", 
 keepMultipleMappings = TRUE, duplicateRemoverMethod = "max", 
 orderAbsValue = FALSE)

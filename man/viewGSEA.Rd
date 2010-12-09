@@ -2,14 +2,14 @@
 \alias{viewGSEA}
 \alias{viewGSEA,GSCA-method}
 \title{
-Plot on the screen a figure of GSEA results of one gene set
+Plot a figure of GSEA results for one gene set
 }
 \description{
 This is a generic function.
 
 When implemented as the S4 method for objects of class \code{\link[HTSanalyzeR:GSCA]{GSCA}}, this 
 function plots a figure of the positions of the gene sets in the ranked
-phenotypes and the location of the enrichment score. 
+gene list and the location of the enrichment score. 
 
 To use this function for objects of class \code{\link[HTSanalyzeR:GSCA]{GSCA}}:
 
@@ -32,7 +32,7 @@ a single character value specifying the name of the gene set collection
 where the gene set is
 }
 	\item{gsName:}{
-a single character value specifying the name of the gene set to be plot
+a single character value specifying the name of the gene set to be plotted
 }
 }
 }

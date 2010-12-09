@@ -48,7 +48,7 @@ the argument 'width' and 'height'
 \details{
 After the analyses step for an object of class 'NWA', users can generate
 the enriched subnetwork identified by the 'BioNet' package. If the slot
-'phenotype' has been input when initializing the object, this function
+'phenotype' was inputted when initializing the object, this function
 will send it to the function \code{\link[HTSanalyzeR:networkPlot]{networkPlot}} as the argument \code{phenotypeVector}
 to highlight nodes in different colors. If the argument \code{species} of the
 function \code{\link[HTSanalyzeR:analyze]{analyze}} has been assigned, labels of

@@ -1,11 +1,10 @@
 \name{FDRcollectionGsea}
 \alias{FDRcollectionGsea}
 \title{
-Compute the FDR associated with a GSEA for a collection (list) of gene sets
+Compute the GSEA false discovery rates for a collection (list) of gene sets
 }
 \description{
-This function computes the FDR associated with a permutation-based p-value
-from the GSEA on a list of gene sets
+This function computes the GSEA fdr over a list of gene sets
 }
 \usage{
 FDRcollectionGsea(permScores, dataScores)

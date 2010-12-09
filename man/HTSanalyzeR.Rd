@@ -7,16 +7,24 @@ HTSanalyzeR Package Overview
 }
 
 \description{
-This package does enrichment (hypergeometric tests and GSEA) and network
-analyses (based on the package 'BioNet') for high-throughput screens. 
+This package provides classes and methods for gene set over-representation, 
+enrichment and network analyses on high-throughput screens. The over-
+representation analysis is performed based on hypergeometric tests. The 
+enrichment analysis is based on the GSEA algorithm (Subramanian et al. 
+PNAS 2005). The network analysis identifies enriched subnetworks based on 
+algorithms from the BioNet package (Beisser et al., Bioinformatics 2010). 
+A pipeline is also specifically designed for cellHTS2 object to perform 
+integrative network analyses of high-throughput RNA interference screens. 
+The users can build their own analysis pipeline for their own data set based 
+on this package. 
 }
 
 \details{
 	\tabular{ll}{
 Package: \tab HTSAnalyzeR\cr
 Type: \tab Package\cr
-Version: \tab 2.3.0\cr
-Date: \tab 2010-12-08\cr
+Version: \tab 2.3.2\cr
+Date: \tab 2010-12-09\cr
 License: \tab Artistic-2.0\cr
 LazyLoad: \tab yes\cr
 	}

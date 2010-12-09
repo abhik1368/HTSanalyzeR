@@ -35,20 +35,21 @@ the method of class \code{\link[HTSanalyzeR:GSCA]{GSCA}} and \code{\link[HTSanal
 \describe{
 	\item{what:}{
 a single character value or a character vector of key words specifying
-what to print. 
+what to print (see details below). 
 }
 }
 
 }
 \details{
-For an object of class \code{\link[HTSanalyzeR:GSCA]{GSCA}}, key words are 'GSC' (the slot
-'listOfGeneSetCollections'), 'GeneList' (the slot 'geneList'), 'Hits'
+For an object of class \code{\link[HTSanalyzeR:GSCA]{GSCA}}, the key words are 'GSC' 
+(the slot 'listOfGeneSetCollections'), 'GeneList' (the slot 'geneList'), 'Hits'
 (the slot 'hits'), 'Para' (the slot 'para'),  'Result' (the slot 'result')
 and 'ALL' (all slots). 
 
-For an object of class \code{\link[HTSanalyzeR:GSCA]{NWA}}, key words include 'Pval' (the slot 'pvalue'), 
-'Phenotype' (the slot 'phenotype'), 'Interactome' (the slot 'interactome'),
-'Para' (the slot 'fdr'), 'Result' (the slot 'result') and 'ALL' (all slots).
+For an object of class \code{\link[HTSanalyzeR:GSCA]{NWA}}, the key words include 
+'Pval' (the slot 'pvalue'), 'Phenotype' (the slot 'phenotype'), 'Interactome' 
+(the slot 'interactome'), 'Para' (the slot 'fdr'), 'Result' (the slot 'result') 
+and 'ALL' (all slots).
 }
 
 \author{
@@ -71,7 +72,7 @@ gsca <- new("GSCA", listOfGeneSetCollections=gscList, geneList =
 KcViab_Data4Enrich, hits = hits)
 ##print summary of gsca
 summarize(gsca)
-##do preprocessing (data4enrich has already been preprocessed)
+##do preprocessing (KcViab_Data4Enrich has already been preprocessed)
 gsca <- preprocess(gsca, species="Dm", initialIDs = "Entrez.gene", 
 keepMultipleMappings = TRUE, duplicateRemoverMethod = "max", 
 orderAbsValue = FALSE)

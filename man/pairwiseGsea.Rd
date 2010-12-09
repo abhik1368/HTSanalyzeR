@@ -5,8 +5,8 @@ GSEA on a pair of phenotypes
 }
 \description{
 This function performs pairwise GSEA: it looks for gene sets that are
-specifically overrepresented towards the two different ends of two ranked
-lists of genes, in a gene set collection.
+specifically over-represented towards the two different ends of two ranked
+phenotype vectors, in a gene set collection.
 }
 \usage{
 pairwiseGsea(gl1, gl2, gsc, exponent=1, nPermutations=1000,
@@ -16,17 +16,18 @@ minGeneSetSize=15, pAdjustMethod="BH")
   \item{gl1}{
 a named numeric or integer vector where names are gene identifiers of
 the same type as the ones in the gene set collection, and values are
-the measurement on phenotype one corresponding to those genes this vector
+the measurements on phenotype one corresponding to those genes. This vector
 MUST be ordered (decreasing or increasing)
 }
   \item{gl2}{
 a named numeric or integer vector where names are gene identifiers of
 the same type as the ones in the gene set collection, and values are the
-measurement on phenotype two corresponding to those genes this vector MUST
-be ordered
+measurements on phenotype two corresponding to those genes. This vector 
+MUST be ordered
 }
   \item{gsc}{
-a list of gene sets, each of which in the list is a character vector. 
+a list of gene sets, each of which in the list is a character vector of
+gene identifiers. 
 }
   \item{exponent}{
 a single numeric or integer value (set as 1 by default) specifying the
@@ -67,7 +68,7 @@ Proc. Natl. Acad. Sci. USA 102, 15545-15550.
 Camille Terfve, Xin Wang
 }
 \seealso{
-\code{\link[HTSanalyzeR:pairwiseGseaPlot]{pairwiseGseaPlot}}, \code{\link[HTSanalyzeR:pairwisePhenoMannWith]{pairwisePhenoMannWith}}
+\code{\link[HTSanalyzeR:pairwiseGseaPlot]{pairwiseGseaPlot}}, \code{\link[HTSanalyzeR:pairwisePhenoMannWhit]{pairwisePhenoMannWhit}}
 }
 \examples{
 gl1 <- runif(100, min=-5, max=5)
