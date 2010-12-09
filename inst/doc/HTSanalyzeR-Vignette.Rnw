@@ -10,7 +10,7 @@
 baseurl={http://www.bioconductor.org},%
 pdftitle={HTSanalyzeR},%
 pdfauthor={Xin Wang},%
-pdfsubject={cellHTS2},%
+pdfsubject={HTSanalyzeR},%
 pdfkeywords={Bioconductor},%
 pagebackref,bookmarks,colorlinks,linkcolor=darkblue,citecolor=darkblue,%
 pagecolor=darkblue,raiselinks,pdftex]{hyperref}
