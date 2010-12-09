@@ -286,7 +286,7 @@ layout="layout.fruchterman.reingold")
 \end{center}
 \end{figure} 
 
-In figure \ref{viewEnrichMap2Fig}, there are considerable coefficients between metabolism-related gene sets, suggesting that the significance of these gene sets is probably due to a group of genes shared by them. 
+In figure \ref{fig:viewEnrichMap2Fig}, there are considerable coefficients between metabolism-related gene sets, suggesting that the significance of these gene sets is probably due to a group of genes shared by them. 
 
 Similarly, the enrichment map can be generated and saved to a file in `pdf' or `png' format.
 
