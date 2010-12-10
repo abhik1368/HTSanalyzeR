@@ -20,14 +20,14 @@ an object of class \code{cellHTS}
 }
   \item{annotationColumn}{
 a single character value specifying the name of the column in the
-fData(cellHTSobject) dataframe from which the feature identifiers will
+fData(cellHTSobject) data frame from which the feature identifiers will
 be extracted
 }
   \item{controls}{
 a single character value specifying the name of the controls to be used 
 as a control population in the two-sample tests (this HAS to be corresponding 
 to how these control wells have been annotated in the column "controlStatus" 
-of the fData(cellHTSobject) dataframe). If nothing is specified, the function 
+of the fData(cellHTSobject) data frame). If nothing is specified, the function 
 will look for negative controls labelled "neg".
 }
   \item{alternative}{

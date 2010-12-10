@@ -209,11 +209,11 @@ gsca<-analyze(gsca, para=list(pValueCutoff=0.05, pAdjustMethod
 
 In the above example, we set a very large \Robject{minGeneSetSize} just for a fast compilation of this vignette. In real applications, the user may want a much smaller threshold (e.g. 15).
 
-During the enrichment analysis of gene sets, the function evaluates the statistical significance of the gene set scores by performing a large number of permutations. This package supports parallel computing to promote speed based on the \Rpackage{snow} package. To do this, the user simply need to set a cluster called \Robject{cluster} before running \Rfunction{analyze}. 
+During the enrichment analysis of gene sets, the function evaluates the statistical significance of the gene set scores by performing a large number of permutations. This package supports parallel computing to promote speed based on the \Rpackage{snow} package. To do this, the user simply needs to set a cluster called \Robject{cluster} before running \Rfunction{analyze}. 
 
 <<eval=FALSE>>=
 library(snow)
-options(htsa.cluster=makeCluster(4, "SOCK"))
+options(cluster=makeCluster(4, "SOCK"))
 @
 
 Please do make sure to stop this cluster and assign `NULL' to it after the enrichment analysis.
@@ -225,7 +225,7 @@ if(is(getOption("cluster"), "cluster")) {
 }
 @
  
-The output of all analyses stored in slot \Robject{result} of the object contains data frames displaying the results for hypergeometric testing and GSEA for each gene set collection, as well as data frames showing the combined results of all gene set collections. Additionally, the output contains dataframes of gene sets exhibiting significant p-values (and significant adjusted p-values) for enrichment from both hypergeometric testing and GSEA.
+The output of all analyses stored in slot \Robject{result} of the object contains data frames displaying the results for hypergeometric testing and GSEA for each gene set collection, as well as data frames showing the combined results of all gene set collections. Additionally, the output contains data frames of gene sets exhibiting significant p-values (and significant adjusted p-values) for enrichment from both hypergeometric testing and GSEA.
 
 \subsection{Summarize results}
 A summary method is provided to print summary information about input gene set collections, phenotypes, hits, parameters for hypeogeometric tests and GSEA and results. 
@@ -371,11 +371,11 @@ As explained above, the data that we use for the network analysis is a configure
 
 In the following example, we perform a one sample t-test which tests whether the mean of the observations for each construct is equal to the mean of all sample observations under the null hypothesis. This amounts to testing whether the phenotype associated with a construct is significantly different from the bulk of observations, with the underlying assumption that in a large scale screen (i.e. genome-wide in this case) most constructs are not expected to show a significant effect. We also perform a two-sample t-test, which tests the null hypothesis that two populations have the same mean, where the two populations are a set of observations for each construct and a set of observations for a control population.  
 
-To perform those tests, it is mandatory that the samples and controls are labelled in the column \Robject{controlStatus} of the fData(xn) dataframe as \Robject{sample} and a string specified by the \Robject{control} argument of the networkAnalysis function, respectively. Non-parametric tests, such as the \textit{Mann-Whitney U test} and the \textit{Rank Product test}, can also be performed. Both the two samples and the one sample tests are automatically produced, in the case of the t-test and the Mann-Withney U test, by the function \Rfunction{cellHTS2OutputStatTests} in the package. 
+To perform those tests, it is mandatory that the samples and controls are labelled in the column \Robject{controlStatus} of the fData(xn) data frame as \Robject{sample} and a string specified by the \Robject{control} argument of the networkAnalysis function, respectively. Non-parametric tests, such as the \textit{Mann-Whitney U test} and the \textit{Rank Product test}, can also be performed. Both the two samples and the one sample tests are automatically produced, in the case of the t-test and the Mann-Withney U test, by the function \Rfunction{cellHTS2OutputStatTests} in the package. 
 
 Please be aware that the t-test works under the assumption that the observations are normally distributed and that all of these tests are less reliable when the number of replicates is small. The user should also keep in mind that the one sample t-test assumes that the majority of conditions are not expected to show any significant effect, which is likely to be a dodgy assumption when the size of the screen is small. This test is also to be avoided when the data consists of pre-screened conditions, i.e. constructs that have been selected specifically based on a potential effect.    
 
-All three kind of tests can be performed with the `two sided', `less' or `greater' alternative, corresponding to population means (or ranking in the case of the rank product) expected to be different, smaller of larger than the null hypothesis, respectively. For example if your phenotypes consist of cell number and you are looking for constructs that impair cell viability, you might be looking for phenotypes that are smaller than the mean. The \Robject{annotationcolumn} argument is used to specify which column of the fData(xn) dataframe contains identifiers for the constructs.  
+All three kind of tests can be performed with the `two sided', `less' or `greater' alternative, corresponding to population means (or ranking in the case of the rank product) expected to be different, smaller of larger than the null hypothesis, respectively. For example if your phenotypes consist of cell number and you are looking for constructs that impair cell viability, you might be looking for phenotypes that are smaller than the mean. The \Robject{annotationcolumn} argument is used to specify which column of the fData(xn) data frame contains identifiers for the constructs.  
 
 <<nwaGetPval, results=hide>>=
 test.stats <- cellHTS2OutputStatTests(cellHTSobject=xn, 

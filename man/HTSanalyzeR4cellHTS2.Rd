@@ -60,7 +60,7 @@ a summary argument for the summarization function from cellHTS2 (see
 }
   \item{annotationColumn}{
 a single character value specifying the name of the column in the fData 
-(cellHTSobject) dataframe from which the feature identifiers will be
+(cellHTSobject) data frame from which the feature identifiers will be
 extracted
 }
 	\item{species}{
@@ -97,7 +97,7 @@ a list of gene set collections (a 'gene set collection' is a list of gene
 sets). Even if only one collection is being tested,it must be entered as
 an element of a 1-element list, e.g. \code{ListOfGeneSetCollections =
 list(YourOneGeneSetCollection)}. Naming the elements of listOfGeneSetCollections
-will result in these names being associated with the relevant dataframes
+will result in these names being associated with the relevant data frames
 in the output (meaningful names are advised)
 }
   \item{cutoffHitsEnrichment}{
@@ -142,7 +142,7 @@ create web links for GO terms.
 a single character value specifying the name of the controls to be used
 as a control population in the two-sample tests (this HAS to be corresponding
 to how these control wells have been annotated in the column "controlStatus"
-of the fData(cellHTSobject) dataframe). If nothing is specified, the function 
+of the fData(cellHTSobject) data frame). If nothing is specified, the function 
 will look for negative controls labelled "neg".
 }
   \item{nwStatsAlternative}{
@@ -203,7 +203,7 @@ as 'RData' in the user-specified directory.
 
 For the KEGG and GO gene sets, this function produces links to the relevant 
 database entries. To make the report more readable, the user can append a column 
-named 'Gene.Set.Term' to each dataframe in the result slot of the object of 
+named 'Gene.Set.Term' to each data frame in the result slot of the object of 
 class \code{\link[HTSanalyzeR:GSCA]{GSCA}} using the method \code{\link[HTSanalyzeR:appendGSTerms]{appendGSTerms}}.
 To ensure that the function works properly, the gene set ID should comply with 
 the following requirements:   

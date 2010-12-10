@@ -9,7 +9,7 @@ This is a generic function.
 
 When implemented as the S4 method for objects of class \code{\link[HTSanalyzeR:GSCA-class]{GSCA}},
 this function finds corresponding annotation terms for KEGG and GO gene sets 
-and inserts a column named "Gene.Set.Term" to each dataframe in the GSCA results. 
+and inserts a column named "Gene.Set.Term" to each data frame in the GSCA results. 
 
 To use this function for objects of class \code{\link[HTSanalyzeR:GSCA-class]{GSCA}}:
 

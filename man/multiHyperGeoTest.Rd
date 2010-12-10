@@ -39,7 +39,7 @@ verbose=TRUE) or not (when verbose=FALSE)
 }
 }
 \value{
-a dataframe containing the results of the hypergeometric test (one row
+a data frame containing the results of the hypergeometric test (one row
 per gene set)
 }
 \author{

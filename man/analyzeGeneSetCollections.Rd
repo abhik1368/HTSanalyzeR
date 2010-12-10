@@ -23,7 +23,7 @@ gene sets). Even if only one collection is being tested, it must be
 entered as an element of a 1-element list, e.g. 
 \code{ListOfGeneSetCollections = list(YourOneGeneSetCollection)}. 
 Naming the elements of listOfGeneSetCollections will result in these 
-names being associated with the relevant dataframes in the output 
+names being associated with the relevant data frames in the output 
 (meaningful names are advised)
 }
   \item{geneList}{
@@ -65,17 +65,17 @@ verbose=TRUE) or not (when verbose=FALSE)
  'geneList', and 'hits'.
 }
 \value{
-\item{HyperGeo.results}{a list of dataframes containing the results for 
+\item{HyperGeo.results}{a list of data frames containing the results for 
 all gene set collections in the input.}
-\item{GSEA.results}{a similar list of dataframes containing the results 
+\item{GSEA.results}{a similar list of data frames containing the results 
 from GSEA. As an example, to access the GSEA results for a gene set 
 collection named "MyGeneSetCollection", one would enter:
 output$GSEA.results$MyGeneSetCollection}
-\item{Sig.pvals.in.both}{a list of dataframes containing the gene sets 
+\item{Sig.pvals.in.both}{a list of data frames containing the gene sets 
 with p-values considered significant in both hypergeometric test and 
 GSEA, before p-value correction. Each element of the list contains the 
 results for one gene set collection.}
-\item{Sig.adj.pvals.in.both}{a list of dataframes containing the gene 
+\item{Sig.adj.pvals.in.both}{a list of data frames containing the gene 
 sets with p-values considered significant in both hypergeometric test 
 and GSEA, after p-value correction. Each element of the list contains 
 the results for one gene set collection.}
