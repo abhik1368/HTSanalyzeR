@@ -636,9 +636,9 @@ Subramanian, A., Tamayo, P., Mootha, V.~K., Mukherjee, S., Ebert, B.~L., et al. 
 \newblock Gene set enrichment analysis: a knowledge-based approach for interpreting genome-wide expression profiles.
 \newblock {\em Proc Natl Acad Sci U S A\/}, {\bf 102}(43), 15545--15550.
 
-\bibitem[Merico {\em et al.}(2010)]{Merico2010}
-Merico D, Isserlin R, Stueker O, Emili A, Bader GD (2010)
-\newblock Enrichment Map: A Network-Based Method for Gene-Set Enrichment Visualization and Interpretation
+\bibitem{Merico2010}
+Merico D, Isserlin R, Stueker O, Emili A, Bader GD (2010).
+\newblock Enrichment Map: A Network-Based Method for Gene-Set Enrichment Visualization and Interpretation.
 \newblock {\em PLoS One} 5(11):e13984
 
 \end{thebibliography}

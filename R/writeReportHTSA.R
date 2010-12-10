@@ -384,7 +384,7 @@ writeReportHTSA <- function(gsca = NULL, nwa = NULL, experimentName = "Unknown",
 						signif.tab = NULL, 
 						row.attr.tab = row.attr.tab,
 						tab.class = "result",
-						tab.name = paste("Gene sets with significant adjusted p value with both hypergeometric test and GSEA: ", rslt.gscs[i], sep=""),
+						tab.name = paste("Gene sets with significant adjusted p-value in both hypergeometric test and GSEA: ", rslt.gscs[i], sep=""),
 						htmlfile = htmlfile
 				)
 			}
