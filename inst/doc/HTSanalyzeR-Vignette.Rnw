@@ -181,7 +181,7 @@ ListGSC <- list(GO_MF=GO_MF, GO_BP=GO_BP, PW_KEGG=PW_KEGG)
 \subsection{Initialize and preprocess}
 An S4 class \Rclass{GSCA} (Gene Set Collection Analysis) is developed to do hypergeometric tests to find gene sets overrepresented among the hits and also perform gene set enrichment analysis (GSEA), as described by Subramanian and colleagues\cite{Subramanian2005}.
 
-To begin, an object of class \Rclass{GSCA} needs to be initialized with a list of gene set collections, a vector of phenotypes and a vector of hits. A preprocessing step including input data validation, duplicate removing, annotation conversion and phenotype ordering can be conducted by the method \Rfunction{preprocess}. An example of such a case is when the input data is not associated with Entrez identifiers (which is the type of identifiers expected for the subsequent analyses). The user can also build their own preprocessing function specifically for their data sets. 
+To begin, an object of class \Rclass{GSCA} needs to be initialized with a list of gene set collections, a vector of phenotypes and a vector of hits. A preprocessing step including input data validation, duplicate removing, annotation conversion and phenotype ordering can be conducted by the method \Rfunction{preprocess}. An example of such a case is when the input data is not associated with Entrez identifiers (which is the type of identifiers expected for the subsequent analyses). The user can also build their own preprocessing function specifically for their data sets. For example, the current method \Rfunction{preprocess} ranks the phenotype vector decreasingly, which may not fit the users' requirements. At this time, the user can develop a new function to order their phenotypes and simply couple it with the functions \Rfunction{annotationConvertor}, \Rfunction{duplicateRemover}, etc. in our package to create their own preprocessing pipeline. 
 
 <<gscaInit, results=hide>>=
 gsca <- new("GSCA", listOfGeneSetCollections=ListGSC, 
@@ -424,7 +424,7 @@ nwa@interactome
 
 \subsection{Perform analysis}
 
-Having preprocessed the input data and created the interactome, the network analysis can then be performed by calling the function \Rfunction{analyze}. In this function, the argument \Robject{fdr} is a parameter for the statistical analysis performed by the BioNet package (see \cite{Beisser2010} for a guide on how to specify those). The function will plot a figure showing the fitting of the BioNet model to your distribution of p-values, which is a good plot to check the choice of statistics used in this function.  
+Having preprocessed the input data and created the interactome, the network analysis can then be performed by calling the method \Rfunction{analyze}. The function will plot a figure showing the fitting of the BioNet model to your distribution of p-values, which is a good plot to check the choice of statistics used in this function. The argument \Robject{fdr} of the method \Rfunction{analyze} is the false discovery rate for BioNet to fit the BUM model. The parameters of the fitted model will then be used for the scoring function, which subsequently enables the BioNet package to search the optimal scoring subnetwork (see \cite{Beisser2010} for more details). 
 
 <<fitBUMplot, fig=TRUE, width=8, height=4.8, results=hide>>=
 nwa<-analyze(nwa, fdr=0.001, species="Dm")
@@ -462,6 +462,8 @@ viewSubNet(nwa)
   Enriched subnetwork identified by BioNet.}
 \end{center}
 \end{figure}
+
+As we can see in figure \ref{fig:viewSubNetFig}, the nodes of the enriched submodule are colored in red and green according to the phenotype (positive or negative). Rectangle nodes correspond to negative scores while circles depict positive scores.
 
 To plot and save the subnetwork, we can use the function \Rfunction{plotSubNet} with \Robject{filepath} and \Robject{filename} specified accordingly. 
 
