@@ -224,19 +224,25 @@ setMethod(
 			for(rs in 1:length(object@result)) {
 				if(names(object@result)[rs]%in%c("HyperGeo.results","GSEA.results","Sig.pvals.in.both","Sig.adj.pvals.in.both")) {
 					sapply(names(object@result[[rs]]), function(gsc) {
-						if(gsc %in% names(object@listOfGeneSetCollections)) {
-							if(nrow(object@result[[rs]][[gsc]])>=1) {
-								if(gsc %in%keggGSCs)
-									object@result[[rs]][[gsc]]<<-appendKEGGTerm(object@result[[rs]][[gsc]])
-								else if(gsc %in%goGSCs)
-									object@result[[rs]][[gsc]]<<-appendGOTerm(object@result[[rs]][[gsc]])
-								else 
-									object@result[[rs]][[gsc]]<<-data.frame(Gene.Set.Term="--", object@result[[rs]][[gsc]], stringsAsFactors=FALSE)	
-							} else {
-								object@result[[rs]][[gsc]]<<-cbind(Gene.Set.Term=NULL,object@result[[rs]][[gsc]])	
-							}
-						}
-					})
+								if(gsc %in% names(object@listOfGeneSetCollections)) {
+									if("Gene.Set.Term" %in% colnames(object@result[[rs]][[gsc]])) {
+										warning(paste("--Gene Set terms already exsit in gene set collection ",gsc," of ", names(object@result)[rs],
+															", and will be overwritten by new gene set terms!\n",sep=""))
+										object@result[[rs]][[gsc]]<-object@result[[rs]][[gsc]][,setdiff(colnames(object@result[[rs]][[gsc]]), "Gene.Set.Term"),drop=FALSE]
+									}								
+									if(nrow(object@result[[rs]][[gsc]])>=1) {
+										if(gsc %in%keggGSCs)
+											object@result[[rs]][[gsc]]<<-appendKEGGTerm(object@result[[rs]][[gsc]])
+										else if(gsc %in%goGSCs)
+											object@result[[rs]][[gsc]]<<-appendGOTerm(object@result[[rs]][[gsc]])
+										else 
+											object@result[[rs]][[gsc]]<<-data.frame(Gene.Set.Term="--", object@result[[rs]][[gsc]], stringsAsFactors=FALSE)	
+									} else {
+										if(gsc %in%keggGSCs || gsc %in%goGSCs)
+											object@result[[rs]][[gsc]]<<-cbind(Gene.Set.Term=NULL,object@result[[rs]][[gsc]])	
+									}
+								}
+							})
 				}
 			}
 			object
