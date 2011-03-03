@@ -3,6 +3,7 @@ makeGSEAplots <- function(geneList, geneSet, exponent, filepath,
 	filename, output='png', ...) {
 	test <- gseaScores(geneList = geneList, geneSet = geneSet,
 			exponent = exponent, mode = "graph")
+	filename<-sub("\\W","_", filename, perl=TRUE)
 	if(output == "pdf" ) 
 		pdf(file=file.path(filepath, paste("gsea_plots", filename, ".pdf", sep="")), ...=...)
 	if(output == "png" ) 
@@ -16,6 +17,7 @@ makeOverlapTable <- function(geneSet, hits, mapID, filepath, filename) {
 	overlap <- intersect(geneSet, hits)
 	nOverlap <- length(overlap)
 	overlapSymbols <- rep(0, nOverlap)
+	filename<-sub("\\W","_", filename, perl=TRUE)
 	if (nOverlap > 0)
 		overlapSymbols <- sapply(mapID[overlap], function(x) 
 			ifelse(length(x) == 1, x, 0))
@@ -216,7 +218,7 @@ writeReportHTSA <- function(gsca = NULL, nwa = NULL, experimentName = "Unknown",
 				}
 				if(length(hyper.filenames[[1]])>0) {
 					href.tab[names(hyper.filenames[[1]]), which(allcol.names=="Observed.Hits")+1, 1] <- 
-							paste("../doc/", hyper.filenames[[1]], ".txt", sep = "")
+							paste("../doc/", sub("\\W","_", hyper.filenames[[1]], perl=TRUE), ".txt", sep = "")
 					href.tab[names(hyper.filenames[[1]]), which(allcol.names=="Observed.Hits")+1, 2] <- "_blank"
 					href.tab[names(hyper.filenames[[1]]), which(allcol.names=="Observed.Hits")+1, 3] <- "Observed.hits"					
 				}
@@ -311,7 +313,7 @@ writeReportHTSA <- function(gsca = NULL, nwa = NULL, experimentName = "Unknown",
 					href.tab[, 1, 3] <- gs.names
 				}
 				if(length(gsea.filenames[[1]])>0) {
-					href.tab[top.gs.id, this.col+2, 1] <- paste("../image/gsea_plots", gsea.filenames[[1]], ".png", sep="")
+					href.tab[top.gs.id, this.col+2, 1] <- paste("../image/gsea_plots", sub("\\W","_", gsea.filenames[[1]], perl=TRUE), ".png", sep="")
 					href.tab[top.gs.id, this.col+2, 2] <- "_blank"
 					href.tab[top.gs.id, this.col+2, 3] <- "gseaplots"	
 				}
