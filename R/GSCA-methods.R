@@ -444,7 +444,8 @@ setMethod(
 setMethod(
 		"viewEnrichMap",
 		"GSCA",
-		function(object, resultName="GSEA.results", gscs, ntop=NULL, allSig=TRUE, gsNameType="id", displayEdgeLabel=TRUE, layout="layout.fruchterman.reingold") {
+		function(object, resultName="GSEA.results", gscs, ntop=NULL, allSig=TRUE, gsNameType="id", displayEdgeLabel=TRUE, 
+				layout="layout.fruchterman.reingold", plot=TRUE) {
 			##check arguments			
 			if(missing(gscs))
 				stop("Please specify the name(s) of Gene Set Collections in 'gscs'! \n")
@@ -464,6 +465,7 @@ setMethod(
 			paraCheck(name="gsNameType", gsNameType)
 			paraCheck(name="displayEdgeLabel", displayEdgeLabel)
 			paraCheck("layout", layout)
+			paraCheck(name="plot",para=plot)
 			##get top gene sets
 			topGS<-getTopGeneSets(object, resultName, gscs, ntop, allSig)
 			if(sum(unlist(lapply(topGS, length)))==0)
@@ -520,6 +522,8 @@ setMethod(
 				###'Node name' controlled by the rownames of tempList
 				g<-graph.adjacency(adjmatrix=map.mat, mode="undirected", weighted=NULL, diag=FALSE)
 			}
+			##add an user-defined attribute 'geneNum' to igraph
+			V(g)$geneSetSize<-map.diag
 			if(length(V(g))>=2) {
 				###'Node size' controlled by the 'size of gene set'
 				v.max.size<-18
@@ -581,46 +585,48 @@ setMethod(
 				edgeWeightVec<-round(edge.min.w+(edge.max.w-edge.min.w)*(E(g)$weight))	
 				E(g)$width<-edgeWeightVec
 			} 
-			##plot graph
-			plot(g,layout=eval(parse(text=layout)))
-			##title
-			
-			##p-value color legend
-			if(resultName=="GSEA.results") {
-				title(main=paste("Enrichment Map of GSEA on \n\"", lapply(list(gscs), paste, collapse=",")[[1]], "\"",sep=""))
-				colVec<-c(redVec[1:(length(redVec)-1)],rev(blueVec))
-				p.cutoff.labels<-rep("",length(colVec))
-				p.cutoff.labels[c(1,4,6,9,12,14,17)]<-c(0,0.01,0.05,1,0.05,0.01,0)
-			} else if(resultName=="HyperGeo.results") {
-				title(main=paste("Enrichment Map of Hypergeometric tests on \n\"", lapply(list(gscs), paste, collapse=",")[[1]],"\"", sep=""))
-				colVec<-redVec
-				p.cutoff.labels<-rep("",length(colVec))
-				p.cutoff.labels[c(1,4,6,9)]<-c(0,0.01,0.05,1)				
-			}
+			if(plot) {
+				##plot graph
+				plot(g,layout=eval(parse(text=layout)))
+				##title
 				
-			points(
-					x = rep(-1.2, length(colVec)), 
-					y = seq(0.5, (0.5-(0.05*length(colVec))), 
-							length.out = length(colVec)), 
-					pch = 15, col = colVec
-			)
-
-			text(
-					x = rep(-1.3, length(colVec)), 
-					y = seq(0.5, (0.5-(0.05*length(colVec))), 
-							length.out = length(colVec)),
-					labels = p.cutoff.labels, 
-					cex = 0.8,
-					adj=1
-			)
-			text(
-					x = -1.25,
-					y = 0.7,
-					labels = "Adjusted\np-values",
-					cex=0.8,
-					adj= 0.5,
-					font=2
-			)
+				##p-value color legend
+				if(resultName=="GSEA.results") {
+					title(main=paste("Enrichment Map of GSEA on \n\"", lapply(list(gscs), paste, collapse=",")[[1]], "\"",sep=""))
+					colVec<-c(redVec[1:(length(redVec)-1)],rev(blueVec))
+					p.cutoff.labels<-rep("",length(colVec))
+					p.cutoff.labels[c(1,4,6,9,12,14,17)]<-c(0,0.01,0.05,1,0.05,0.01,0)
+				} else if(resultName=="HyperGeo.results") {
+					title(main=paste("Enrichment Map of Hypergeometric tests on \n\"", lapply(list(gscs), paste, collapse=",")[[1]],"\"", sep=""))
+					colVec<-redVec
+					p.cutoff.labels<-rep("",length(colVec))
+					p.cutoff.labels[c(1,4,6,9)]<-c(0,0.01,0.05,1)				
+				}
+				
+				points(
+						x = rep(-1.2, length(colVec)), 
+						y = seq(0.5, (0.5-(0.05*length(colVec))), 
+								length.out = length(colVec)), 
+						pch = 15, col = colVec
+				)
+				
+				text(
+						x = rep(-1.3, length(colVec)), 
+						y = seq(0.5, (0.5-(0.05*length(colVec))), 
+								length.out = length(colVec)),
+						labels = p.cutoff.labels, 
+						cex = 0.8,
+						adj=1
+				)
+				text(
+						x = -1.25,
+						y = 0.7,
+						labels = "Adjusted\np-values",
+						cex=0.8,
+						adj= 0.5,
+						font=2
+				)
+			}
 			return(g)
 		}
 )

@@ -58,6 +58,10 @@ the edges in the enrichment map
 a single character value specifying the layout of the enrichment map. 
 (see \code{help(layout)} of the package \code{igraph})
 }
+	\item{plot:}{
+a single logical value. If 'TRUE', the enrichment map will be plotted; 
+otherwise the function only returns the igraph of enrichment map.
+}
 }
 
 }
