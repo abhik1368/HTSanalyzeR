@@ -1,0 +1,17 @@
+citHeader("To cite HTSanalyzeR:")
+
+citEntry(entry="article",  
+   author="Xin Wang and Camille Terfve and John C. Rose and Florian Markowetz",
+   title="HTSanalyzeR: an R/Bioconductor package for integrated network analysis of high-throughput screens",
+   journal="Bioinformatics",
+   year="2011",
+   volume="27",
+   number="6",
+   pages="879",
+   textVersion = paste("Xin Wang and Camille Terfve and John C. Rose and Florian Markowetz.",
+    "HTSanalyzeR: an R/Bioconductor package for integrated network analysis of high-throughput screens.",
+    "Bioinformatics 27:6 879 (2011)."))
+
+citFooter("Thanks very much for using HTSanalyzeR!,",
+          "we appreciate if you remember to cite it in your paper : ).")
+   
