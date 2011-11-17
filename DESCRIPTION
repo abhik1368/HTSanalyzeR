@@ -9,6 +9,9 @@ Depends: igraph, GSEABase, BioNet, cellHTS2, RankProd, methods
 Imports: graph, igraph, GSEABase, BioNet, cellHTS2, AnnotationDbi, biomaRt
 Suggests: KEGG.db, GO.db, org.Dm.eg.db, GOstats, org.Ce.eg.db, org.Mm.eg.db, org.Rn.eg.db, org.Hs.eg.db, snow
 Description: This package provides classes and methods for gene set over-representation, enrichment and network analyses on high-throughput screens. The over-representation analysis is performed based on hypergeometric tests. The enrichment analysis is based on the GSEA algorithm (Subramanian et al. PNAS 2005). The network analysis identifies enriched subnetworks based on algorithms from the BioNet package (Beisser et al., Bioinformatics 2010). A pipeline is also specifically designed for cellHTS2 object to perform integrative network analyses of high-throughput RNA interference screens. The users can build their own analysis pipeline for their own data set based on this package. 
+Reference: Xin Wang and Camille Terfve and John C. Rose and Florian Markowetz.
+        HTSanalyzeR: an R/Bioconductor package for integrated network analysis of high-throughput screens. Bioinformatics 27:6 879
+        (2011).
 License: Artistic-2.0
 biocViews: CellBasedAssays, Bioinformatics, MultipleComparisons
 Collate:
