@@ -1,3 +1,0 @@
-version 2.5.1
-- added an attribute 'geneSetSize' to enrichment map in function 'viewEnrichMap' so that the user can rescale the size of gene sets by themselves
-- added a new argument 'plot' to function 'viewEnrichMap' so that the user can control whether or not to plot the enrichment map
