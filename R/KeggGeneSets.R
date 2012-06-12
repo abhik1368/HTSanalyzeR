@@ -5,7 +5,11 @@ KeggGeneSets <- function(species = "Dm") {
 		paraCheck("species", species)
 		##Create a list with an element for each pathway, each element 
 		##containing a vector of gene identifiers	
-		Kegg <- as.list(KEGGPATHID2EXTID)
+#		Kegg <- as.list(KEGGPATHID2EXTID)
+		Kegg <- tryCatch(as.list(KEGGPATHID2EXTID), error=function(e) NULL)
+		if(is.null(Kegg))
+			stop(paste('Please load library ', 'KEGG.db', 
+				' before running this function!', sep=""))
 		##Keep only those elements of the list that correspond to 
 		##pathways from the gievn species	
 		if(species == "Hs") 
@@ -25,7 +29,12 @@ KeggGeneSets <- function(species = "Dm") {
 		##flybase gene ID
 		if(species == "Dm") {
 			this.pw.kegg <- Kegg[grep("dme", names(Kegg))]
-			fbgn2eg <- as.list(org.Dm.egFLYBASE2EG)
+#			fbgn2eg <- as.list(org.Dm.egFLYBASE2EG)
+			fbgn2eg<-tryCatch(as.list(get("org.Dm.egFLYBASE2EG")), error=function(e) NULL)
+			if(is.null(fbgn2eg))
+				stop(paste('Please load library ', 'org.Dm.eg.db', 
+					' before running this function!', sep=""))
+					
 			junk <- sapply(1:length(this.pw.kegg), 
 				function(l) {
 					this.pw.kegg[[l]] <<- 

@@ -8,17 +8,28 @@ GOGeneSets <- function(species = "Dm", ontologies = "MF") {
 	paraCheck("ontologies", ontologies)
 	##This creates a list with an element for each GO term, containing 
 	##the Entrez Gene identifiers and corresponding evidence codes
-	if(species == "Hs") 
-		ThisGO<-org.Hs.egGO2EG
-	else if(species == "Mm") 
-		ThisGO<-org.Mm.egGO2EG
-	else if(species == "Rn") 
-		ThisGO<-org.Rn.egGo2EG
-	else if(species == "Dm") 
-		ThisGO<-org.Dm.egGO2EG
-	else if(species == "Ce") 
-		ThisGO<-org.Ce.egGO2EG
+#	if(species == "Hs") 
+#		ThisGO<-org.Hs.egGO2EG
+#	else if(species == "Mm") 
+#		ThisGO<-org.Mm.egGO2EG
+#	else if(species == "Rn") 
+#		ThisGO<-org.Rn.egGo2EG
+#	else if(species == "Dm") 
+#		ThisGO<-org.Dm.egGO2EG
+#	else if(species == "Ce") 
+#		ThisGO<-org.Ce.egGO2EG
+	annopc<-paste("org", species, "eg", "db", sep=".")
+	annodb<-paste("org", species, "egGO2EG", sep=".")
+	ThisGO<-tryCatch(get(annodb), error=function(e) NULL)
+	if(is.null(ThisGO))
+		stop(paste('Please load library ', annopc, 
+			' before running this function!', sep=""))
 	##all GO terms 
+#	all.go.id <- GOID(GOTERM)
+	GOTERM <- tryCatch(get("GOTERM"), error=function(e) NULL)
+	if(is.null(GOTERM))
+		stop(paste('Please load library ', 'GO.db', 
+			' before running this function!', sep=""))
 	all.go.id <- GOID(GOTERM)
 	names(all.go.id) <- NULL
 	##all GO types

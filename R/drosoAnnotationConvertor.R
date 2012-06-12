@@ -14,47 +14,90 @@ drosoAnnotationConvertor <- function(geneList, initialIDs = "Entrez.gene",
 	##Determine the environment to be used for the mapping
 	##If the type of initial identifiers is not "Entrez.gene", then the mapping will 
 	##automatically be from one of the following to Entrez Gene identifiers		
+#	if(initialIDs == "Ensembl.transcript") 
+#		fromto<-org.Dm.egENSEMBLTRANS2EG
+#	else if(initialIDs == "Ensembl.prot") 
+#		fromto<-org.Dm.egENSEMBLPROT2EG
+#	else if(initialIDs == "Ensembl.gene") 
+#		fromto<-org.Dm.egENSEMBL2EG
+#	else if(initialIDs == "RefSeq") 
+#		fromto<-org.Dm.egREFSEQ2EG
+#	else if(initialIDs == "Symbol") 
+#		fromto<-org.Dm.egSYMBOL2EG
+#	else if(initialIDs == "GenBank") 
+#		fromto<-org.Dm.egACCNUM2EG
+#	else if(initialIDs == "Flybase") 
+#		fromto<-org.Dm.egFLYBASE2EG
+#	else if(initialIDs == "FlybaseCG") 
+#		fromto<-org.Dm.egFLYBASECG2EG
+#	else if(initialIDs == "FlybaseProt") 
+#		fromto<-org.Dm.egFLYBASEPROT2EG
+		
 	if(initialIDs == "Ensembl.transcript") 
-		fromto<-org.Dm.egENSEMBLTRANS2EG
+		fromto<-tryCatch(get("org.Dm.egENSEMBLTRANS2EG"), error=function(e) NULL)
 	else if(initialIDs == "Ensembl.prot") 
-		fromto<-org.Dm.egENSEMBLPROT2EG
+		fromto<-tryCatch(get("org.Dm.egENSEMBLPROT2EG"), error=function(e) NULL)
 	else if(initialIDs == "Ensembl.gene") 
-		fromto<-org.Dm.egENSEMBL2EG
+		fromto<-tryCatch(get("org.Dm.egENSEMBL2EG"), error=function(e) NULL)
 	else if(initialIDs == "RefSeq") 
-		fromto<-org.Dm.egREFSEQ2EG
+		fromto<-tryCatch(get("org.Dm.egREFSEQ2EG"), error=function(e) NULL)
 	else if(initialIDs == "Symbol") 
-		fromto<-org.Dm.egSYMBOL2EG
+		fromto<-tryCatch(get("org.Dm.egSYMBOL2EG"), error=function(e) NULL)
 	else if(initialIDs == "GenBank") 
-		fromto<-org.Dm.egACCNUM2EG
+		fromto<-tryCatch(get("org.Dm.egACCNUM2EG"), error=function(e) NULL)
 	else if(initialIDs == "Flybase") 
-		fromto<-org.Dm.egFLYBASE2EG
+		fromto<-tryCatch(get("org.Dm.egFLYBASE2EG"), error=function(e) NULL)
 	else if(initialIDs == "FlybaseCG") 
-		fromto<-org.Dm.egFLYBASECG2EG
+		fromto<-tryCatch(get("org.Dm.egFLYBASECG2EG"), error=function(e) NULL)
 	else if(initialIDs == "FlybaseProt") 
-		fromto<-org.Dm.egFLYBASEPROT2EG
+		fromto<-tryCatch(get("org.Dm.egFLYBASEPROT2EG"), error=function(e) NULL)
 	##If the initial identifiers is 	"Entrez.gene", then the mapping will 
 	##automatically be from Entrez Gene identifiers	to one of the following	
 	if(initialIDs== "Entrez.gene") {
 		if(finalIDs == "Ensembl.gene") 
-			fromto<-org.Dm.egENSEMBL
+			fromto<-tryCatch(get("org.Dm.egENSEMBL"), error=function(e) NULL)
 		else if(finalIDs == "Ensembl.transcript") 
-			fromto<-org.Dm.egENSEMBLTRANS			
+			fromto<-tryCatch(get("org.Dm.egENSEMBLTRANS"), error=function(e) NULL)			
 		else if(finalIDs == "Ensembl.prot") 
-			fromto<-org.Dm.egENSEMBLPROT
+			fromto<-tryCatch(get("org.Dm.egENSEMBLPROT"), error=function(e) NULL)
 		else if(finalIDs == "RefSeq") 
-			fromto<-org.Dm.egREFSEQ
+			fromto<-tryCatch(get("org.Dm.egREFSEQ"), error=function(e) NULL)
 		else if(finalIDs == "Symbol") 
-			fromto<-org.Dm.egSYMBOL
+			fromto<-tryCatch(get("org.Dm.egSYMBOL"), error=function(e) NULL)
 		else if(finalIDs == "GenBank") 
-			fromto<-org.Dm.egACCNUM
+			fromto<-tryCatch(get("org.Dm.egACCNUM"), error=function(e) NULL)
 		else if(finalIDs == "Flybase") 
-			fromto<-org.Dm.egFLYBASE
+			fromto<-tryCatch(get("org.Dm.egFLYBASE"), error=function(e) NULL)
 		else if(finalIDs == "FlybaseCG") 
-			fromto<-org.Dm.egFLYBASECG
+			fromto<-tryCatch(get("org.Dm.egFLYBASECG"), error=function(e) NULL)
 		else if(finalIDs == "FlybaseProt") 
-			fromto<-org.Dm.egFLYBASEPROT
+			fromto<-tryCatch(get("org.Dm.egFLYBASEPROT"), error=function(e) NULL)
 	}	
+#	if(initialIDs== "Entrez.gene") {
+#		if(finalIDs == "Ensembl.gene") 
+#			fromto<-org.Dm.egENSEMBL
+#		else if(finalIDs == "Ensembl.transcript") 
+#			fromto<-org.Dm.egENSEMBLTRANS			
+#		else if(finalIDs == "Ensembl.prot") 
+#			fromto<-org.Dm.egENSEMBLPROT
+#		else if(finalIDs == "RefSeq") 
+#			fromto<-org.Dm.egREFSEQ
+#		else if(finalIDs == "Symbol") 
+#			fromto<-org.Dm.egSYMBOL
+#		else if(finalIDs == "GenBank") 
+#			fromto<-org.Dm.egACCNUM
+#		else if(finalIDs == "Flybase") 
+#			fromto<-org.Dm.egFLYBASE
+#		else if(finalIDs == "FlybaseCG") 
+#			fromto<-org.Dm.egFLYBASECG
+#		else if(finalIDs == "FlybaseProt") 
+#			fromto<-org.Dm.egFLYBASEPROT
+#	}	
 	##Check that the environment has been correctly determined
+	annopc<-paste("org", "Dm", "eg", "db", sep=".")
+	if(is.null(fromto))
+		stop(paste('Please load library ', annopc, 
+			' before running this function!', sep=""))
 	if(!is(fromto,"AnnDbBimap")) 
 		stop(paste("Please provide a valid type of identifiers for the ",
 			"'initialIDs' and 'finalIDs' parameters ",

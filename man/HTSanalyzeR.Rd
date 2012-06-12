@@ -23,8 +23,8 @@ on this package.
 	\tabular{ll}{
 Package: \tab HTSAnalyzeR\cr
 Type: \tab Package\cr
-Version: \tab 2.5.1\cr
-Date: \tab 2011-06-09\cr
+Version: \tab 2.9.1\cr
+Date: \tab 2012-06-11\cr
 License: \tab Artistic-2.0\cr
 LazyLoad: \tab yes\cr
 	}

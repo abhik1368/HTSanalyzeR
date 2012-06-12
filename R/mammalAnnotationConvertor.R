@@ -18,34 +18,39 @@ mammalAnnotationConvertor <- function(geneList, initialIDs="Entrez.gene",
 		##the mapping will automatically be from one of the following to 
 		##Entrez Gene identifiers		
 		if(initialIDs == "Ensembl.transcript") 
-			fromto <- org.Hs.egENSEMBLTRANS2EG
+			fromto <- tryCatch(get("org.Hs.egENSEMBLTRANS2EG"), error=function(e) NULL)
 		else if(initialIDs == "Ensembl.prot") 
-			fromto <- org.Hs.egENSEMBLPROT2EG
+			fromto <- tryCatch(get("org.Hs.egENSEMBLPROT2EG"), error=function(e) NULL)
 		else if(initialIDs == "Ensembl.gene") 
-			fromto <- org.Hs.egENSEMBL2EG
+			fromto <- tryCatch(get("org.Hs.egENSEMBL2EG"), error=function(e) NULL)
 		else if(initialIDs == "RefSeq") 
-			fromto <- org.Hs.egREFSEQ2EG
+			fromto <- tryCatch(get("org.Hs.egREFSEQ2EG"), error=function(e) NULL)
 		else if(initialIDs == "Symbol") 
-			fromto <- org.Hs.egSYMBOL2EG
-		else if(initialIDs == "GenBank") fromto<-org.Hs.egACCNUM2EG
+			fromto <- tryCatch(get("org.Hs.egSYMBOL2EG"), error=function(e) NULL)
+		else if(initialIDs == "GenBank") 
+			fromto<-tryCatch(get("org.Hs.egACCNUM2EG"), error=function(e) NULL)
 		else if(initialIDs== "Entrez.gene") {
 			##If the initial identifiers is "Entrez.gene", then the 
 			##mapping will automatically be from Entrez Gene identifiers
 			##to one of the following		
 			if(finalIDs == "Ensembl.gene") 
-				fromto<-org.Hs.egENSEMBL
+				fromto<-tryCatch(get("org.Hs.egENSEMBL"), error=function(e) NULL)
 			else if(finalIDs == "Ensembl.transcript") 
-				fromto<-org.Hs.egENSEMBLTRANS
+				fromto<-tryCatch(get("org.Hs.egENSEMBLTRANS"), error=function(e) NULL)
 			else if(finalIDs == "Ensembl.prot") 
-				fromto<-org.Hs.egENSEMBLPROT
+				fromto<-tryCatch(get("org.Hs.egENSEMBLPROT"), error=function(e) NULL)
 			else if(finalIDs == "RefSeq") 
-				fromto<-org.Hs.egREFSEQ
+				fromto<-tryCatch(get("org.Hs.egREFSEQ"), error=function(e) NULL)
 			else if(finalIDs == "Symbol") 
-				fromto<-org.Hs.egSYMBOL
+				fromto<-tryCatch(get("org.Hs.egSYMBOL"), error=function(e) NULL)
 			else if(finalIDs == "GenBank") 
-				fromto<-org.Hs.egACCNUM
+				fromto<-tryCatch(get("org.Hs.egACCNUM"), error=function(e) NULL)
 		}	
 		##Check that the environment has been correctly determined
+		annopc<-paste("org", "Hs", "eg", "db", sep=".")
+		if(is.null(fromto))
+			stop(paste('Please load library ', annopc, 
+				' before running this function!', sep=""))
 		if(!is(fromto, "AnnDbBimap"))
 			stop("Please provide a valid type of identifiers for the ",
 				"'initialIDs' and 'finalIDs' parameters ",
@@ -56,35 +61,39 @@ mammalAnnotationConvertor <- function(geneList, initialIDs="Entrez.gene",
 		##the mapping will automatically be from one of the following 
 		##to Entrez Gene identifiers			
 		if(initialIDs == "Ensembl.transcript") 
-			fromto <- org.Mm.egENSEMBLTRANS2EG
+			fromto <- tryCatch(get("org.Mm.egENSEMBLTRANS2EG"), error=function(e) NULL)
 		else if(initialIDs == "Ensembl.prot") 
-			fromto <- org.Mm.egENSEMBLPROT2EG
+			fromto <- tryCatch(get("org.Mm.egENSEMBLPROT2EG"), error=function(e) NULL)
 		else if(initialIDs == "Ensembl.gene") 
-			fromto <- org.Mm.egENSEMBL2EG
+			fromto <- tryCatch(get("org.Mm.egENSEMBL2EG"), error=function(e) NULL)
 		else if(initialIDs == "RefSeq") 
-			fromto <- org.Mm.egREFSEQ2EG
+			fromto <- tryCatch(get("org.Mm.egREFSEQ2EG"), error=function(e) NULL)
 		else if(initialIDs == "Symbol") 
-			fromto <- org.Mm.egSYMBOL2EG
+			fromto <- tryCatch(get("org.Mm.egSYMBOL2EG"), error=function(e) NULL)
 		else if(initialIDs == "GenBank") 
-			fromto <- org.Mm.egACCNUM2EG
+			fromto <- tryCatch(get("org.Mm.egACCNUM2EG"), error=function(e) NULL)
 		else if(initialIDs == "Entrez.gene") {
 			##If the initial identifiers is "Entrez.gene", then the 
 			##mapping will automatically be from Entrez Gene identifiers
 			##to one of the following				
 			if(finalIDs == "Ensembl.gene") 
-				fromto <- org.Mm.egENSEMBL
+				fromto <- tryCatch(get("org.Mm.egENSEMBL"), error=function(e) NULL)
 			else if(finalIDs == "Ensembl.transcript") 
-				fromto <- org.Mm.egENSEMBLTRANS
+				fromto <- tryCatch(get("org.Mm.egENSEMBLTRANS"), error=function(e) NULL)
 			else if(finalIDs == "Ensembl.prot") 
-				fromto <- org.Mm.egENSEMBLPROT
+				fromto <- tryCatch(get("org.Mm.egENSEMBLPROT"), error=function(e) NULL)
 			else if(finalIDs == "RefSeq") 
-				fromto <- org.Mm.egREFSEQ
+				fromto <- tryCatch(get("org.Mm.egREFSEQ"), error=function(e) NULL)
 			else if(finalIDs == "Symbol") 
-				fromto <- org.Mm.egSYMBOL
+				fromto <- tryCatch(get("org.Mm.egSYMBOL"), error=function(e) NULL)
 			else if(finalIDs == "GenBank") 
-				fromto <- org.Mm.egACCNUM
+				fromto <- tryCatch(get("org.Mm.egACCNUM"), error=function(e) NULL)
 		}	
 		##Check that the environment has been correctly determined
+		annopc<-paste("org", "Mm", "eg", "db", sep=".")
+		if(is.null(fromto))
+			stop(paste('Please load library ', annopc, 
+				' before running this function!', sep=""))
 		if(!is(fromto, "AnnDbBimap"))
 			stop("Please provide a valid type of identifiers for the ",
 				"'initialIDs' and 'finalIDs' parameters ",
@@ -95,35 +104,39 @@ mammalAnnotationConvertor <- function(geneList, initialIDs="Entrez.gene",
 		##the mapping will automatically be from one of the following to 
 		##Entrez Gene identifiers			
 		if(initialIDs == "Ensembl.transcript") 
-			fromto <- org.Rn.egENSEMBLTRANS2EG
+			fromto <- tryCatch(get("org.Rn.egENSEMBLTRANS2EG"), error=function(e) NULL)
 		else if(initialIDs == "Ensembl.prot") 
-			fromto <- org.Rn.egENSEMBLPROT2EG
+			fromto <- tryCatch(get("org.Rn.egENSEMBLPROT2EG"), error=function(e) NULL)
 		else if(initialIDs == "Ensembl.gene") 
-			fromto <- org.Rn.egENSEMBL2EG
+			fromto <- tryCatch(get("org.Rn.egENSEMBL2EG"), error=function(e) NULL)
 		else if(initialIDs == "RefSeq") 
-			fromto <- org.Rn.egREFSEQ2EG
+			fromto <- tryCatch(get("org.Rn.egREFSEQ2EG"), error=function(e) NULL)
 		else if(initialIDs == "Symbol") 
-			fromto <- org.Rn.egSYMBOL2EG
+			fromto <- tryCatch(get("org.Rn.egSYMBOL2EG"), error=function(e) NULL)
 		else if(initialIDs == "GenBank") 
-			fromto <- org.Rn.egACCNUM2EG
+			fromto <- tryCatch(get("org.Rn.egACCNUM2EG"), error=function(e) NULL)
 		else if(initialIDs == "Entrez.gene") {
 			##If the initial identifiers is "Entrez.gene", then the 
 			##mapping will automatically be from Entrez Gene identifiers	
 			##to one of the following				
 			if(finalIDs == "Ensembl.gene") 
-				fromto <- org.Rn.egENSEMBL
+				fromto <- tryCatch(get("org.Rn.egENSEMBL"), error=function(e) NULL)
 			else if(finalIDs == "Ensembl.transcript") 
-				fromto <- org.Rn.egENSEMBLTRANS
+				fromto <- tryCatch(get("org.Rn.egENSEMBLTRANS"), error=function(e) NULL)
 			else if(finalIDs == "Ensembl.prot") 
-				fromto <- org.Rn.egENSEMBLPROT
+				fromto <- tryCatch(get("org.Rn.egENSEMBLPROT"), error=function(e) NULL)
 			else if(finalIDs == "RefSeq") 
-				fromto <- org.Rn.egREFSEQ
+				fromto <- tryCatch(get("org.Rn.egREFSEQ"), error=function(e) NULL)
 			else if(finalIDs == "Symbol") 
-				fromto <- org.Rn.egSYMBOL
+				fromto <- tryCatch(get("org.Rn.egSYMBOL"), error=function(e) NULL)
 			else if(finalIDs == "GenBank") 
-				fromto <- org.Rn.egACCNUM
+				fromto <- tryCatch(get("org.Rn.egACCNUM"), error=function(e) NULL)
 		}	
 		##Check that the environment has been correctly determined
+		annopc<-paste("org", "Rn", "eg", "db", sep=".")
+		if(is.null(fromto))
+			stop(paste('Please load library ', annopc, 
+				' before running this function!', sep=""))
 		if(!is(fromto, "AnnDbBimap")) 
 			stop("Please provide a valid type of identifiers for the ",
 				"'initialIDs' and 'finalIDs' parameters ",

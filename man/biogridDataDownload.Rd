@@ -14,8 +14,8 @@ biogridDataDownload(link, species = "Dm", dataDirectory=".", verbose=TRUE)
 \arguments{
   \item{link}{
 the link (url) from where the data should be downloaded (in tab2 format).
-If this argument is missing or NULL, the default link (version 3.1.71,
-valid on Dec. 5 2010) will be used.
+If this argument is missing or NULL, the default link (version 3.1.89,
+valid on Jun. 11 2012) will be used.
 }
   \item{species}{
 a single character value specifying the species for which the data should 

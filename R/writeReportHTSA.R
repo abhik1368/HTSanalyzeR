@@ -98,7 +98,7 @@ writeReportHTSA <- function(gsca = NULL, nwa = NULL, experimentName = "Unknown",
 	##       	produce html templates	     #
 	##########################################
 	##Copy css and logos in there
-	cpfile <- dir(system.file("templates", package="HTSanalyzeR"), full=TRUE)
+	cpfile <- dir(system.file("templates", package="HTSanalyzeR"), full.names=TRUE)
 	file.copy(from = cpfile, to = dirs['image'], overwrite = TRUE)
 	##########################################
 	##          	index page 				 #

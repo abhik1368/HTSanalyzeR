@@ -16,37 +16,70 @@ celAnnotationConvertor <- function(geneList, initialIDs="Entrez.gene",
 	#If the type of initial identifiers is not "Entrez.gene", then the 
 	#mapping will automatically be from one of the following to Entrez 
 	#Gene identifiers	
+#	if(initialIDs == "Ensembl.transcript") 
+#		fromto <- org.Ce.egENSEMBLTRANS2EG
+#	else if(initialIDs == "Ensembl.prot") 
+#		fromto <- org.Ce.egENSEMBLPROT2EG
+#	else if(initialIDs == "Ensembl.gene") 
+#		fromto <- org.Ce.egENSEMBL2EG
+#	else if(initialIDs == "RefSeq") 
+#		fromto <- org.Ce.egREFSEQ2EG
+#	else if(initialIDs == "Symbol") 
+#		fromto <- org.Ce.egSYMBOL2EG
+#	else if(initialIDs == "GenBank") 
+#		fromto <- org.Ce.egACCNUM2EG
+		
 	if(initialIDs == "Ensembl.transcript") 
-		fromto <- org.Ce.egENSEMBLTRANS2EG
+		fromto <- tryCatch(get("org.Ce.egENSEMBLTRANS2EG"), error=function(e) NULL)
 	else if(initialIDs == "Ensembl.prot") 
-		fromto <- org.Ce.egENSEMBLPROT2EG
+		fromto <- tryCatch(get("org.Ce.egENSEMBLPROT2EG"), error=function(e) NULL)
 	else if(initialIDs == "Ensembl.gene") 
-		fromto <- org.Ce.egENSEMBL2EG
+		fromto <- tryCatch(get("org.Ce.egENSEMBL2EG"), error=function(e) NULL)
 	else if(initialIDs == "RefSeq") 
-		fromto <- org.Ce.egREFSEQ2EG
+		fromto <- tryCatch(get("org.Ce.egREFSEQ2EG"), error=function(e) NULL)
 	else if(initialIDs == "Symbol") 
-		fromto <- org.Ce.egSYMBOL2EG
+		fromto <- tryCatch(get("org.Ce.egSYMBOL2EG"), error=function(e) NULL)
 	else if(initialIDs == "GenBank") 
-		fromto <- org.Ce.egACCNUM2EG
+		fromto <- tryCatch(get("org.Ce.egACCNUM2EG"), error=function(e) NULL)
 	#If the initial identifiers is 	"Entrez.gene", then the mapping will 
 	#automatically be from Entrez Gene identifiers	to one of the following
+#	if(initialIDs == "Entrez.gene") {
+#		if(finalIDs == "Ensembl.gene") 
+#			fromto <- org.Ce.egENSEMBL
+#		if(finalIDs == "Ensembl.transcript") 
+#			fromto <- org.Ce.egENSEMBLTRANS			
+#		if(finalIDs == "Ensembl.prot") 
+#			fromto <- org.Ce.egENSEMBLPROT
+#		if(finalIDs == "RefSeq") 
+#			fromto <- org.Ce.egREFSEQ
+#		if(finalIDs == "Symbol") 
+#			fromto <- org.Ce.egSYMBOL
+#		if(finalIDs == "GenBank") 
+#			fromto <- org.Ce.egACCNUM
+#		if(finalIDs == "wormbase") 
+#			fromto <- org.Ce.egWORMBASE
+#	}
 	if(initialIDs == "Entrez.gene") {
 		if(finalIDs == "Ensembl.gene") 
-			fromto <- org.Ce.egENSEMBL
+			fromto <- tryCatch(get("org.Ce.egENSEMBL"), error=function(e) NULL)
 		if(finalIDs == "Ensembl.transcript") 
-			fromto <- org.Ce.egENSEMBLTRANS			
+			fromto <- tryCatch(get("org.Ce.egENSEMBLTRANS"), error=function(e) NULL)			
 		if(finalIDs == "Ensembl.prot") 
-			fromto <- org.Ce.egENSEMBLPROT
+			fromto <- tryCatch(get("org.Ce.egENSEMBLPROT"), error=function(e) NULL)		
 		if(finalIDs == "RefSeq") 
-			fromto <- org.Ce.egREFSEQ
+			fromto <- tryCatch(get("org.Ce.egREFSEQ"), error=function(e) NULL)
 		if(finalIDs == "Symbol") 
-			fromto <- org.Ce.egSYMBOL
+			fromto <- tryCatch(get("org.Ce.egSYMBOL"), error=function(e) NULL)
 		if(finalIDs == "GenBank") 
-			fromto <- org.Ce.egACCNUM
+			fromto <- tryCatch(get("org.Ce.egACCNUM"), error=function(e) NULL)
 		if(finalIDs == "wormbase") 
-			fromto <- org.Ce.egWORMBASE
+			fromto <- tryCatch(get("org.Ce.egWORMBASE"), error=function(e) NULL)
 	}
 	#Check that the environment has been correctly determined
+	annopc<-paste("org", "Ce", "eg", "db", sep=".")
+	if(is.null(fromto))
+		stop(paste('Please load library ', annopc, 
+			' before running this function!', sep=""))
 	if(class(fromto) != "AnnDbBimap") 
 		stop(paste("Please provide a valid type of identifiers for the",
 			" 'initialIDs' and 'finalIDs' parameters ",

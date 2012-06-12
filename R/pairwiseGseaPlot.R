@@ -22,7 +22,7 @@ pairwiseGseaPlot <- function(gl1, gl2, geneSet, exponent = 1,
 		pdf(file = file.path(filepath, paste("pairwiseGsea_plots", 
 			filename, sep = "")), ...=...)
 	if(output == "png") 
-		png(file = file.path(filepath, paste("pairwiseGsea_plots", 
+		png(filename = file.path(filepath, paste("pairwiseGsea_plots", 
 			filename, sep = "")), ...=...)
 	##set graphical parameters	
 	par(pin = c(5, 1.5), mfrow = c(2, 2), lwd = 1, mai = c(0.2, 0.8, 0.5, 0.1))
