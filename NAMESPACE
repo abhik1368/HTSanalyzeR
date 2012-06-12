@@ -1,6 +1,8 @@
 importClassesFrom("graph", "graphNEL")
-import("igraph", "GSEABase", "cellHTS2", "BioNet", "biomaRt", "AnnotationDbi")
-
+importFrom("graph", "numNodes", "numEdges")
+import("igraph", "GSEABase", "BioNet", "biomaRt", "AnnotationDbi")
+importFrom("cellHTS2", "state", "scoreReplicates", "summarizeReplicates", "Data", "Data<-")
+importFrom("RankProd", "RP")
 exportClasses(
 	"GSCA",
 	"NWA"
@@ -32,7 +34,8 @@ export(
 	   "pairwisePhenoMannWhit",
        "permutationPvalueCollectionGsea",
        "hyperGeoTest",
-       "writeReportHTSA")
+       "writeReportHTSA",
+	"changes")
 
 exportMethods(
 	"analyze",
