@@ -18,7 +18,8 @@ function \code{\link[HTSanalyzeR:networkAnalysis]{networkAnalysis}} to do subnet
 To use this function for objects of class \code{\link[HTSanalyzeR:GSCA-class]{GSCA}}:
 
 analyze(object, para = list(pValueCutoff = 0.05, pAdjustMethod = "BH", 
-nPermutations = 1000, minGeneSetSize = 15, exponent = 1), verbose = TRUE)
+nPermutations = 1000, minGeneSetSize = 15, exponent = 1), verbose = TRUE, 
+doGSCA=TRUE, doGSEA=TRUE)
 
 To use this function for objects of class \code{\link[HTSanalyzeR:NWA-class]{NWA}}:
 
@@ -79,8 +80,15 @@ used as labels for those nodes.
 a single logical value specifying to display detailed messages (when 
 verbose=TRUE) or not (when verbose=FALSE)
 }
+  \item{doGSOA:}{
+a single logical value specifying to perform gene set overrepresentation 
+analysis (when doGSOA=TRUE) or not (when doGSOA=FALSE)
 }
-
+  \item{doGSEA:}{
+a single logical value specifying to perform gene set enrichment analysis 
+(when doGSEA=TRUE) or not (when doGSEA=FALSE)
+}
+}
 }
 \details{
 For objects of class \code{\link[HTSanalyzeR:GSCA-class]{GSCA}}:
@@ -146,7 +154,8 @@ orderAbsValue = FALSE)
 gsca
 ##do hypergeometric tests and GSEA
 gsca <- analyze(gsca, para = list(pValueCutoff = 0.05, pAdjustMethod 
-= "BH", nPermutations = 1000, minGeneSetSize = 100,exponent = 1))
+= "BH", nPermutations = 1000, minGeneSetSize = 100,exponent = 1), doGSOA=TRUE, 
+doGSEA=TRUE)
 ##updated object
 gsca
 summarize(gsca)

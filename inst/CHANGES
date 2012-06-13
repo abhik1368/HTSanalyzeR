@@ -1,7 +1,19 @@
+version 2.9.2
+- Gene set overrepresentation and enrichment analysis can run independently 
+  using the S4 method 'analyze' by specifying argument 'doGSOA' (for 
+  hypergeometric test based overrepresentation analysis) and 'doGSEA' (for 
+  GSEA). More details in ?analyze.
+- One bug corrected for function 'analyzeGeneSetCollection' when calculating the 
+  overlap of significant gene sets in both GSEA and HyperGeo.
 version 2.9.1
-- moved pakcages BioNet, cellHTS2, AnnotationDbi, biomaRt, RankProd from 'depend' to 'import' field in DESCRIPTION
-- function 'GOGeneSets' and 'KeggGeneSets', resolved the problem of no global binding for 'org.Hs.egGO2EG', ...
-- function 'biogridDataDownload', default download link updated to version 3.1.89, tested on Jun 11, 2012
+- moved pakcages BioNet, cellHTS2, AnnotationDbi, biomaRt, RankProd from 
+  'depend' to 'import' field in DESCRIPTION
+- function 'GOGeneSets' and 'KeggGeneSets', resolved the problem of no global 
+  binding for 'org.Hs.egGO2EG', ...
+- function 'biogridDataDownload', default download link updated to version 
+  3.1.89, tested on Jun 11, 2012
 version 2.5.1
-- added an attribute 'geneSetSize' to enrichment map in function 'viewEnrichMap' so that the user can rescale the size of gene sets by themselves
-- added a new argument 'plot' to function 'viewEnrichMap' so that the user can control whether or not to plot the enrichment map
+- added an attribute 'geneSetSize' to enrichment map in function 'viewEnrichMap' 
+  so that the user can rescale the size of gene sets by themselves
+- added a new argument 'plot' to function 'viewEnrichMap' so that the user can 
+  control whether or not to plot the enrichment map

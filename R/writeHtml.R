@@ -19,47 +19,74 @@ writeHTSAHtmlTab<-function(enrichmentAnalysis,tab=c("GSCA","NWA"),htmlfile,rootd
 		cat(paste('\n <table class="noframe"> <tr> <td class="tabs"> <h3><a href="',file.path(rootdir,"index.html"),'" title="index">Index</a></h3> </td>',sep=""), append = TRUE, file = htmlfile)		
 	}
 	if("GSCA" %in% tab) {
+		if(is.null(enrichmentAnalysis$HyperGeo.results))
+			doGSOA<-FALSE
+		else
+			doGSOA<-TRUE
+		if(is.null(enrichmentAnalysis$GSEA.results))
+			doGSEA<-FALSE
+		else
+			doGSEA<-TRUE
 		cat("\n <tr>", append = TRUE, file = htmlfile)
 		cat('<td class="tabs"> <h3>  </h3> </td>', append = TRUE, file = htmlfile)
-		l.HyperGeo.results<-length(enrichmentAnalysis$HyperGeo.results)
-		l.GSEA.results<-length(enrichmentAnalysis$GSEA.results)
-		l.Sig.adj.pvals.in.both<-length(enrichmentAnalysis$Sig.adj.pvals.in.both)
+		if(doGSOA) {
+			l.results<-length(enrichmentAnalysis$HyperGeo.results)
+			gscs.names<-names(enrichmentAnalysis$HyperGeo.results)
+		}
+		
+		if(doGSEA) {
+			l.results<-length(enrichmentAnalysis$GSEA.results)
+			gscs.names<-names(enrichmentAnalysis$GSEA.results)
+		}
+			
+		if(doGSOA && doGSEA) {
+			l.Sig.adj.pvals.in.both<-length(enrichmentAnalysis$Sig.adj.pvals.in.both)
+		}
 		##Headers
-		for(i in 1:l.HyperGeo.results){
-			cat(paste('\n <td class="tabs"> <h3>',names(enrichmentAnalysis$HyperGeo.results)[i],'</h3> </td>',sep=""), append = TRUE, file = htmlfile)
+		for(i in 1:l.results){
+##			cat(paste('\n <td class="tabs"> <h3>',names(enrichmentAnalysis$HyperGeo.results)[i],'</h3> </td>',sep=""), append = TRUE, file = htmlfile)
+			cat(paste('\n <td class="tabs"> <h3>',gscs.names[i],'</h3> </td>',sep=""), append = TRUE, file = htmlfile)
 		}
 		cat("\n </tr>", append = TRUE, file = htmlfile)	
 		##Enrichment maps
-		cat('<tr><td class="tabs"> <h3> Enrichment maps </h3> </td>', append = TRUE, file = htmlfile)
-		for(i in 1:l.HyperGeo.results){
-			cat(paste('\n <td class="tabs"> <h3><a href="',file.path(rootdir,"html",paste("enrichment_map",i,".html",sep="")),'" title="',sep=""), append = TRUE, file = htmlfile)
-			cat(paste(names(enrichmentAnalysis$GSEA.results)[i],' Enrichment Map">here</a></h3>',sep=""), append=TRUE, file=htmlfile)	
+		if(doGSOA || doGSEA) {
+			cat('<tr><td class="tabs"> <h3> Enrichment maps </h3> </td>', append = TRUE, file = htmlfile)
+			for(i in 1:l.results){
+				cat(paste('\n <td class="tabs"> <h3><a href="',file.path(rootdir,"html",paste("enrichment_map",i,".html",sep="")),'" title="',sep=""), append = TRUE, file = htmlfile)
+				cat(paste(gscs.names[i],' Enrichment Map">here</a></h3>',sep=""), append=TRUE, file=htmlfile)	
+			}
+			cat("\n </tr>", append = TRUE, file = htmlfile)				
 		}
-		cat("\n </tr>", append = TRUE, file = htmlfile)		
 		##HyperGeo tabs
-		cat('<tr><td class="tabs"> <h3> Hypergeometric tests </h3> </td>', append = TRUE, file = htmlfile)
-		for(i in 1:l.HyperGeo.results){
-			cat(paste('\n <td class="tabs"> <h3><a href="',file.path(rootdir,"html",paste("hyperg",i,".html",sep="")),'" title="',sep=""), append = TRUE, file = htmlfile)
-			cat(paste(names(enrichmentAnalysis$HyperGeo.results)[i],' Hyperg. Tests">','here</a></h3> </td>',sep=""), append = TRUE, file = htmlfile)
+		if(doGSOA) {			
+			cat('<tr><td class="tabs"> <h3> Hypergeometric tests </h3> </td>', append = TRUE, file = htmlfile)
+			for(i in 1:l.results){
+				cat(paste('\n <td class="tabs"> <h3><a href="',file.path(rootdir,"html",paste("hyperg",i,".html",sep="")),'" title="',sep=""), append = TRUE, file = htmlfile)
+				cat(paste(gscs.names[i],' Hyperg. Tests">','here</a></h3> </td>',sep=""), append = TRUE, file = htmlfile)
+			}
+			cat("\n </tr>", append = TRUE, file = htmlfile)		
 		}
-		cat("\n </tr>", append = TRUE, file = htmlfile)
 		##GSEA tabs
-		cat('<tr><td class="tabs"> <h3> GSEA </h3> </td>', append = TRUE, file = htmlfile)	
-		for(i in 1:l.GSEA.results){
-			cat(paste('\n <td class="tabs"> <h3><a href="',file.path(rootdir,"html",paste("gsea",i,".html",sep="")),'" title="',sep=""), append = TRUE, file = htmlfile)
-			cat(paste(names(enrichmentAnalysis$GSEA.results)[i],' GSEA">','here</a></h3> </td>',sep=""), append = TRUE, file = htmlfile)
-			##cat(paste('<h3><a href="', file.path(rootdir,"html",paste("gsea",i,"_map.html",sep="")),
-			##	'"title=',names(enrichmentAnalysis$GSEA.results)[i],'enrichment map">map</a></h3>',sep=""), append=TRUE, file=htmlfile)	
-			##cat("</td>",append=TRUE, file=htmlfile)
+		if(doGSEA) {			
+			cat('<tr><td class="tabs"> <h3> GSEA </h3> </td>', append = TRUE, file = htmlfile)	
+			for(i in 1:l.results){
+				cat(paste('\n <td class="tabs"> <h3><a href="',file.path(rootdir,"html",paste("gsea",i,".html",sep="")),'" title="',sep=""), append = TRUE, file = htmlfile)
+				cat(paste(gscs.names[i],' GSEA">','here</a></h3> </td>',sep=""), append = TRUE, file = htmlfile)
+				##cat(paste('<h3><a href="', file.path(rootdir,"html",paste("gsea",i,"_map.html",sep="")),
+				##	'"title=',names(enrichmentAnalysis$GSEA.results)[i],'enrichment map">map</a></h3>',sep=""), append=TRUE, file=htmlfile)	
+				##cat("</td>",append=TRUE, file=htmlfile)
+			}
+			cat("\n </tr> <tr>", append = TRUE, file = htmlfile)			
 		}
-		cat("\n </tr> <tr>", append = TRUE, file = htmlfile)	
-		cat('<td class="tabs"> <h3> Enrichment Summary </h3> </td>', append = TRUE, file = htmlfile)
 		##Tabs for both significant gene sets
-		for(i in 1:l.Sig.adj.pvals.in.both){
-			cat(paste('\n <td class="tabs"> <h3><a href="',file.path(rootdir,"html",paste("enrichment",i,".html",sep="")),'" title="',sep=""), append = TRUE, file = htmlfile)
-			cat(paste(names(enrichmentAnalysis$Sig.adj.pvals.in.both)[i],' Enrichment.summary">','here</a></h3> </td>',sep=""), append = TRUE, file = htmlfile)
+		if(doGSOA && doGSEA) {
+			cat('<td class="tabs"> <h3> Enrichment Summary </h3> </td>', append = TRUE, file = htmlfile)			
+			for(i in 1:l.Sig.adj.pvals.in.both){
+				cat(paste('\n <td class="tabs"> <h3><a href="',file.path(rootdir,"html",paste("enrichment",i,".html",sep="")),'" title="',sep=""), append = TRUE, file = htmlfile)
+				cat(paste(gscs.names[i],' Enrichment.summary">','here</a></h3> </td>',sep=""), append = TRUE, file = htmlfile)
+			}
+			cat("\n </tr>", append = TRUE, file = htmlfile)		
 		}
-		cat("\n </tr>", append = TRUE, file = htmlfile)
 	}
 	if("NWA" %in% tab) {
 		cat("\n <tr>", append = TRUE, file = htmlfile)
@@ -75,9 +102,18 @@ writeHTSAHtmlTail<-function(htmlfile) {
 writeHTSAHtmlSummary<-function(gsca=NULL, nwa=NULL, htmlfile) {
 	cat("\n <hr/> \n ",append=TRUE,file=htmlfile)
 	if(!is.null(gsca)) {
-		l.HyperGeo.results<-length(gsca@result$HyperGeo.results)
-		l.GSEA.results<-length(gsca@result$GSEA.results)
-		l.Sig.adj.pvals.in.both<-length(gsca@result$Sig.adj.pvals.in.both)
+		if(is.null(gsca@result$HyperGeo.results))
+			doGSOA<-FALSE
+		else
+			doGSOA<-TRUE
+		if(is.null(gsca@result$GSEA.results))
+			doGSEA<-FALSE
+		else
+			doGSEA<-TRUE
+	
+##		l.HyperGeo.results<-length(gsca@result$HyperGeo.results)
+##		l.GSEA.results<-length(gsca@result$GSEA.results)
+##		l.Sig.adj.pvals.in.both<-length(gsca@result$Sig.adj.pvals.in.both)
 		cat("<br> The enrichment analysis was performed using the phenotype vector", append = TRUE, file = htmlfile)
 		##cat(geneListName, append = TRUE, file = htmlfile)
 		cat(paste(" including ",gsca@summary$gl[,"input"], " genes",sep=""), append = TRUE, file = htmlfile)
@@ -89,21 +125,26 @@ writeHTSAHtmlSummary<-function(gsca=NULL, nwa=NULL, htmlfile) {
 		}
 		cat("\n \t </UL>", append = TRUE, file = htmlfile)
 		cat("\n The following methods were used: ", append = TRUE, file = htmlfile)
-		cat("\n \t <UL> \n \t \t <LI>", append = TRUE, file = htmlfile)
-		cat("Hypergeometric test", append = TRUE, file = htmlfile)
-		cat("\n \t \t <UL>", append = TRUE, file = htmlfile)
-		cat(paste("\n \t \t \t <LI> Significant gene set cutoff p-value (adjusted): ",gsca@summary$para$hypergeo[,"pValueCutoff"]), append = TRUE, file = htmlfile)
-		cat(paste("\n \t \t \t <LI> MHT correction method: ",gsca@summary$para$hypergeo[,"pAdjustMethod"]), append = TRUE, file = htmlfile)
-		cat(paste("\n \t \t \t <LI> Minimum gene set size: ",gsca@summary$para$hypergeo[,"minGeneSetSize"]), append = TRUE, file = htmlfile)
-		cat("\n \t \t </UL>", append = TRUE, file = htmlfile)
-		cat("\n \t \t <LI>", append = TRUE, file = htmlfile)
-		cat("Gene Set Enrichment Analysis", append = TRUE, file = htmlfile)
-		cat(paste("\n \t \t <UL> \n \t \t \t <LI> Significant gene set cutoff p-value (adjusted): ",gsca@summary$para$gsea[,"pValueCutoff"]), append = TRUE, file = htmlfile)
-		cat(paste("\n \t \t \t <LI> Minimum gene set size: ",gsca@summary$para$gsea[,"minGeneSetSize"],sep=""), append = TRUE, file = htmlfile)
-		cat(paste("\n \t \t \t <LI> MHT correction method: ",gsca@summary$para$gsea[,"pAdjustMethod"]), append = TRUE, file = htmlfile)
-		cat(paste("\n \t \t \t <LI> Number of permutations: ",gsca@summary$para$gsea[,"nPermutations"]), append = TRUE, file = htmlfile)
-		cat(paste("\n \t \t \t <LI> Exponent: ",gsca@summary$para$gsea[,"exponent"]), append = TRUE, file = htmlfile)
-		cat("\n \t \t </UL>", append = TRUE, file = htmlfile)
+		cat("\n \t <UL>", append = TRUE, file = htmlfile)
+		if(doGSOA) {
+			cat("\n \t \t <LI>", append = TRUE, file = htmlfile)
+			cat("Hypergeometric test", append = TRUE, file = htmlfile)
+			cat("\n \t \t <UL>", append = TRUE, file = htmlfile)
+			cat(paste("\n \t \t \t <LI> Significant gene set cutoff p-value (adjusted): ",gsca@summary$para$hypergeo[,"pValueCutoff"]), append = TRUE, file = htmlfile)
+			cat(paste("\n \t \t \t <LI> MHT correction method: ",gsca@summary$para$hypergeo[,"pAdjustMethod"]), append = TRUE, file = htmlfile)
+			cat(paste("\n \t \t \t <LI> Minimum gene set size: ",gsca@summary$para$hypergeo[,"minGeneSetSize"]), append = TRUE, file = htmlfile)
+			cat("\n \t \t </UL>", append = TRUE, file = htmlfile)
+		}
+		if(doGSEA) {
+			cat("\n \t \t <LI>", append = TRUE, file = htmlfile)	
+			cat("Gene Set Enrichment Analysis", append = TRUE, file = htmlfile)
+			cat(paste("\n \t \t <UL> \n \t \t \t <LI> Significant gene set cutoff p-value (adjusted): ",gsca@summary$para$gsea[,"pValueCutoff"]), append = TRUE, file = htmlfile)
+			cat(paste("\n \t \t \t <LI> Minimum gene set size: ",gsca@summary$para$gsea[,"minGeneSetSize"],sep=""), append = TRUE, file = htmlfile)
+			cat(paste("\n \t \t \t <LI> MHT correction method: ",gsca@summary$para$gsea[,"pAdjustMethod"]), append = TRUE, file = htmlfile)
+			cat(paste("\n \t \t \t <LI> Number of permutations: ",gsca@summary$para$gsea[,"nPermutations"]), append = TRUE, file = htmlfile)
+			cat(paste("\n \t \t \t <LI> Exponent: ",gsca@summary$para$gsea[,"exponent"]), append = TRUE, file = htmlfile)
+			cat("\n \t \t </UL>", append = TRUE, file = htmlfile)		
+		}
 	}
 
 	if(!is.null(nwa)) {

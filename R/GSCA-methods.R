@@ -17,7 +17,7 @@ setMethod("initialize",
 			.Object@geneList<-geneList
 			.Object@hits<-hits
 			##[.Object@para<-para]
-			##check result summary and preprocessed to make sure they are not specified by users
+			##check result summary and preprocessed status
 			.Object@result<-list()
 			.Object@preprocessed<-FALSE
 			
@@ -28,7 +28,8 @@ setMethod("initialize",
 			colnames(sum.info.gsc)<-c("input",paste("above min size",sep=""))
 			###gene list
 			sum.info.gl<-matrix(,1,4)
-			colnames(sum.info.gl)<-c("input","valid","duplicate removed","converted to entrez")
+			colnames(sum.info.gl)<-c("input","valid","duplicate removed",
+				"converted to entrez")
 			rownames(sum.info.gl)<-"Gene List"
 			###hits
 			sum.info.hits<-matrix(,1,2)
@@ -37,11 +38,13 @@ setMethod("initialize",
 			###parameters
 			sum.info.para<-list()
 			sum.info.para$hypergeo<-matrix(,1,3)
-			colnames(sum.info.para$hypergeo)<-c("minGeneSetSize","pValueCutoff","pAdjustMethod")
+			colnames(sum.info.para$hypergeo)<-c("minGeneSetSize","pValueCutoff",
+				"pAdjustMethod")
 			rownames(sum.info.para$hypergeo)<-"HyperGeo Test"
 			
 			sum.info.para$gsea<-matrix(,1,5)
-			colnames(sum.info.para$gsea)<-c("minGeneSetSize","pValueCutoff","pAdjustMethod","nPermutations","exponent")
+			colnames(sum.info.para$gsea)<-c("minGeneSetSize","pValueCutoff",
+				"pAdjustMethod","nPermutations","exponent")
 			rownames(sum.info.para$gsea)<-"GSEA"			
 			###results
 			sum.info.results<-matrix(,3,length(listOfGeneSetCollections))
@@ -58,7 +61,8 @@ setMethod("initialize",
 			##[sum.info.para$gsea<-data.frame(sum.info.para$gsea)
 			
 			
-			.Object@summary<-list(gsc=sum.info.gsc,gl=sum.info.gl,hits=sum.info.hits,para=sum.info.para,results=sum.info.results)			
+			.Object@summary<-list(gsc=sum.info.gsc,gl=sum.info.gl,
+				hits=sum.info.hits,para=sum.info.para,results=sum.info.results)			
 			.Object
 		}
 )
@@ -66,7 +70,9 @@ setMethod("initialize",
 setMethod(
 		"preprocess",
 		"GSCA",
-		function(object, species="Dm", initialIDs="FlybaseCG", keepMultipleMappings=TRUE, duplicateRemoverMethod="max", orderAbsValue=FALSE, verbose=TRUE) {
+		function(object, species="Dm", initialIDs="FlybaseCG", 
+			keepMultipleMappings=TRUE, duplicateRemoverMethod="max", 
+			orderAbsValue=FALSE, verbose=TRUE) {
 			#######################
 			##check input arguments
 			#######################
@@ -84,14 +90,17 @@ setMethod(
 			genelist<-object@geneList
 			##remove NA in geneList
 			if(verbose) cat("--Removing genes without values in geneList ...\n")
-			genelist<-genelist[which((!is.na(genelist)) & (names(genelist)!="") & (!is.na(names(genelist))))]
-			object@summary$gl[,"valid"]<-length(genelist)				#genes with valid values
+			genelist<-genelist[which((!is.na(genelist)) & (names(genelist)!="") 
+				& (!is.na(names(genelist))))]
+			#genes with valid values
+			object@summary$gl[,"valid"]<-length(genelist)				
 			if(length(genelist)==0)
 				stop("Input 'geneList' contains no useful data!\n")
 			##duplicate remover
 			if(verbose) cat("--Removing duplicated genes ...\n")
 			genelist<-duplicateRemover(geneList=genelist,method=duplicateRemoverMethod)
-			object@summary$gl[,"duplicate removed"]<-length(genelist)	#genes after removing duplicates 
+			#genes after removing duplicates 
+			object@summary$gl[,"duplicate removed"]<-length(genelist)	
 
 			hits<-object@hits[object@hits!="" & !is.na(object@hits)]
 			if(length(hits)==0)
@@ -123,8 +132,8 @@ setMethod(
 						verbose=verbose
 				)
 			}
-			
-			object@summary$gl[,"converted to entrez"]<-length(genelist)	#genes after annotation conversion
+			#genes after annotation conversion
+			object@summary$gl[,"converted to entrez"]<-length(genelist)	
 			
 			if(verbose) cat("--Ordering Gene List decreasingly ...\n")
 			if(!orderAbsValue)
@@ -132,7 +141,8 @@ setMethod(
 			else
 				genelist<-abs(genelist)[order(abs(genelist),decreasing=TRUE)]	
 			hits<-names(hits.vec)
-			object@summary$hits[,"preprocessed"]<-length(hits)			#hits after preprocessed
+			#hits after preprocessed
+			object@summary$hits[,"preprocessed"]<-length(hits)			
 			##update genelist and hits, and return object
 			object@geneList<-genelist
 			object@hits<-hits
@@ -147,11 +157,21 @@ setMethod(
 setMethod(
 		"analyze",
 		"GSCA",
-		function(object, para=list(pValueCutoff = 0.05,pAdjustMethod = "BH", nPermutations = 1000, minGeneSetSize = 15,exponent = 1), verbose=TRUE) {
+		function(object, para=list(pValueCutoff = 0.05,pAdjustMethod = "BH", 
+			nPermutations = 1000, minGeneSetSize = 15,exponent = 1), 
+			verbose=TRUE, doGSOA=TRUE, doGSEA=TRUE) {
+			
+			paraCheck(name="doGSOA", para=doGSOA)
+			paraCheck(name="doGSEA", para=doGSEA)
+			if((!doGSOA) && (!doGSEA))
+				stop("Please set doGSOA (hypergeometric tests) and/or doGSEA (GSEA) to TURE!\n")
 			paraCheck(name="verbose",para=verbose)
 			object@para<-paraCheck(name="gsca.para",para=para)
-			object@summary$para$hypergeo[1,]<-c(object@para$minGeneSetSize,object@para$pValueCutoff,object@para$pAdjustMethod)
-			object@summary$para$gsea[1,]<-c(object@para$minGeneSetSize,object@para$pValueCutoff,object@para$pAdjustMethod,object@para$nPermutations,object@para$exponent)
+			object@summary$para$hypergeo[1,]<-c(object@para$minGeneSetSize,
+				object@para$pValueCutoff,object@para$pAdjustMethod)
+			object@summary$para$gsea[1,]<-c(object@para$minGeneSetSize,
+				object@para$pValueCutoff,object@para$pAdjustMethod,
+				object@para$nPermutations,object@para$exponent)
 			##if(!is.data.frame(object@summary$para$hypergeo))
 			##	object@summary$para$hypergeo<-data.frame(object@summary$para$hypergeo)
 			##if(!is.data.frame(object@summary$para$gsea))
@@ -169,16 +189,31 @@ setMethod(
 					nPermutations=object@para$nPermutations, 
 					minGeneSetSize=object@para$minGeneSetSize,
 					exponent=object@para$exponent,
-					verbose=verbose
+					verbose=verbose,
+					doGSOA=doGSOA,
+					doGSEA=doGSEA
 			)
 			##update summary information
 			cols<-colnames(object@summary$results)
-			object@summary$gsc[,2]<-unlist(lapply(object@result$HyperGeo.results, nrow))[cols]
-
-			object@summary$results["HyperGeo",]<-unlist(lapply(object@result$HyperGeo.results,function(df) {sum(df[,"Adjusted.Pvalue"]<object@para$pValueCutoff)}))[cols]
-			object@summary$results["GSEA",]<-unlist(lapply(object@result$GSEA.results,function(df) {sum(df[,"Adjusted.Pvalue"]<object@para$pValueCutoff)}))[cols]
-			object@summary$results["Both",]<-unlist(lapply(object@result$Sig.adj.pvals.in.both,nrow))[cols]
-			
+			object@summary$results[1:3,]<-NA
+			if(doGSOA) {
+				object@summary$gsc[,2]<-unlist(lapply(
+					object@result$HyperGeo.results, nrow))[cols]	
+				object@summary$results["HyperGeo",]<-unlist(
+					lapply(object@result$HyperGeo.results,function(df) {
+					sum(df[,"Adjusted.Pvalue"]<object@para$pValueCutoff)}))[cols]											
+			}
+			if(doGSEA) {
+				object@summary$gsc[,2]<-unlist(lapply(
+					object@result$GSEA.results, nrow))[cols]	
+				object@summary$results["GSEA",]<-unlist(lapply(
+				object@result$GSEA.results,function(df) {
+					sum(df[,"Adjusted.Pvalue"]<object@para$pValueCutoff)}))[cols]			
+			}
+			if(doGSOA && doGSEA) {
+				object@summary$results["Both",]<-unlist(lapply(
+					object@result$Sig.adj.pvals.in.both,nrow))[cols]			
+			}
 			object
 		}
 )
@@ -311,6 +346,8 @@ setMethod(
 			paraCheck(name="resultName",para=resultName)
 			if(!(resultName %in% names(object@result)))
 				stop("Please input 'HyperGeo.results' or 'GSEA.results'!\n")
+			if(is.null(object@result[[resultName]]))
+				stop("Please run Hypergeometric or GSEA analysis before using this function!\n")
 			gsc.names<-names(object@result[[resultName]])
 			if(!all(gscs %in% gsc.names))
 				stop("Wrong Gene Set Collection name(s) in 'gscs'! \n")
@@ -348,6 +385,8 @@ setMethod(
 		function(object, gscs, species=NULL, ntop=NULL, allSig=FALSE, filepath=".") {
 			##check arguments
 			paraCheck(name="filepath",para=filepath)
+			if(is.null(object@result[["HyperGeo.results"]]))
+				stop("Please run Hypergeometric tests before using this function!\n")			
 			if(!is.null(species)) {
 				paraCheck(name="species",para=species)
 				anno.db.species<-paste("org",species,"eg","db",sep=".")
@@ -453,7 +492,9 @@ setMethod(
 			##resultName<-"GSEA.results"
 			paraCheck(name="resultName",para=resultName)
 			if(!(resultName %in% names(object@result)))
-				stop("No GSEA results found in object!\n")
+				stop("No results found in object!\n")
+			if(is.null(object@result[[resultName]]))
+				stop("Please run Hypergeometric or GSEA analysis before using this function!\n")
 			gsc.names<-names(object@result[[resultName]])
 			if(!all(gscs %in% gsc.names))
 				stop("Wrong Gene Set Collection name(s) in 'gscs'! \n")

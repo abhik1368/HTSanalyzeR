@@ -14,7 +14,7 @@ and gene set enrichment analyses for all of the gene set collections
 \usage{
 analyzeGeneSetCollections(listOfGeneSetCollections, geneList, hits, 
 pAdjustMethod="BH", pValueCutoff=0.05, nPermutations=1000, 
-minGeneSetSize=15, exponent=1, verbose=TRUE)
+minGeneSetSize=15, exponent=1, verbose=TRUE, doGSOA=TRUE, doGSEA=TRUE)
 }
 \arguments{
   \item{listOfGeneSetCollections}{
@@ -58,6 +58,14 @@ a single integer or numeric value used in weighting phenotypes in GSEA
   \item{verbose}{
 a single logical value specifying to display detailed messages (when 
 verbose=TRUE) or not (when verbose=FALSE)
+}
+  \item{doGSOA}{
+a single logical value specifying to perform gene set overrepresentation 
+analysis (when doGSOA=TRUE) or not (when doGSOA=FALSE)
+}
+  \item{doGSEA}{
+a single logical value specifying to perform gene set enrichment analysis 
+(when doGSEA=TRUE) or not (when doGSEA=FALSE)
 }
 }
 \details{

@@ -340,6 +340,10 @@ paraCheck <- function(name, para) {
 		if(length(para) != 1 || (!is.integer(para) && !is.numeric(para))) 
 			stop("'cutoffHitsEnrichment' should be a single integer!\n ")
 	}
+	if(name=="doGSOA" || name=="doGSEA") {
+		if(length(para) != 1 || !is.logical(para))
+			stop("'doGSOA' and 'doGSEA' should be a single logical value!\n ")
+	}
 }
 
 
