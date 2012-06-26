@@ -1,7 +1,7 @@
 .onLoad<-function(libname, pkgname) {
 	packageStartupMessage(
 "/////////////////////////////////////////////////////////////////////////////\n
-//------------------Thanks for using HTSanalyzeR v 2.9.2-------------------//\n 
+//------------------Thanks for using HTSanalyzeR v 2.9.3-------------------//\n 
 //------------please use function changes() to see new changes-------------//\n
 //------------please report any bug to xin.wang@cancer.org.uk--------------//\n
 /////////////////////////////////////////////////////////////////////////////\n", 
@@ -9,7 +9,10 @@ appendLF=FALSE)
 }
 changes<-function() {
 cat(
-"//changes in v2.9.2\n
+"//changes in v2.9.3\n
+- The dependency of igraph was changed to igraph0 to adapt to the change in 
+  BioNet.
+//changes in v2.9.2\n
 - Gene set overrepresentation and enrichment analysis can run independently 
   using the S4 method 'analyze' by specifying argument 'doGSOA' (for 
   hypergeometric test based overrepresentation analysis) and 'doGSEA' (for 

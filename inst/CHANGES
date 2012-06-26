@@ -1,3 +1,5 @@
+version 2.9.3
+- change the dependency of igraph to igraph0 to adapt to the change in BioNet
 version 2.9.2
 - Gene set overrepresentation and enrichment analysis can run independently 
   using the S4 method 'analyze' by specifying argument 'doGSOA' (for 

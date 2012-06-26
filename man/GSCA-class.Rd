@@ -121,7 +121,7 @@ the examples below)
 library(org.Dm.eg.db)
 library(KEGG.db)
 library(AnnotationDbi)
-library(igraph)
+##library(igraph0)
 ##load data for enrichment analyses
 data("KcViab_Data4Enrich")
 ##select hits
