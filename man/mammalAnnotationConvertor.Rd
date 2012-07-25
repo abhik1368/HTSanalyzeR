@@ -4,9 +4,10 @@
 Convert between different types of identifiers for mammalian species
 }
 \description{
-This function converts an initial named data vector to the same vector
-but with a different identifier category (this function also works on
-matrices with gene identifiers as row names).
+This function converts an initial data vector named by non-entrez ids to the same 
+vector but with entrez ids, and vice versa. Genes for which no mapping were found 
+will be removed. This function can also take a matrix, with gene identifiers as 
+row names.
 }
 \usage{
 mammalAnnotationConvertor(geneList, initialIDs = "Entrez.gene", finalIDs = 

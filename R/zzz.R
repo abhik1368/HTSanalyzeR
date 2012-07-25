@@ -1,7 +1,7 @@
 .onLoad<-function(libname, pkgname) {
 	packageStartupMessage(
 "/////////////////////////////////////////////////////////////////////////////\n
-//------------------Thanks for using HTSanalyzeR v 2.9.3-------------------//\n 
+//------------------Thanks for using HTSanalyzeR v 2.9.4-------------------//\n 
 //------------please use function changes() to see new changes-------------//\n
 //------------please report any bug to xin.wang@cancer.org.uk--------------//\n
 /////////////////////////////////////////////////////////////////////////////\n", 
@@ -9,7 +9,10 @@ appendLF=FALSE)
 }
 changes<-function() {
 cat(
-"//changes in v2.9.3\n
+"//changes in v2.9.4\n
+- Correct a contradiction in annotationConvertor. Now it can convert between 
+entrez genes and non-entrez genes.\n
+//changes in v2.9.3\n
 - The dependency of igraph was changed to igraph0 to adapt to the change in 
   BioNet.\n
 //changes in v2.9.2\n

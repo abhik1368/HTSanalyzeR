@@ -4,10 +4,10 @@
 Convert between different types of gene identifiers
 }
 \description{
-This function converts an initial named data vector to the same vector but 
-with a different identifier category, and removes the genes for which no 
-mapping were found. This function can also take a matrix, with gene 
-identifiers as row names.
+This function converts an initial data vector named by non-entrez ids to the same 
+vector but with entrez ids, and vice versa. Genes for which no mapping were found 
+will be removed. This function can also take a matrix, with gene identifiers as 
+row names.
 }
 \usage{
 annotationConvertor(geneList, species="Dm", initialIDs="Entrez.gene", 

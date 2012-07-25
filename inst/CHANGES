@@ -1,3 +1,6 @@
+version 2.9.4
+- Correct a contradiction in annotationConvertor. Now it can convert between 
+entrez genes and non-entrez genes.
 version 2.9.3
 - change the dependency of igraph to igraph0 to adapt to the change in BioNet
 version 2.9.2

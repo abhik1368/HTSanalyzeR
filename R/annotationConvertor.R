@@ -14,7 +14,7 @@ annotationConvertor<-function(geneList, species="Dm",
 	paraCheck("verbose", verbose)
 	
 	##convert annotations if initialIDs are not Entrez 
-	if(initialIDs != "Entrez.gene") {
+##	if(initialIDs != "Entrez.gene") {
 		##check species
 		paraCheck(name = "species", para = species)	
 		if(species == "Dm") {
@@ -58,10 +58,11 @@ annotationConvertor<-function(geneList, species="Dm",
 				geneList = geneList, initialIDs = initialIDs , 
 				finalIDs = finalIDs, verbose = verbose)
 		}
-	} else {
-		geneListEntrez<-geneList
-		names(geneListEntrez)<-names(geneList)
-	}
+##	} 
+##	else {
+##		geneListEntrez<-geneList
+##		names(geneListEntrez)<-names(geneList)
+##	}
 	return(geneListEntrez)
 }
 
