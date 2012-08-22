@@ -1,5 +1,8 @@
+version 2.9.5
+- Corrected a bug in function hyperGeoTest to avoid significant p-values for 
+zero observed hit.
 version 2.9.4
-- Correct a contradiction in annotationConvertor. Now it can convert between 
+- Corrected a contradiction in annotationConvertor. Now it can convert between 
 entrez genes and non-entrez genes.
 version 2.9.3
 - change the dependency of igraph to igraph0 to adapt to the change in BioNet

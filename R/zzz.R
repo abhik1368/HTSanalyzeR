@@ -9,7 +9,10 @@ appendLF=FALSE)
 }
 changes<-function() {
 cat(
-"//changes in v2.9.4\n
+"//changes in v2.9.5\n
+- Corrected a bug in function hyperGeoTest to avoid significant p-values for 
+zero observed hit.\n
+//changes in v2.9.4\n
 - Correct a contradiction in annotationConvertor. Now it can convert between 
 entrez genes and non-entrez genes.\n
 //changes in v2.9.3\n

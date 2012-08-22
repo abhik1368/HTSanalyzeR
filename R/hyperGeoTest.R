@@ -20,7 +20,7 @@ hyperGeoTest <- function(geneSet, universe, hits) {
 	##number of hits in gene set		
 	k <- length(overlap) 							
 	n <- length(hits)	
-	HGTresults <- phyper(k, m, Nm, n, lower.tail = F)
+	HGTresults <- phyper(k-1, m, Nm, n, lower.tail = F)
 	ex <- (n/N)*m
 	if(m == 0) HGTresults <- NA
 	hyp.vec <- c(N, m, n, ex, k, HGTresults)
