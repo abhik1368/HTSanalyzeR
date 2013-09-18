@@ -1,6 +1,6 @@
 importClassesFrom("graph", "graphNEL")
 importFrom("graph", "numNodes", "numEdges", "nodes")
-import("igraph0", "GSEABase", "BioNet", "biomaRt", "AnnotationDbi")
+import("igraph", "GSEABase", "BioNet", "biomaRt", "AnnotationDbi")
 importFrom("cellHTS2", "state", "scoreReplicates", "summarizeReplicates", "Data", "Data<-")
 importFrom("RankProd", "RP")
 exportClasses(
