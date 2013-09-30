@@ -3,8 +3,8 @@ Type: Package
 Title: Gene set over-representation, enrichment and network analyses for high-throughput screens
 Version: 2.13.2
 Date: 2013-09-29
-Author: Xin Wang <xinwang2hms@gmail.com>, Camille Terfve <cdat2@cam.ac.uk>, John C. Rose <jcr53@cam.ac.uk>, Florian Markowetz <Florian.Markowetz@cancer.org.uk>
-Maintainer: Xin Wang <Xin.Wang@cancer.org.uk>
+Author: Xin Wang <xinwang2hms@gmail.com>, Camille Terfve <cdat2@cam.ac.uk>, John C. Rose <jcr53@cam.ac.uk>, Florian Markowetz <Florian.Markowetz@cruk.cam.ac.uk>
+Maintainer: Xin Wang <xinwang2hms@gmail.com>
 Depends: R (>= 2.15), igraph, methods
 Imports: graph, igraph, GSEABase, BioNet, cellHTS2, AnnotationDbi, biomaRt, RankProd
 Suggests: KEGG.db, GO.db, org.Dm.eg.db, GOstats, org.Ce.eg.db, org.Mm.eg.db, org.Rn.eg.db, org.Hs.eg.db, snow
