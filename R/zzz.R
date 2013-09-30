@@ -9,9 +9,13 @@ appendLF=FALSE)
 }
 changes<-function() {
 cat(
-"//changes in v2.13.1 (Sep 12, 2013)\n
-- Change the dependency on igraph0 to igraph, as requested \n")
+"//changes in v2.13.1 (Sep 29, 2013)\n
+- Bug corrected for GSEA. The bug was that the size of
+  gene set was computed before filtering out genes that
+  are not in the universe. \n")
 }
+##//changes in v2.13.1 (Sep 12, 2013)\n
+##- Change the dependency on igraph0 to igraph, as requested \n
 ##//changes in v2.9.5\n
 ##- Corrected a bug in function hyperGeoTest to avoid significant p-values for 
 ##zero observed hit.\n

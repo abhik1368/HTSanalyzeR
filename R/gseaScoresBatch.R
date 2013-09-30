@@ -13,13 +13,15 @@ gseaScoresBatch <- function(geneList, geneNames.perm, geneSet,
 	if(ncol(geneNames.perm) != (nPermutations+1))
 		stop("The No of columns of 'geneNames.perm' should be equal to 'nPermutations'!\n")
 	geneList.names <- names(geneList)
-	##Compute the size of the gene set and of the genelist	
-	nh<-length(geneSet)
-	N<-length(geneList)
+
 	##The geneSet should be a subset of the gene universe, i.e. we keep 
 	##only those element of the gene set that appear in the geneList		
 	geneSet<-intersect(geneList.names,geneSet)
-	ES<-rep(0,nPermutations+1)
+    ##Compute the size of the gene set and of the genelist
+    nh<-length(geneSet)
+    N<-length(geneList)
+    
+    ES<-rep(0,nPermutations+1)
 	Phit<-matrix(0,nrow=N,ncol=nPermutations+1)
 	Pmiss<-Phit
 	runningES<-NULL

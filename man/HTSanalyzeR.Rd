@@ -23,8 +23,8 @@ on this package.
 	\tabular{ll}{
 Package: \tab HTSAnalyzeR\cr
 Type: \tab Package\cr
-Version: \tab 2.9.5\cr
-Date: \tab 2012-08-22\cr
+Version: \tab 2.13.2\cr
+Date: \tab 2013-09-29\cr
 License: \tab Artistic-2.0\cr
 LazyLoad: \tab yes\cr
 	}
@@ -48,7 +48,7 @@ A full listing of documented topics is available in HTML view by typing
 
 \author{
 Xin Wang, Camille D.A. Terfve, John C. Rose, and Florian Markowetz
-Maintainer: Xin Wang <Xin.Wang@cancer.org.uk>
+Maintainer: Xin Wang <xinwang2hms@gmail.com>
 }
 
 \references{

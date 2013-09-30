@@ -1,3 +1,5 @@
+version 2.13.2 (Sep 29, 2013)
+- Bug corrected for GSEA. The bug was that the size of gene set was computed before filtering out genes that are not in the universe.
 version 2.13.1 (Sep 12, 2013)
 - Change the dependency on igraph0 to igraph, as requested. 
 version 2.9.5
