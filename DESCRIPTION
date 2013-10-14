@@ -1,7 +1,7 @@
 Package: HTSanalyzeR
 Type: Package
 Title: Gene set over-representation, enrichment and network analyses for high-throughput screens
-Version: 2.14.0
+Version: 2.15.0
 Date: 2013-09-29
 Author: Xin Wang <xinwang2hms@gmail.com>, Camille Terfve <cdat2@cam.ac.uk>, John C. Rose <jcr53@cam.ac.uk>, Florian Markowetz <Florian.Markowetz@cruk.cam.ac.uk>
 Maintainer: Xin Wang <xinwang2hms@gmail.com>
