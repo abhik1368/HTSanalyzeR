@@ -1,0 +1,173 @@
+\name{analyze}
+\alias{analyze}
+\alias{analyze,GSCA-method}
+\alias{analyze,NWA-method}
+\title{
+Gene Set Collection Analysis or NetWork Analysis
+}
+\description{
+This is a generic function.
+
+When implemented as the S4 method for objects of class \code{\link[HTSanalyzeR:GSCA-class]{GSCA}},
+this function invokes function  \code{\link[HTSanalyzeR:analyzeGeneSetCollections]{analyzeGeneSetCollections}} to do 
+hypergeometic tests and GSEA. 
+
+When implemented on an object of class \code{\link[HTSanalyzeR:NWA-class]{NWA}}, it calls 
+function \code{\link[HTSanalyzeR:networkAnalysis]{networkAnalysis}} to do subnetwork identification. 
+
+To use this function for objects of class \code{\link[HTSanalyzeR:GSCA-class]{GSCA}}:
+
+analyze(object, para = list(pValueCutoff = 0.05, pAdjustMethod = "BH", 
+nPermutations = 1000, minGeneSetSize = 15, exponent = 1), verbose = TRUE, 
+doGSCA=TRUE, doGSEA=TRUE)
+
+To use this function for objects of class \code{\link[HTSanalyzeR:NWA-class]{NWA}}:
+
+analyze(object, fdr=0.001, species, verbose=TRUE)
+}
+\usage{
+analyze(object, ...)
+}
+\arguments{
+	\item{object}{
+an object. When this function is implemented as the S4 method of class 'GSCA' 
+or 'NWA', this argument is an object of class 'GSCA' or 'NWA'.
+}
+	\item{...}{
+other arguments depending on class (see below for the arguments supported by 
+the method of class 'GSCA' or 'NWA')
+}
+\describe{
+	\item{para:}{
+a list of parameters for GSEA and hypergeometric tests including:
+}
+	\item{para$pValueCutoff}{
+a single numeric value specifying the cutoff for p-values considered significant
+}
+	\item{para$pAdjustMethod:}{
+a single character value specifying the p-value adjustment method 
+to be used (see 'p.adjust' for details)
+}
+	\item{para$nPermutations:}{
+a single integer or numeric value specifying the number of permutations 
+for deriving p-values in GSEA
+}
+	\item{para$minGeneSetSize:}{
+a single integer or numeric value specifying the minimum number of 
+elements in a gene set that must map to elements of the gene universe. 
+Gene sets with fewer than this number are removed from both hypergeometric 
+analysis and GSEA.
+}
+	\item{para$exponent:}{
+a single integer or numeric value used in weighting phenotypes in GSEA 
+(see 'gseaScores' function)
+}
+	\item{fdr:}{
+a single numeric value specifying the false discovery for the scoring 
+of nodes (see \code{BioNet::scoreNodes} and Dittrich et al., 2008 for details)	
+}
+	\item{species:}{
+a single character value specifying the species for which the data 
+should be read. The current version supports one of the following 
+species: "Dm" ("Drosophila_melanogaster"), "Hs" ("Homo_sapiens"), 
+"Rn" ("Rattus_norvegicus"), "Mm" ("Mus_musculus"), "Ce" 
+("Caenorhabditis_elegans"). This is an optional argument here. If it is 
+provided, then the labels of nodes of the identified subnetwork will be
+mapped from Entrez IDs to gene symbols; otherwise, Entrez IDs will be
+used as labels for those nodes.
+}
+	\item{verbose:}{
+a single logical value specifying to display detailed messages (when 
+verbose=TRUE) or not (when verbose=FALSE)
+}
+  \item{doGSOA:}{
+a single logical value specifying to perform gene set overrepresentation 
+analysis (when doGSOA=TRUE) or not (when doGSOA=FALSE)
+}
+  \item{doGSEA:}{
+a single logical value specifying to perform gene set enrichment analysis 
+(when doGSEA=TRUE) or not (when doGSEA=FALSE)
+}
+}
+}
+\details{
+For objects of class \code{\link[HTSanalyzeR:GSCA-class]{GSCA}}:
+
+The function will store the results from function \code{\link[HTSanalyzeR:analyzeGeneSetCollections]{analyzeGeneSetCollections}} 
+in slot \code{result}, and update information about these results to 
+slot \code{summary} of class \code{\link[HTSanalyzeR:GSCA-class]{GSCA}}. 
+
+See function \code{\link[HTSanalyzeR:analyzeGeneSetCollections]{analyzeGeneSetCollections}} for the detailed information
+about the returned results.
+
+For objects of class \code{\link[HTSanalyzeR:NWA-class]{NWA}}:
+
+The function will store the subnetwork module identified by BioNet (if 
+\code{species} is given, labels of nodes will also be mapped from Entrez IDs 
+to gene symbols), and update information about these results to slot 
+\code{summary} of class \code{\link[HTSanalyzeR:NWA-class]{NWA}}.
+
+See function \code{\link[HTSanalyzeR:networkAnalysis]{networkAnalysis}} for the detailed information about the
+returned results.
+}
+\value{
+In the end, this function will return an updated object of class \code{\link[HTSanalyzeR:GSCA-class]{GSCA}} 
+or \code{\link[HTSanalyzeR:NWA-class]{NWA}}.  
+}
+\references{
+Beisser D, Klau GW, Dandekar T, Muller T, Dittrich MT. \emph{BioNet: an R-Package 
+for the functional analysis of biological networks.} Bioinformatics. 2010 
+Apr 15;26(8):1129-30.
+
+Dittrich MT, Klau GW, Rosenwald A., Dandekar T and Muller T. 
+\emph{Identifying functional modules in protein-protein interaction 
+networks: an integrated exact approach.} Bioinformatics 2008 24(13):
+i223-i231.
+}
+\author{
+Xin Wang \email{xw264@cam.ac.uk}
+}
+\seealso{
+\code{\link[HTSanalyzeR:analyzeGeneSetCollections]{analyzeGeneSetCollections}}, \code{\link[HTSanalyzeR:networkAnalysis]{networkAnalysis}}
+}
+\examples{
+\dontrun{
+library(org.Dm.eg.db)
+library(KEGG.db)
+##load data for enrichment analyses
+data("KcViab_Data4Enrich")
+##select hits
+hits <- names(KcViab_Data4Enrich)[which(abs(KcViab_Data4Enrich) > 2)]
+##set up a list of gene set collections
+PW_KEGG <- KeggGeneSets(species = "Dm")
+gscList <- list(PW_KEGG = PW_KEGG)
+##create an object of class 'GSCA'
+gsca <- new("GSCA", listOfGeneSetCollections=gscList,
+geneList = KcViab_Data4Enrich, hits = hits)
+##print gsca
+gsca
+##do preprocessing (KcViab_Data4Enrich has already been preprocessed)
+gsca <- preprocess(gsca, species="Dm", initialIDs = "Entrez.gene", 
+keepMultipleMappings = TRUE, duplicateRemoverMethod = "max", 
+orderAbsValue = FALSE)
+##print gsca again
+gsca
+##do hypergeometric tests and GSEA
+gsca <- analyze(gsca, para = list(pValueCutoff = 0.05, pAdjustMethod 
+= "BH", nPermutations = 1000, minGeneSetSize = 100,exponent = 1), doGSOA=TRUE, 
+doGSEA=TRUE)
+##updated object
+gsca
+summarize(gsca)
+}
+}
+
+
+
+
+
+
+
+
+
+

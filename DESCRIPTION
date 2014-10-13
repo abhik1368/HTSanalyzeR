@@ -1,0 +1,47 @@
+Package: HTSanalyzeR
+Type: Package
+Title: Gene set over-representation, enrichment and network analyses
+        for high-throughput screens
+Version: 2.18.0
+Date: 2013-09-29
+Author: Xin Wang <xinwang2hms@gmail.com>, Camille Terfve
+        <cdat2@cam.ac.uk>, John C. Rose <jcr53@cam.ac.uk>, Florian
+        Markowetz <Florian.Markowetz@cruk.cam.ac.uk>
+Maintainer: Xin Wang <xinwang2hms@gmail.com>
+Depends: R (>= 2.15), igraph, methods
+Imports: graph, igraph, GSEABase, BioNet, cellHTS2, AnnotationDbi,
+        biomaRt, RankProd
+Suggests: KEGG.db, GO.db, org.Dm.eg.db, GOstats, org.Ce.eg.db,
+        org.Mm.eg.db, org.Rn.eg.db, org.Hs.eg.db, snow
+Description: This package provides classes and methods for gene set
+        over-representation, enrichment and network analyses on
+        high-throughput screens. The over-representation analysis is
+        performed based on hypergeometric tests. The enrichment
+        analysis is based on the GSEA algorithm (Subramanian et al.
+        PNAS 2005). The network analysis identifies enriched
+        subnetworks based on algorithms from the BioNet package
+        (Beisser et al., Bioinformatics 2010). A pipeline is also
+        specifically designed for cellHTS2 object to perform
+        integrative network analyses of high-throughput RNA
+        interference screens. The users can build their own analysis
+        pipeline for their own data set based on this package.
+Reference: Xin Wang and Camille Terfve and John C. Rose and Florian
+        Markowetz. HTSanalyzeR: an R/Bioconductor package for
+        integrated network analysis of high-throughput screens.
+        Bioinformatics 27:6 879 (2011).
+License: Artistic-2.0
+Collate: paraCheck.R aggregatePvals.R analyzeGeneSetCollections.R
+        annotationConvertor.R biogridDataDownload.R
+        celAnnotationConvertor.R cellHTS2OutputStatTests.R
+        collectionGsea.R drosoAnnotationConvertor.R duplicateRemover.R
+        FDRcollectionGsea.R GOGeneSets.R gseaPlots.R gseaScores.R
+        gseaScoresBatch.R gseaScoresBatchParallel.R hyperGeoTest.R
+        HTSanalyzeR4cellHTS2.R HTSanalyzeR-internal.R KeggGeneSets.R
+        mammalAnnotationConvertor.R multiHyperGeoTest.R
+        networkAnalysis.R networkPlot.R classUnions.R AllGenerics.R
+        AllClasses.R GSCA-methods.R NWA-methods.R pairwiseGsea.R
+        pairwiseGseaPlot.R pairwisePhenoMannWhit.R
+        permutationPvalueCollectionGsea.R writeHtml.R writeReportHTSA.R
+        zzz.R
+LazyLoad: yes
+biocViews: CellBasedAssays, MultipleComparison
