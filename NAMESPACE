@@ -1,0 +1,58 @@
+importClassesFrom("graph", "graphNEL")
+importFrom("graph", "numNodes", "numEdges", "nodes")
+import("igraph", "GSEABase", "BioNet", "biomaRt", "AnnotationDbi")
+importFrom("cellHTS2", "state", "scoreReplicates", "summarizeReplicates", "Data", "Data<-")
+importFrom("RankProd", "RP")
+exportClasses(
+	"GSCA",
+	"NWA"
+)
+export(
+	   "aggregatePvals",
+	   "annotationConvertor",
+	   "biogridDataDownload", 
+       "celAnnotationConvertor",
+       "cellHTS2OutputStatTests",
+       "collectionGsea",
+       "drosoAnnotationConvertor",
+       "duplicateRemover",
+       "FDRcollectionGsea",
+       "analyzeGeneSetCollections",
+       "GOGeneSets",
+       "gseaPlots",
+       "gseaScores",
+       "gseaScoresBatch",
+       "gseaScoresBatchParallel",
+       "HTSanalyzeR4cellHTS2",
+       "KeggGeneSets",
+       "mammalAnnotationConvertor",
+       "multiHyperGeoTest",
+       "networkAnalysis",
+       "networkPlot",
+	   "pairwiseGsea",
+	   "pairwiseGseaPlot",
+	   "pairwisePhenoMannWhit",
+       "permutationPvalueCollectionGsea",
+       "hyperGeoTest",
+       "writeReportHTSA",
+	"changes")
+
+exportMethods(
+	"analyze",
+	"reportAll",
+	"plotSubNet",
+	"viewSubNet",
+	"viewEnrichMap",
+	"plotEnrichMap",
+	"plotGSEA",
+	"viewGSEA",
+    "writeHits",	
+    "getTopGeneSets",	
+    "appendGSTerms",
+	"interactome",
+	"preprocess",
+	"show",
+	"summarize",
+	"report"
+)
+
