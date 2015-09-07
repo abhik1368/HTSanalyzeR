@@ -4,7 +4,7 @@
 ##data frame.
 
 multiHyperGeoTest <- function(collectionOfGeneSets, universe, hits, 
-	minGeneSetSize = 15, pAdjustMethod = "BH", verbose = TRUE) {
+	minGeneSetSize = 15, pAdjustMethod = "BH", verbose = TRUE, progress) {
 	##check arguments
 	paraCheck("gsc", collectionOfGeneSets)
 	paraCheck("universe", universe)
@@ -24,18 +24,30 @@ multiHyperGeoTest <- function(collectionOfGeneSets, universe, hits,
 			minGeneSetSize, "!\n", sep = ""))
 	geneset.filtered <- which(geneset.size >= minGeneSetSize)
 	##if verbose, create a progress bar to monitor computation progress
-	if(verbose) 
-		pb <- txtProgressBar(style=3)
+	if(verbose){
+    if(is.null(progress)){
+      pb <- txtProgressBar(style=3)  
+    }
+		else{
+      pb <- progress
+		}
+	}
 	results <- t(
 			sapply(geneset.filtered, 
 				function(i) {
-					if(verbose) 
-						setTxtProgressBar(pb, i/l.GeneSet)		
+					if(verbose){
+					  if(is.null(progress)){
+					    setTxtProgressBar(pb, i/l.GeneSet)  	
+					  }
+					  else{
+					    progress$set(value = i/l.GeneSet)
+					  }         
+					}						
 					hyperGeoTest(collectionOfGeneSets[i], universe, hits)
 				}
 			)
 		)
-	if(verbose) 
+	if(verbose && is.null(progress)) 
 		close(pb)
 	if(length(results) > 0) {
 		##results <- t(as.data.frame(results))

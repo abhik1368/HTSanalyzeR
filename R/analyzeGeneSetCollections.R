@@ -5,7 +5,7 @@
 ##hypothesis testing correction).
 analyzeGeneSetCollections <- function(listOfGeneSetCollections, geneList, 
 	hits, pAdjustMethod = "BH", pValueCutoff = 0.05, nPermutations=1000, 
-	minGeneSetSize=15, exponent=1, verbose=TRUE, doGSOA=TRUE, doGSEA=TRUE) {
+	minGeneSetSize=15, exponent=1, verbose=TRUE, doGSOA=TRUE, doGSEA=TRUE, progress) {
 	##check arguments
 	if((!doGSOA)&&(!doGSEA))
 		stop("Please choose to perform hypergeometric tests and/or GSEA by specifying 'doGSOA' and 'doGSEA'!\n")
@@ -46,11 +46,13 @@ analyzeGeneSetCollections <- function(listOfGeneSetCollections, geneList,
 		listOfGeneSetCollections[[l]] <- 
 			listOfGeneSetCollections[[l]][gs.id]
 		##output information about filtering of gene set collections
-		if(verbose && n.gs.discarded > 0)
-			cat(paste("--", n.gs.discarded, " gene sets don't have >= ", 
+		if(verbose && n.gs.discarded > 0)      
+			message <- paste("--", n.gs.discarded, " gene sets don't have >= ", 
 				minGeneSetSize, " overlapped genes with universe in gene",
 				" set collection named ", names(listOfGeneSetCollections)[l], 
-				"!\n",sep=""))
+				"!\n",sep="")
+    if(!is.null(progress)) progress$set(detail = message)
+    else cat(message)
 	}
 	##stop when no gene set passes the size requirement
 	if(all(unlist(lapply(listOfGeneSetCollections,length))==0))
@@ -63,17 +65,21 @@ analyzeGeneSetCollections <- function(listOfGeneSetCollections, geneList,
 	######################
 	if(doGSOA) {
 		HGTresults<-list()
-		cat("-Performing hypergeometric analysis ...\n")
+    message <- "-Performing hypergeometric analysis ...\n"
+    if(is.null(progress)) cat(message)
+    else progress$set(message = message)
 
 		for(i in 1 : length(listOfGeneSetCollections)) {
 			if(verbose) {
-				cat("--For", names(listOfGeneSetCollections)[i], "\n")
+				message = paste("--For", names(listOfGeneSetCollections)[i], "\n", sep=" ")
+        if(is.null(progress)) cat(message)
+        else progress$set(detail = message)
 			}
 			if(length(listOfGeneSetCollections[[i]]) > 0)
 				HGTresults[[i]] <- multiHyperGeoTest(
 					listOfGeneSetCollections[[i]], universe=names(geneList), 
 					hits = hits, minGeneSetSize = minGeneSetSize, 
-					pAdjustMethod = pAdjustMethod, verbose = verbose)
+					pAdjustMethod = pAdjustMethod, verbose = verbose, progress=progress)
 			else {
 				HGTresults[[i]] <- matrix(, nrow=0, ncol=7)
 				colnames(HGTresults[[i]]) <- c("Universe Size", 
@@ -103,7 +109,9 @@ analyzeGeneSetCollections <- function(listOfGeneSetCollections, geneList,
 		})
 		
 		names(HGTresults)<-result.names
-		cat("-Hypergeometric analysis complete\n\n")	
+		message <- "-Hypergeometric analysis complete\n\n"
+    if(is.null(progress)) cat(message)
+    else progress$set(message = message)
 		
 		##identify gene set collections with hypergeometric test 
 		##pvalues < pValueCutoff
@@ -137,19 +145,23 @@ analyzeGeneSetCollections <- function(listOfGeneSetCollections, geneList,
 	######################
 	if(doGSEA) {
 		GSEA.results.list <- list()
-		cat("-Performing gene set enrichment analysis ...\n")
+		message <- "-Performing gene set enrichment analysis ...\n"
+    if(is.null(progress)) cat(message)
+    else progress$set(message = message)
 		##Calculate enrichment scores for all gene sets in all collections
 		test.collection<-list()
 		sapply(1:length(listOfGeneSetCollections), function(i) {
 				if(verbose) {
-					cat("--For", names(listOfGeneSetCollections)[i], "\n")
+					message <- paste("--For", names(listOfGeneSetCollections)[i], "\n", sep=" ")
+          if(is.null(progress)) cat(message)
+          else progress$set(detail = message, value=0)
 				}
 				if(length(listOfGeneSetCollections[[i]]) > 0)
 					test.collection[[i]] <<- collectionGsea(
 						listOfGeneSetCollections[[i]], 
 						geneList=geneList,exponent=exponent,
 						nPermutations=nPermutations, 
-						minGeneSetSize=minGeneSetSize,verbose=verbose)
+						minGeneSetSize=minGeneSetSize,verbose=verbose, progress=progress)
 				else {
 					test.collection[[i]]<<-list(Observed.scores=NULL, 
 						Permutation.scores=NULL)
@@ -266,7 +278,9 @@ analyzeGeneSetCollections <- function(listOfGeneSetCollections, geneList,
 		overlap.adj=NULL
 	}
 
-	cat("-Gene set enrichment analysis complete \n")
+	message <- "-Gene set enrichment analysis complete \n"
+  if(is.null(progress)) cat(message)
+  else progress$set(message = message)
 	final.results <- list("HyperGeo.results" = HGTresults, 
 		"GSEA.results" = GSEA.results.list, "Sig.pvals.in.both" = overlap,
 		"Sig.adj.pvals.in.both" = overlap.adj)

@@ -72,7 +72,7 @@ setMethod(
 		"GSCA",
 		function(object, species="Dm", initialIDs="FlybaseCG", 
 			keepMultipleMappings=TRUE, duplicateRemoverMethod="max", 
-			orderAbsValue=FALSE, verbose=TRUE) {
+			orderAbsValue=FALSE, verbose=TRUE, progress) {
 			#######################
 			##check input arguments
 			#######################
@@ -85,11 +85,17 @@ setMethod(
 			#######################
 			##	 preprocessing
 			#######################
-			cat("-Preprocessing for input gene list and hit list ...\n")
+			message <- "-Preprocessing for input gene list and hit list ...\n"
+      if(is.null(progress)) cat(message)
+      else progress$set(detail = message)
 			
 			genelist<-object@geneList
 			##remove NA in geneList
-			if(verbose) cat("--Removing genes without values in geneList ...\n")
+			if(verbose){
+			  message <- "--Removing genes without values in geneList ...\n"
+        if(is.null(progress)) cat(message)
+        else progress$set(detail = message)
+			} 
 			genelist<-genelist[which((!is.na(genelist)) & (names(genelist)!="") 
 				& (!is.na(names(genelist))))]
 			#genes with valid values
@@ -97,7 +103,11 @@ setMethod(
 			if(length(genelist)==0)
 				stop("Input 'geneList' contains no useful data!\n")
 			##duplicate remover
-			if(verbose) cat("--Removing duplicated genes ...\n")
+			if(verbose){
+			  message <- "--Removing duplicated genes ...\n"
+        if(is.null(progress)) cat(message)
+        else progress$set(detail = message)
+			} 
 			genelist<-duplicateRemover(geneList=genelist,method=duplicateRemoverMethod)
 			#genes after removing duplicates 
 			object@summary$gl[,"duplicate removed"]<-length(genelist)	
@@ -114,7 +124,11 @@ setMethod(
 				
 			##annotation convertor
 			if(initialIDs!="Entrez.gene") {
-				if(verbose) cat("--Converting annotations ...\n")
+				if(verbose){
+				  message <- "--Converting annotations ...\n"
+          if(is.null(progress)) cat(message)
+          else progress$set(detail = message)
+				} 
 				genelist<-annotationConvertor(
 						geneList=genelist,
 						species=species,
@@ -159,7 +173,7 @@ setMethod(
 		"GSCA",
 		function(object, para=list(pValueCutoff = 0.05,pAdjustMethod = "BH", 
 			nPermutations = 1000, minGeneSetSize = 15,exponent = 1), 
-			verbose=TRUE, doGSOA=TRUE, doGSEA=TRUE) {
+			verbose=TRUE, doGSOA=TRUE, doGSEA=TRUE, progress) {
 			
 			paraCheck(name="doGSOA", para=doGSOA)
 			paraCheck(name="doGSEA", para=doGSEA)
@@ -191,7 +205,8 @@ setMethod(
 					exponent=object@para$exponent,
 					verbose=verbose,
 					doGSOA=doGSOA,
-					doGSEA=doGSEA
+					doGSEA=doGSEA,
+          progress=progress
 			)
 			##update summary information
 			cols<-colnames(object@summary$results)
@@ -261,7 +276,7 @@ setMethod(
 					sapply(names(object@result[[rs]]), function(gsc) {
 								if(gsc %in% names(object@listOfGeneSetCollections)) {
 									if("Gene.Set.Term" %in% colnames(object@result[[rs]][[gsc]])) {
-										warning(paste("--Gene Set terms already exsit in gene set collection ",gsc," of ", names(object@result)[rs],
+										warning(paste("--Gene Set terms already exist in gene set collection ",gsc," of ", names(object@result)[rs],
 															", and will be overwritten by new gene set terms!\n",sep=""))
 										object@result[[rs]][[gsc]]<-object@result[[rs]][[gsc]][,setdiff(colnames(object@result[[rs]][[gsc]]), "Gene.Set.Term"),drop=FALSE]
 									}								

@@ -42,6 +42,6 @@ Collate: paraCheck.R aggregatePvals.R analyzeGeneSetCollections.R
         AllClasses.R GSCA-methods.R NWA-methods.R pairwiseGsea.R
         pairwiseGseaPlot.R pairwisePhenoMannWhit.R
         permutationPvalueCollectionGsea.R writeHtml.R writeReportHTSA.R
-        zzz.R
+        zzz.R gseaScoresBatchForeach.R
 LazyLoad: yes
 biocViews: CellBasedAssays, MultipleComparison

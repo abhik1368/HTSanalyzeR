@@ -23,6 +23,7 @@ export(
        "gseaScores",
        "gseaScoresBatch",
        "gseaScoresBatchParallel",
+       "gseaScoresBatchForeach",
        "HTSanalyzeR4cellHTS2",
        "KeggGeneSets",
        "mammalAnnotationConvertor",
